@@ -1,0 +1,496 @@
+/* ==========================================================================
+   GAMELAN KODING — STYLESHEET DESAIN RAMAH ANAK
+   Kriteria PRD:
+   - Target sentuh minimal 44px x 44px
+   - Font besar, kontras jelas, ramah anak SD (Fredoka & Quicksand)
+   - Layout portrait-first, responsif di tablet & laptop (centered max-w-480px)
+   - Navigasi bawah 5 tab dengan tab aktif tampil lebih besar
+   ========================================================================== */
+
+:root {
+  --font-main: 'Fredoka', 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Palet Warna Gamelan & Ramah Anak */
+  --color-primary: #10b981;       /* Hijau Ceria khas tab Editor di sketsa */
+  --color-primary-dark: #059669;
+  --color-primary-light: #d1fae5;
+  
+  --color-misi: #f59e0b;          /* Kuning/Amber hangat khas tab Misi di sketsa */
+  --color-misi-dark: #d97706;
+  --color-misi-light: #fef3c7;
+  
+  --color-gold: #facc15;          /* Kuningan bilah gamelan */
+  --color-gold-dark: #ca8a04;
+  --color-gold-glow: #fef08a;
+  
+  --color-wood: #78350f;          /* Kayu rancakan saron */
+  --color-wood-light: #92400e;
+  --color-wood-frame: #451a03;
+  
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-info: #0284c7;
+  --color-info-light: #e0f2fe;
+
+  --color-bg-app: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-text-main: #1e293b;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  --touch-target-min: 44px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --shadow-active-tab: 0 -4px 14px rgba(16, 185, 129, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #0f172a; /* Latar gelap di luar frame untuk tampilan laptop/tablet */
+  color: var(--color-text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Container Frame Portrait-First */
+.app-container {
+  width: 100%;
+  max-width: 480px; /* Lebar portrait ideal */
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  /* Tampilan di Tablet & Laptop: Frame elevated elegan di tengah */
+  body {
+    padding: 16px 0;
+    align-items: center;
+  }
+  .app-container {
+    height: 94vh;
+    min-height: 720px;
+    max-height: 900px;
+    border-radius: 28px;
+    border: 4px solid #334155;
+  }
+}
+
+/* Header Aplikasi */
+.app-header {
+  height: 60px;
+  background: white;
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 20;
+  flex-shrink: 0;
+}
+
+.app-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f766e;
+  letter-spacing: -0.3px;
+}
+
+.app-badge-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  background-color: var(--color-misi-light);
+  color: var(--color-misi-dark);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.icon-btn-profile {
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  border-radius: var(--radius-full);
+  background-color: #f1f5f9;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-main);
+  transition: all 0.15s ease;
+}
+
+.icon-btn-profile:hover,
+.icon-btn-profile:active {
+  background-color: #e2e8f0;
+  transform: scale(0.96);
+}
+
+/* Area Konten Utama */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navigasi Bawah 5 Tab */
+.bottom-nav {
+  height: 68px;
+  background: white;
+  border-top: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.nav-tab-btn {
+  flex: 1;
+  height: 56px;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-family: var(--font-main);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.nav-tab-btn:hover {
+  color: var(--color-text-main);
+}
+
+/* Tab Aktif Tampil Lebih Besar (sesuai PRD) */
+.nav-tab-btn.active {
+  transform: translateY(-4px) scale(1.12);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.nav-tab-btn.active.tab-editor {
+  color: #047857;
+}
+
+.nav-tab-btn.active.tab-editor .tab-icon-wrapper {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+}
+
+.nav-tab-btn.active.tab-misi {
+  color: #b45309;
+}
+
+.nav-tab-btn.active.tab-misi .tab-icon-wrapper {
+  background-color: var(--color-misi);
+  color: white;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
+}
+
+.nav-tab-btn.active:not(.tab-editor):not(.tab-misi) {
+  color: #0284c7;
+}
+
+.nav-tab-btn.active:not(.tab-editor):not(.tab-misi) .tab-icon-wrapper {
+  background-color: #0284c7;
+  color: white;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+}
+
+.tab-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: all 0.2s ease;
+}
+
+/* Dua Tab Atas di Layar Editor (PRD 4.2: Sketsa 1) */
+.editor-top-tabs {
+  height: 48px;
+  background: #f1f5f9;
+  display: flex;
+  padding: 4px;
+  gap: 6px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.editor-tab-item {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.editor-tab-item.active {
+  background: white;
+  color: #0f172a;
+  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+}
+
+/* Toolbar Tombol Mainkan/Berhenti & + Blok (PRD 4.2) */
+.editor-toolbar {
+  height: 56px;
+  background: white;
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  gap: 8px;
+  z-index: 10;
+}
+
+.btn-add-block {
+  min-height: var(--touch-target-min);
+  padding: 0 16px;
+  background-color: #eff6ff;
+  border: 2px solid #3b82f6;
+  color: #1d4ed8;
+  border-radius: var(--radius-full);
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-add-block:hover,
+.btn-add-block:active {
+  background-color: #dbeafe;
+  transform: scale(0.98);
+}
+
+.btn-play-toggle {
+  min-height: var(--touch-target-min);
+  padding: 0 18px;
+  border-radius: var(--radius-full);
+  border: none;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-play-toggle.play {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-play-toggle.play:hover {
+  background-color: #059669;
+}
+
+.btn-play-toggle.stop {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-play-toggle.stop:hover {
+  background-color: #dc2626;
+}
+
+/* Bottom Sheet / Drawer Palet Blok */
+.sheet-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.sheet-drawer {
+  background: white;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 16px 16px 24px;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 5px;
+  background: #cbd5e1;
+  border-radius: var(--radius-full);
+  margin: 0 auto 12px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Bilah Saron Visualizer */
+.saron-chassis {
+  background: linear-gradient(180deg, #92400e 0%, #78350f 70%, #451a03 100%);
+  border-radius: 16px;
+  padding: 18px 12px 14px;
+  box-shadow: 0 8px 16px rgba(69, 26, 3, 0.3);
+  border: 3px solid #b45309;
+}
+
+.saron-keys-grid {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.saron-key {
+  flex: 1;
+  background: linear-gradient(180deg, #fef08a 0%, #facc15 45%, #ca8a04 100%);
+  border: 2px solid #a16207;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.saron-key:active,
+.saron-key.active {
+  transform: translateY(3px);
+  filter: brightness(1.2);
+  box-shadow: 0 0 16px #facc15;
+}
+
+.saron-key-label {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #713f12;
+}
+
+.gong-instrument {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, #fde047 15%, #eab308 50%, #854d0e 95%);
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 5px solid #a16207;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(113, 63, 18, 0.35);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.gong-instrument:active,
+.gong-instrument.active {
+  transform: scale(0.96);
+  filter: brightness(1.25);
+  box-shadow: 0 0 24px #eab308;
+}
+
+.gong-boss {
+  width: 36px;
+  height: 36px;
+  background: radial-gradient(circle, #fef08a, #ca8a04);
+  border-radius: 50%;
+  border: 2px solid #78350f;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+/* Badge Contoh Belum Divalidasi Praktisi */
+.culture-disclaimer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fffbeb;
+  border: 1px dashed #f59e0b;
+  color: #92400e;
+  font-size: 0.76rem;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+}
