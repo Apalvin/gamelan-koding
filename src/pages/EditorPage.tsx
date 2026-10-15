@@ -67,7 +67,7 @@ export const EditorPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative' }}>
       {/* Dua Tab Di Atas Sesuai Sketsa 1 PRD */}
       <div className="editor-top-tabs" role="tablist">
         <button
@@ -102,7 +102,7 @@ export const EditorPage: React.FC = () => {
       />
 
       {/* Isi Layar Berdasarkan Tab Atas */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <div style={{ flex: '1 1 0%', minHeight: 0, position: 'relative', overflow: 'hidden' }}>
         {/* Tab 1: Kanvas Blockly */}
         <div
           style={{

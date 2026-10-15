@@ -57,29 +57,42 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+  height: 100%;
+  height: -webkit-fill-available;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   font-family: var(--font-main);
   background-color: #0f172a; /* Latar gelap di luar frame untuk tampilan laptop/tablet */
   color: var(--color-text-main);
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: stretch;
-  overflow-x: hidden;
   user-select: none;
 }
 
 #root {
   width: 100%;
+  height: 100%;
+  height: -webkit-fill-available;
+  height: 100dvh;
   display: flex;
   justify-content: center;
 }
 
-/* Container Frame Portrait-First */
+/* Container Frame Portrait-First (Penuh di HP, Fixed di Desktop) */
 .app-container {
   width: 100%;
-  max-width: 480px; /* Lebar portrait ideal */
-  min-height: 100vh;
+  max-width: 480px;
+  height: 100%;
+  height: -webkit-fill-available;
+  height: 100dvh;
+  max-height: 100dvh;
   background-color: var(--color-bg-app);
   display: flex;
   flex-direction: column;
@@ -90,8 +103,18 @@ body {
 
 @media (min-width: 768px) {
   /* Tampilan di Tablet & Laptop: Frame elevated elegan di tengah */
+  html, body {
+    overflow: auto;
+  }
   body {
     padding: 16px 0;
+    align-items: center;
+    min-height: 100vh;
+    height: auto;
+  }
+  #root {
+    height: auto;
+    min-height: 100vh;
     align-items: center;
   }
   .app-container {
@@ -160,22 +183,26 @@ body {
 
 /* Area Konten Utama */
 .main-content {
-  flex: 1;
+  flex: 1 1 0%;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Navigasi Bawah 5 Tab */
+/* Navigasi Bawah 5 Tab (Selalu Menempel di Bawah Layar HP) */
 .bottom-nav {
-  height: 68px;
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+  min-height: 64px;
   background: white;
   border-top: 2px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 6px;
+  padding: 0 6px env(safe-area-inset-bottom, 0px) 6px;
   z-index: 30;
   flex-shrink: 0;
 }
