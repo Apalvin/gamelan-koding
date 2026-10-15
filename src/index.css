@@ -521,3 +521,15 @@ body {
   border-radius: var(--radius-sm);
   margin-top: 8px;
 }
+
+/* Milestone 4: Penyorotan Blok Aktif Saat Suara Berbunyi */
+.blockly-block-playing {
+  filter: drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 4px #fbbf24) brightness(1.15) !important;
+  transition: filter 0.12s ease-out;
+}
+
+.blocklyHighlightedConnectionPath {
+  stroke: #f59e0b !important;
+  stroke-width: 4px !important;
+}
+

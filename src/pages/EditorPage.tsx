@@ -8,6 +8,7 @@ import { GamelanVisualizer } from '../components/output/GamelanVisualizer';
 import { HardwareSimulationPanel, OutputMode } from '../components/output/HardwareSimulationPanel';
 import { SlendroNote, GamelanEvent } from '../types/gamelan';
 import { compileWorkspace } from '../compiler/compileWorkspace';
+import { digitalSimOutput } from '../audio/digitalSimOutput';
 
 type EditorTopTab = 'editor' | 'output';
 
@@ -31,10 +32,10 @@ export const EditorPage: React.FC = () => {
   const [previewGong, setPreviewGong] = useState(false);
 
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
-  const playTimeoutsRef = useRef<number[]>([]);
 
   const handleWorkspaceReady = (ws: Blockly.WorkspaceSvg) => {
     workspaceRef.current = ws;
+    digitalSimOutput.setWorkspace(ws);
   };
 
   const handleAddBlock = (blockType: string) => {
@@ -63,14 +64,13 @@ export const EditorPage: React.FC = () => {
   };
 
   const stopPlayback = () => {
-    playTimeoutsRef.current.forEach((id) => clearTimeout(id));
-    playTimeoutsRef.current = [];
+    digitalSimOutput.stop();
     setIsPlaying(false);
     setPreviewNote(null);
     setPreviewGong(false);
   };
 
-  const handleTogglePlay = () => {
+  const handleTogglePlay = async () => {
     if (isPlaying) {
       stopPlayback();
       return;
@@ -97,33 +97,32 @@ export const EditorPage: React.FC = () => {
     });
 
     setIsPlaying(true);
-    playTimeoutsRef.current = [];
 
-    // Jadwalkan visualisasi bilah / gong menyala
-    result.events.forEach((ev) => {
-      const timeoutId = window.setTimeout(() => {
-        if (ev.instrument === 'gong') {
-          setPreviewGong(true);
-          window.setTimeout(() => setPreviewGong(false), 500);
-        } else if (ev.note) {
-          setPreviewNote(ev.note);
-          window.setTimeout(() => setPreviewNote(null), 350);
-        }
-      }, ev.tMs);
-      playTimeoutsRef.current.push(timeoutId);
-    });
-
-    // Timeout untuk akhir program
-    const endTimeout = window.setTimeout(() => {
-      setIsPlaying(false);
-    }, result.totalDurationMs + 200);
-    playTimeoutsRef.current.push(endTimeout);
+    // 3. Putar audio gamelan, animasi bilah, dan highlight blok di kanvas
+    await digitalSimOutput.play(result.events);
   };
 
-  // Bersihkan timeouts saat komponen unmount
+  // Daftarkan listener visual & pembersihan saat unmount
   useEffect(() => {
+    digitalSimOutput.setOnVisualEvent((ev) => {
+      if (!ev) {
+        setPreviewNote(null);
+        setPreviewGong(false);
+      } else if (ev.instrument === 'gong') {
+        setPreviewGong(true);
+        setPreviewNote(null);
+      } else if (ev.note) {
+        setPreviewNote(ev.note);
+        setPreviewGong(false);
+      }
+    });
+
+    digitalSimOutput.setOnFinish(() => {
+      setIsPlaying(false);
+    });
+
     return () => {
-      playTimeoutsRef.current.forEach((id) => clearTimeout(id));
+      digitalSimOutput.stop();
     };
   }, []);
 

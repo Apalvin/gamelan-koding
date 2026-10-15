@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SlendroNote } from '../../types/gamelan';
+import { gamelanSynth } from '../../audio/gamelanSynth';
 
 interface GamelanVisualizerProps {
   activeNote?: SlendroNote | null;
@@ -22,11 +23,17 @@ export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
   const [manualGong, setManualGong] = useState(false);
 
   const handleTapKey = (note: SlendroNote) => {
+    // Aktifkan dan bunyikan sintesis saron slendro
+    gamelanSynth.initAudio();
+    gamelanSynth.playSaronNote(note);
     setManualNote(note);
     setTimeout(() => setManualNote(null), 300);
   };
 
   const handleTapGong = () => {
+    // Aktifkan dan bunyikan gong ageng dengan ombak
+    gamelanSynth.initAudio();
+    gamelanSynth.playGong();
     setManualGong(true);
     setTimeout(() => setManualGong(false), 450);
   };
@@ -102,6 +109,11 @@ export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
         <div style={{ marginTop: 10, fontSize: '0.78rem', color: '#78350f', fontWeight: 700 }}>
           {isGongActive || manualGong ? '💥 GOOONG!' : 'Gong Ageng'}
         </div>
+      </div>
+
+      {/* Catatan Akurasi Suara Sesuai PRD Bagian 7.4 */}
+      <div style={{ textAlign: 'center', fontSize: '0.72rem', color: '#94a3b8', fontStyle: 'italic', marginTop: -8 }}>
+        💡 Catatan: Suara simulasi sintesis Web Audio adalah pendekatan digital, bukan representasi penuh gamelan asli.
       </div>
     </div>
   );
