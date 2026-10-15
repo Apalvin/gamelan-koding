@@ -123,17 +123,19 @@ export function addBlockToWorkspace(workspace: Blockly.WorkspaceSvg, blockType: 
   newBlock.initSvg();
   newBlock.render();
 
-  // Cari blok paling bawah di tumpukan utama untuk menyambungkan secara otomatis
+  // Cari blok ketika_mulai untuk menyambungkan langsung ke tumpukan program utama
+  const startBlocks = workspace.getBlocksByType('ketika_mulai', false);
   const topBlocks = workspace.getTopBlocks(true);
+  const rootBlock = startBlocks.length > 0 ? startBlocks[0] : (topBlocks.length > 0 ? topBlocks[0] : null);
   let connected = false;
 
-  if (topBlocks.length > 0 && newBlock.previousConnection) {
-    let currentBlock: Blockly.Block | null = topBlocks[0];
-    while (currentBlock && currentBlock.getNextBlock()) {
-      currentBlock = currentBlock.getNextBlock();
+  if (rootBlock && newBlock.previousConnection) {
+    let currentBlock: Blockly.Block = rootBlock;
+    while (currentBlock.getNextBlock()) {
+      currentBlock = currentBlock.getNextBlock()!;
     }
 
-    if (currentBlock && currentBlock.nextConnection && !currentBlock.nextConnection.isConnected()) {
+    if (currentBlock.nextConnection && !currentBlock.nextConnection.isConnected()) {
       currentBlock.nextConnection.connect(newBlock.previousConnection);
       connected = true;
     }
@@ -150,5 +152,8 @@ export function addBlockToWorkspace(workspace: Blockly.WorkspaceSvg, blockType: 
     }
   }
 
+  // Render ulang workspace untuk memperbarui visual blok
+  newBlock.render();
+  workspace.render();
   newBlock.select();
 }

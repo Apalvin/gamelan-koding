@@ -30,6 +30,44 @@ export interface GamelanOutput {
  */
 export interface HardwareSimLog {
   t: number;
-  ch: number; // nomor aktuator / bilah
+  ch: number | string; // nomor aktuator / bilah
   vel: number;
+}
+
+/**
+ * Konstanta Pengaman (Guard) Sesuai Bagian 7.2 PRD
+ */
+export const DEFAULT_MAX_STEPS = 5000;
+export const DEFAULT_MAX_EVENTS = 2000;
+export const DEFAULT_BPM = 60;
+export const MIN_BPM = 40;
+export const MAX_BPM = 140;
+
+/**
+ * Hasil Kompilasi Sukses
+ */
+export interface CompileSuccess {
+  success: true;
+  events: GamelanEvent[];
+  totalDurationMs: number;
+  blockIds: string[];
+  stepsCount: number;
+}
+
+/**
+ * Hasil Kompilasi Gagal (Terkena Guard Infinite Loop, Overflow, dsb.)
+ */
+export interface CompileError {
+  success: false;
+  error: string;
+  code: 'INFINITE_LOOP' | 'EVENT_OVERFLOW' | 'EMPTY_PROGRAM' | 'SYNTAX_ERROR';
+  step?: number;
+}
+
+export type CompileResult = CompileSuccess | CompileError;
+
+export interface CompilerOptions {
+  defaultBpm?: number;
+  maxSteps?: number;
+  maxEvents?: number;
 }
