@@ -43,22 +43,24 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     <>
       <header className="app-header">
         <div className="app-title-group">
-          <div style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'linear-gradient(135deg, #10b981, #047857)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            boxShadow: '0 2px 6px rgba(16, 185, 129, 0.35)'
-          }}>
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 13,
+              background: '#FFB2DD',
+              color: '#2D2D2B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1.5px solid rgba(45, 45, 43, 0.1)',
+            }}
+          >
             <Music size={20} strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="app-title" style={{ margin: 0, lineHeight: 1.2 }}>Gamelan Koding</h1>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Musik Tradisi & Logika Blok</div>
+            <h1 className="app-title" style={{ margin: 0, lineHeight: 1.15 }}>Gamelan Koding</h1>
+            <div style={{ fontSize: '0.68rem', color: '#6C6B66', fontWeight: 600 }}>Musik Tradisi & Logika Blok</div>
           </div>
         </div>
 
@@ -71,12 +73,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             aria-label="Pengaturan dan Profil"
             title="Pengaturan Siswa"
           >
-            <Settings size={22} color="#334155" />
+            <Settings size={20} color="#2D2D2B" />
           </button>
         </div>
       </header>
 
-      {/* Modal Pengaturan & Profil Ramah Anak */}
+      {/* Modal Pengaturan & Profil (Classly Warm Surface Aesthetic) */}
       {showModal && (
         <div
           role="dialog"
@@ -84,55 +86,57 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'rgba(15, 23, 42, 0.5)',
+            background: 'rgba(45, 45, 43, 0.45)',
             backdropFilter: 'blur(3px)',
             zIndex: 100,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 16
+            padding: 16,
           }}
           onClick={() => setShowModal(false)}
         >
           <div
             style={{
-              background: 'white',
+              background: '#F8F3E7',
               borderRadius: 24,
               padding: 24,
               width: '100%',
               maxWidth: 380,
-              boxShadow: '0 20px 35px rgba(0,0,0,0.2)',
-              border: '2px solid #e2e8f0'
+              border: '1.5px solid rgba(45, 45, 43, 0.12)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <User size={24} color="#0f766e" />
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: '#0f766e' }}>Profil Siswa</h2>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    background: '#FFB2DD',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#2D2D2B',
+                  }}
+                >
+                  <User size={18} strokeWidth={2.5} />
+                </div>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: '#2D2D2B' }}>Profil Siswa</h2>
               </div>
               <button
                 type="button"
+                className="btn-back-circle"
                 onClick={() => setShowModal(false)}
-                style={{
-                  minWidth: 44,
-                  minHeight: 44,
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: '#f1f5f9',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
                 aria-label="Tutup pengaturan"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#2D2D2B', marginBottom: 6 }}>
                 Nama Panggilan:
               </label>
               <input
@@ -142,177 +146,192 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 style={{
                   width: '100%',
                   padding: '12px 14px',
-                  borderRadius: 12,
-                  border: '2px solid #cbd5e1',
-                  fontSize: '1rem',
+                  borderRadius: 14,
+                  border: '1.5px solid rgba(45, 45, 43, 0.15)',
+                  background: '#FFFCF5',
+                  fontSize: '0.95rem',
                   fontFamily: 'inherit',
-                  outline: 'none'
+                  color: '#2D2D2B',
+                  outline: 'none',
                 }}
                 placeholder="Tulis nama panggilanmu..."
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '10px 12px',
-                background: '#f8fafc',
-                borderRadius: 12
-              }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 14px',
+                  background: '#FFFCF5',
+                  borderRadius: 14,
+                  border: '1px solid rgba(45, 45, 43, 0.08)',
+                }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Volume2 size={18} color="#0284c7" />
-                  <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Suara Simulasi</span>
+                  <Volume2 size={18} color="#2D2D2B" />
+                  <span style={{ fontSize: '0.86rem', fontWeight: 600, color: '#2D2D2B' }}>Suara Simulasi</span>
                 </div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#16a34a' }}>Aktif</span>
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    fontWeight: 800,
+                    color: '#2D2D2B',
+                    background: '#E1E6D1',
+                    padding: '3px 8px',
+                    borderRadius: 9999,
+                  }}
+                >
+                  Aktif
+                </span>
               </div>
 
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '10px 12px',
-                background: '#f8fafc',
-                borderRadius: 12
-              }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 14px',
+                  background: '#FFFCF5',
+                  borderRadius: 14,
+                  border: '1px solid rgba(45, 45, 43, 0.08)',
+                }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Globe size={18} color="#0284c7" />
-                  <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Bahasa Petunjuk</span>
+                  <Globe size={18} color="#2D2D2B" />
+                  <span style={{ fontSize: '0.86rem', fontWeight: 600, color: '#2D2D2B' }}>Bahasa Petunjuk</span>
                 </div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Indonesia</span>
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    fontWeight: 800,
+                    color: '#2D2D2B',
+                    background: '#FEEFBF',
+                    padding: '3px 8px',
+                    borderRadius: 9999,
+                  }}
+                >
+                  Indonesia
+                </span>
               </div>
             </div>
 
-              <div className="culture-disclaimer" style={{ marginBottom: 12 }}>
-                <span>ℹ️ Suara simulasi hanyalah pendekatan digital, bukan representasi penuh gamelan asli.</span>
-              </div>
+            <div className="culture-disclaimer" style={{ marginBottom: 14 }}>
+              <span>ℹ️ Suara simulasi hanyalah pendekatan digital, bukan representasi penuh gamelan asli.</span>
+            </div>
 
-              {/* Buka Panduan Onboarding */}
-              {onOpenOnboarding && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    onOpenOnboarding();
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#f0fdf4',
-                    border: '1.5px solid #bbf7d0',
-                    borderRadius: 12,
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    color: '#15803d',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                    marginBottom: 10,
-                  }}
-                >
-                  <BookOpen size={16} /> Buka Panduan Onboarding
-                </button>
-              )}
-
-              {/* Showcase Dewan Juri */}
-              {onOpenJuryShowcase && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    onOpenJuryShowcase();
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#fefce8',
-                    border: '1.5px solid #fde047',
-                    borderRadius: 12,
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    color: '#854d0e',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                    marginBottom: 10,
-                  }}
-                >
-                  <Award size={16} /> Showcase Esai Dewan Juri
-                </button>
-              )}
-
-              {/* Lab / Debug Audio */}
+            {/* Buka Panduan Onboarding */}
+            {onOpenOnboarding && (
               <button
                 type="button"
                 onClick={() => {
                   setShowModal(false);
-                  window.location.hash = '#debug-audio';
+                  onOpenOnboarding();
                 }}
                 style={{
                   width: '100%',
-                  padding: '10px 12px',
-                  background: '#f8fafc',
-                  border: '1.5px solid #cbd5e1',
-                  borderRadius: 12,
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  color: '#475569',
+                  minHeight: 44,
+                  padding: '0 14px',
+                  background: '#FAE0E4',
+                  border: 'none',
+                  borderRadius: 9999,
+                  fontSize: '0.86rem',
+                  fontWeight: 800,
+                  color: '#2D2D2B',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  marginBottom: 10,
+                  marginBottom: 8,
                 }}
               >
-                🛠️ Buka Lab / Debug Audio
+                <BookOpen size={16} /> Buka Panduan Onboarding
               </button>
+            )}
 
-              {/* Reset Total Aplikasi (Clean Slate) */}
+            {/* Showcase Dewan Juri */}
+            {onOpenJuryShowcase && (
               <button
                 type="button"
-                onClick={handleResetTotal}
+                onClick={() => {
+                  setShowModal(false);
+                  onOpenJuryShowcase();
+                }}
                 style={{
                   width: '100%',
-                  padding: '10px 12px',
-                  background: '#fef2f2',
-                  border: '1.5px solid #fecaca',
-                  borderRadius: 12,
-                  fontSize: '0.83rem',
-                  fontWeight: 700,
-                  color: '#b91c1c',
+                  minHeight: 44,
+                  padding: '0 14px',
+                  background: '#FEEFBF',
+                  border: 'none',
+                  borderRadius: 9999,
+                  fontSize: '0.86rem',
+                  fontWeight: 800,
+                  color: '#2D2D2B',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  marginBottom: 14,
+                  marginBottom: 8,
                 }}
               >
-                <RotateCcw size={15} /> Reset Total Aplikasi (Clean Slate)
+                <Award size={16} /> Showcase Esai Dewan Juri
               </button>
+            )}
 
+            {/* Lab / Debug Audio */}
             <button
               type="button"
-              onClick={() => setShowModal(false)}
+              onClick={() => {
+                setShowModal(false);
+                window.location.hash = '#debug-audio';
+              }}
               style={{
                 width: '100%',
-                minHeight: 46,
-                background: '#10b981',
-                color: 'white',
+                minHeight: 44,
+                padding: '0 14px',
+                background: '#EAF0F9',
                 border: 'none',
-                borderRadius: 14,
+                borderRadius: 9999,
+                fontSize: '0.86rem',
                 fontWeight: 700,
-                fontSize: '1rem',
-                cursor: 'pointer'
+                color: '#2D2D2B',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                marginBottom: 8,
               }}
             >
-              Simpan & Tutup
+              🛠️ Buka Lab / Debug Audio
+            </button>
+
+            {/* Reset Total Aplikasi (Clean Slate) */}
+            <button
+              type="button"
+              onClick={handleResetTotal}
+              style={{
+                width: '100%',
+                minHeight: 44,
+                padding: '0 14px',
+                background: '#FFFCF5',
+                border: '1.5px solid rgba(220, 38, 38, 0.3)',
+                borderRadius: 9999,
+                fontSize: '0.84rem',
+                fontWeight: 700,
+                color: '#dc2626',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+              }}
+            >
+              <RotateCcw size={16} /> Reset Semua Data
             </button>
           </div>
         </div>

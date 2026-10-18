@@ -12,7 +12,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onTabChange,
 }) => {
   const renderIcon = (iconName: string, isActive: boolean) => {
-    const size = isActive ? 22 : 20;
+    const size = isActive ? 21 : 19;
     const strokeWidth = isActive ? 2.5 : 2;
 
     switch (iconName) {
@@ -39,15 +39,30 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
           <button
             key={tab.id}
             type="button"
-            className={`nav-tab-btn ${tab.colorClass} ${isActive ? 'active' : ''}`}
+            className={`nav-tab-btn ${isActive ? 'active' : ''}`}
             onClick={() => onTabChange(tab.id)}
             aria-label={tab.ariaLabel}
             aria-current={isActive ? 'page' : undefined}
           >
-            <div className="tab-icon-wrapper">
+            <div
+              className="tab-icon-wrapper"
+              style={{
+                backgroundColor: isActive ? '#FFB2DD' : 'transparent',
+                color: '#2D2D2B',
+              }}
+            >
               {renderIcon(tab.iconName, isActive)}
             </div>
-            <span>{tab.label}</span>
+            <span
+              style={{
+                color: '#2D2D2B',
+                fontWeight: isActive ? 800 : 500,
+                fontSize: '0.72rem',
+                marginTop: 2,
+              }}
+            >
+              {tab.label}
+            </span>
           </button>
         );
       })}
