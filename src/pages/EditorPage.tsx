@@ -16,6 +16,7 @@ import missionsData from '../content/missions.json';
 import { Mission, EvaluationResult } from '../types/mission';
 import { evaluateMission, evaluateC6 } from '../compiler/missionEvaluator';
 import { missionProgressService } from '../services/missionProgressService';
+import { karyakuService, SavedProject } from '../services/karyakuService';
 import { TabId } from '../types/navigation';
 
 type EditorTopTab = 'editor' | 'output';
@@ -25,8 +26,16 @@ interface CompilerNotice {
   message: string;
 }
 
+interface SaveSuccessToast {
+  title: string;
+  message: string;
+}
+
 interface EditorPageProps {
   activeMissionId?: string | null;
+  projectToLoad?: SavedProject | null;
+  shouldAutoPlayProject?: boolean;
+  onClearProjectToLoad?: () => void;
   onExitMission?: () => void;
   onNavigateToTab?: (tab: TabId) => void;
   onSelectMission?: (code: string) => void;
@@ -34,6 +43,9 @@ interface EditorPageProps {
 
 export const EditorPage: React.FC<EditorPageProps> = ({
   activeMissionId,
+  projectToLoad,
+  shouldAutoPlayProject = false,
+  onClearProjectToLoad,
   onExitMission,
   onNavigateToTab,
   onSelectMission,
@@ -51,6 +63,8 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   // Evaluasi & Karyaku modals
   const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
   const [isCreativeModalOpen, setIsCreativeModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [saveSuccessToast, setSaveSuccessToast] = useState<SaveSuccessToast | null>(null);
 
   // Compiler results
   const [compiledEvents, setCompiledEvents] = useState<GamelanEvent[]>([]);
@@ -62,23 +76,103 @@ export const EditorPage: React.FC<EditorPageProps> = ({
 
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
 
+  const stopPlayback = () => {
+    digitalSimOutput.stop();
+    setIsPlaying(false);
+    setPreviewNote(null);
+    setPreviewGong(false);
+  };
+
   const loadBuggyXmlIfC4 = (ws: Blockly.WorkspaceSvg) => {
     if (activeMission?.code === 'C4' && activeMission.editorTarget?.initialBuggyXml) {
       try {
+        stopPlayback();
         ws.clear();
         const dom = Blockly.utils.xml.textToDom(activeMission.editorTarget.initialBuggyXml);
         Blockly.Xml.domToWorkspace(dom, ws);
+        const res = compileWorkspace(ws);
+        if (res.success) {
+          setCompiledEvents(res.events);
+        }
       } catch (err) {
         console.error('Failed to load buggy xml', err);
       }
     }
   };
 
+  const loadProjectXml = (ws: Blockly.WorkspaceSvg, proj: SavedProject, autoPlay = false) => {
+    try {
+      stopPlayback();
+      ws.clear();
+      const xmlToUse = proj.xml && proj.xml.trim().length > 0 ? proj.xml : karyakuService.DEFAULT_SAMPLE_XML;
+      const dom = Blockly.utils.xml.textToDom(xmlToUse);
+      Blockly.Xml.domToWorkspace(dom, ws);
+      karyakuService.saveDraftXml(xmlToUse);
+      onClearProjectToLoad?.();
+
+      const res = compileWorkspace(ws);
+      if (res.success) {
+        setCompiledEvents(res.events);
+        if (autoPlay && res.events.length > 0) {
+          setTimeout(() => {
+            digitalSimOutput.play(res.events);
+            setIsPlaying(true);
+          }, 150);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load project into workspace', err);
+    }
+  };
+
   const handleWorkspaceReady = (ws: Blockly.WorkspaceSvg) => {
     workspaceRef.current = ws;
     digitalSimOutput.setWorkspace(ws);
-    loadBuggyXmlIfC4(ws);
+
+    // 1. Tentukan apa yang harus dimuat
+    if (projectToLoad && projectToLoad.xml) {
+      loadProjectXml(ws, projectToLoad, shouldAutoPlayProject);
+    } else if (activeMission?.code === 'C4' && activeMission.editorTarget?.initialBuggyXml) {
+      loadBuggyXmlIfC4(ws);
+    } else {
+      const draftXml = karyakuService.getDraftXml();
+      if (draftXml) {
+        try {
+          ws.clear();
+          const dom = Blockly.utils.xml.textToDom(draftXml);
+          Blockly.Xml.domToWorkspace(dom, ws);
+          const res = compileWorkspace(ws);
+          if (res.success) {
+            setCompiledEvents(res.events);
+          }
+        } catch {
+          // fallback biarkan blok ketika_mulai bawaan
+        }
+      } else if (ws.getAllBlocks(false).length === 0) {
+        const startBlock = ws.newBlock('ketika_mulai');
+        startBlock.initSvg();
+        startBlock.render();
+        startBlock.moveBy(36, 40);
+      }
+    }
+
+    // 2. Auto-save draft ke localStorage setiap kali ada perubahan blok oleh pengguna
+    ws.addChangeListener((event: any) => {
+      if (!event || event.isUiEvent) return;
+      try {
+        const dom = Blockly.Xml.workspaceToDom(ws);
+        const xml = Blockly.Xml.domToText(dom);
+        karyakuService.saveDraftXml(xml);
+      } catch {}
+    });
   };
+
+  // Muat proyek jika projectToLoad diperbarui dari Karyaku saat workspace sudah aktif
+  useEffect(() => {
+    if (workspaceRef.current && projectToLoad && projectToLoad.xml) {
+      loadProjectXml(workspaceRef.current, projectToLoad, shouldAutoPlayProject);
+    }
+  }, [projectToLoad, shouldAutoPlayProject]);
 
   // Muat kode awal C4 jika berganti ke misi C4 saat workspace sudah aktif
   useEffect(() => {
@@ -102,6 +196,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         workspaceRef.current.clear();
         setCompilerNotice(null);
         setCompiledEvents([]);
+        karyakuService.clearDraftXml();
         if (activeMission?.code === 'C4') {
           loadBuggyXmlIfC4(workspaceRef.current);
         } else {
@@ -109,16 +204,14 @@ export const EditorPage: React.FC<EditorPageProps> = ({
           startBlock.initSvg();
           startBlock.render();
           startBlock.moveBy(36, 40);
+          try {
+            const dom = Blockly.Xml.workspaceToDom(workspaceRef.current);
+            const xml = Blockly.Xml.domToText(dom);
+            karyakuService.saveDraftXml(xml);
+          } catch {}
         }
       }
     }
-  };
-
-  const stopPlayback = () => {
-    digitalSimOutput.stop();
-    setIsPlaying(false);
-    setPreviewNote(null);
-    setPreviewGong(false);
   };
 
   const handleTogglePlay = async () => {
@@ -140,24 +233,28 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       return;
     }
 
-    // 2. Jika kompilasi sukses
     setCompiledEvents(result.events);
     setCompilerNotice({
       type: 'success',
-      message: `Tersusun ${result.events.length} tabuhan (${(result.totalDurationMs / 1000).toFixed(1)} detik).`,
+      message: `Program siap! Memainkan ${result.events.length} tabuhan...`,
     });
 
-    setIsPlaying(true);
-
-    // 3. Putar audio gamelan, animasi bilah, dan highlight blok di kanvas
-    await digitalSimOutput.play(result.events);
+    // 2. Putar melalui DigitalSimOutput (audio Web Audio + visualisasi menyala)
+    try {
+      setIsPlaying(true);
+      await digitalSimOutput.play(result.events);
+      setIsPlaying(false);
+    } catch (err) {
+      console.error('Audio playback error', err);
+      setIsPlaying(false);
+    }
   };
 
   // Evaluasi tabuhan terhadap target misi aktif
   const handleCheckMission = () => {
     if (!workspaceRef.current || !activeMission) return;
-    const result = compileWorkspace(workspaceRef.current);
 
+    const result = compileWorkspace(workspaceRef.current);
     if (!result.success) {
       setCompilerNotice({
         type: result.code === 'INFINITE_LOOP' ? 'error' : 'warning',
@@ -166,31 +263,72 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       return;
     }
 
+    setCompiledEvents(result.events);
+
+    // Misi C6 membuka modal input nama gending
+    if (activeMission.code === 'C6') {
+      setIsCreativeModalOpen(true);
+      return;
+    }
+
+    // Evaluasi C3 atau C4
     const evaluation = evaluateMission(activeMission, result.events);
     setEvalResult(evaluation);
+
     if (evaluation.isCorrect) {
-      missionProgressService.saveProgress(activeMission.code, evaluation.stars, 'selesai');
+      missionProgressService.saveProgress(activeMission.id, evaluation.stars, 'selesai');
     }
   };
 
-  // Buka dialog simpan kreasi C6
   const handleOpenCreativeModal = () => {
     if (!workspaceRef.current) return;
     const result = compileWorkspace(workspaceRef.current);
-    if (!result.success) {
+    if (result.success) {
+      setCompiledEvents(result.events);
+    }
+    setIsCreativeModalOpen(true);
+  };
+
+  // Buka modal simpan pola umum kapan saja dari Toolbar
+  const handleOpenSaveModal = () => {
+    if (!workspaceRef.current) return;
+    const result = compileWorkspace(workspaceRef.current);
+    if (!result.success || result.events.length === 0) {
       setCompilerNotice({
         type: 'warning',
-        message: result.error,
+        message: 'Yuk sambungkan minimal satu blok tabuhan ke blok ketika ▶ ditekan sebelum menyimpan!',
       });
       return;
     }
     setCompiledEvents(result.events);
-    setIsCreativeModalOpen(true);
+    setIsSaveModalOpen(true);
   };
 
-  // Konfirmasi simpan karya C6 ke localStorage
+  // Konfirmasi simpan pola umum ke Karyaku
+  const handleConfirmSaveGeneralPattern = (title: string, description: string) => {
+    if (!workspaceRef.current) return;
+    try {
+      const dom = Blockly.Xml.workspaceToDom(workspaceRef.current);
+      const xml = Blockly.Xml.domToText(dom);
+      const saved = karyakuService.saveProject({
+        title,
+        description,
+        notesCount: compiledEvents.length,
+        xml,
+      });
+      setIsSaveModalOpen(false);
+      setSaveSuccessToast({
+        title: saved.title,
+        message: `Pola "${saved.title}" berhasil disimpan ke tab Karyaku!`,
+      });
+    } catch (err) {
+      console.error('Failed to save pattern', err);
+    }
+  };
+
+  // Konfirmasi simpan karya C6 ke localStorage dan evaluasi
   const handleConfirmSaveCreative = (title: string, description: string) => {
-    if (!activeMission) return;
+    if (!activeMission || !workspaceRef.current) return;
     const evaluation = evaluateC6(compiledEvents, title, activeMission);
     setEvalResult(evaluation);
     setIsCreativeModalOpen(false);
@@ -198,17 +336,17 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     if (evaluation.isCorrect) {
       missionProgressService.saveProgress('C6', evaluation.stars, 'selesai');
       try {
-        const stored = localStorage.getItem('gamelan_karyaku');
-        const list = stored ? JSON.parse(stored) : [];
-        const newProject = {
-          id: 'karya-' + Date.now(),
+        const dom = Blockly.Xml.workspaceToDom(workspaceRef.current);
+        const xml = Blockly.Xml.domToText(dom);
+        karyakuService.saveProject({
           title,
           description,
-          date: 'Hari ini',
           notesCount: compiledEvents.length,
-        };
-        localStorage.setItem('gamelan_karyaku', JSON.stringify([newProject, ...list]));
-      } catch {}
+          xml,
+        });
+      } catch (err) {
+        console.error('Failed to save C6 creation', err);
+      }
     }
   };
 
@@ -226,7 +364,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     }
   };
 
-  // Daftarkan listener visual & pembersihan saat unmount
+  // Daftarkan listener visual & pembersihan saat unmount (auto-save draft)
   useEffect(() => {
     digitalSimOutput.setOnVisualEvent((ev) => {
       if (!ev) {
@@ -246,6 +384,14 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     });
 
     return () => {
+      // Simpan draft sebelum unmount
+      if (workspaceRef.current && workspaceRef.current.getAllBlocks(false).length > 0) {
+        try {
+          const dom = Blockly.Xml.workspaceToDom(workspaceRef.current);
+          const xml = Blockly.Xml.domToText(dom);
+          karyakuService.saveDraftXml(xml);
+        } catch {}
+      }
       digitalSimOutput.stop();
     };
   }, []);
@@ -293,7 +439,70 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         onTogglePlay={handleTogglePlay}
         onOpenPalette={() => setIsPaletteOpen(true)}
         onResetWorkspace={handleResetWorkspace}
+        onSavePattern={handleOpenSaveModal}
       />
+
+      {/* Toast Notifikasi Berhasil Simpan ke Karyaku */}
+      {saveSuccessToast && (
+        <div
+          style={{
+            margin: '6px 12px 0',
+            padding: '10px 14px',
+            borderRadius: 14,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 10,
+            fontSize: '0.84rem',
+            fontWeight: 700,
+            background: '#ecfdf5',
+            color: '#065f46',
+            border: '1.5px solid #a7f3d0',
+            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)',
+            zIndex: 16,
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🎉 {saveSuccessToast.message}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {onNavigateToTab && (
+              <button
+                type="button"
+                onClick={() => onNavigateToTab('karyaku')}
+                style={{
+                  background: '#059669',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: '4px 10px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                Lihat di Karyaku
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setSaveSuccessToast(null)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#047857',
+                cursor: 'pointer',
+                padding: 4,
+                display: 'flex',
+              }}
+              aria-label="Tutup notifikasi"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Banner Notifikasi Hasil Kompilasi & Guard */}
       {compilerNotice && (
@@ -408,8 +617,19 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       <SaveCreativeModal
         isOpen={isCreativeModalOpen}
         notesCount={compiledEvents.length}
+        badgeLabel="Misi C6 • Ciptakan Gendingmu"
         onClose={() => setIsCreativeModalOpen(false)}
         onSave={handleConfirmSaveCreative}
+      />
+
+      {/* Modal Simpan Pola Bebas ke Karyaku */}
+      <SaveCreativeModal
+        isOpen={isSaveModalOpen}
+        notesCount={compiledEvents.length}
+        badgeLabel="Koleksi Karyaku • Simpan Pola"
+        defaultTitle="Gending Kreasiku"
+        onClose={() => setIsSaveModalOpen(false)}
+        onSave={handleConfirmSaveGeneralPattern}
       />
     </div>
   );

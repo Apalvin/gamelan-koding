@@ -4,6 +4,8 @@ import { Sparkles, BookmarkCheck, X } from 'lucide-react';
 interface SaveCreativeModalProps {
   isOpen: boolean;
   notesCount: number;
+  badgeLabel?: string;
+  defaultTitle?: string;
   onClose: () => void;
   onSave: (title: string, description: string) => void;
 }
@@ -11,10 +13,12 @@ interface SaveCreativeModalProps {
 export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
   isOpen,
   notesCount,
+  badgeLabel,
+  defaultTitle = '',
   onClose,
   onSave,
 }) => {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(defaultTitle);
   const [description, setDescription] = useState('');
 
   if (!isOpen) return null;
@@ -92,13 +96,13 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
               marginBottom: 6,
             }}
           >
-            <Sparkles size={13} /> Misi C6 • Ciptakan Gendingmu
+            <Sparkles size={13} /> {badgeLabel || 'Koleksi Karyaku • Simpan Pola'}
           </div>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 4px', color: '#0f172a' }}>
             Simpan ke Karyaku
           </h2>
           <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-            Gending kreasimu memiliki <strong>{notesCount} ketukan tabuhan</strong>. Beri nama agar tersimpan rapi di koleksi Karyaku!
+            Pola tabuhanmu memiliki <strong>{notesCount} ketukan tabuhan</strong>. Beri nama agar tersimpan rapi di koleksi Karyaku!
           </p>
         </div>
 
