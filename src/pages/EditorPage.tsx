@@ -498,13 +498,13 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         />
       )}
 
-      {/* Banner Tantangan Gending Akhir (Compact & Collapsible) */}
+      {/* Banner Tantangan Gending Akhir (Lengkap di Mode Detail, Ringkas saat Ditutup) */}
       {isFinalChallengeActive && (
         <div
           style={{
             background: 'var(--bg-surface)',
             borderBottom: '1.5px solid var(--border-card)',
-            padding: '8px 12px',
+            padding: isChallengeCollapsed ? '6px 12px' : '10px 14px',
             display: 'flex',
             flexDirection: 'column',
             gap: isChallengeCollapsed ? 0 : 8,
@@ -512,8 +512,8 @@ export const EditorPage: React.FC<EditorPageProps> = ({
             transition: 'all 0.2s ease',
           }}
         >
-          {/* Header Baris 1: Status, Pola Ringkas & Kontrol Lipat/Keluar */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6 }}>
+          {/* Header Baris 1: Status & Tombol Kontrol */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: 1 }}>
               <div
                 style={{
@@ -532,22 +532,21 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               >
                 <Sparkles size={12} /> Tantangan Awal
               </div>
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '0.82rem',
-                  fontWeight: 800,
-                  color: 'var(--text-primary)',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                Pola 8 Ketuk: 3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
-              </span>
+              {isChallengeCollapsed && (
+                <span
+                  style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: 'var(--text-muted)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  (Tersimpan & Diciutkan)
+                </span>
+              )}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={() => setIsChallengeCollapsed(!isChallengeCollapsed)}
@@ -555,26 +554,26 @@ export const EditorPage: React.FC<EditorPageProps> = ({
                   background: 'var(--bg-app)',
                   border: '1.5px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-pill)',
-                  padding: '3px 8px',
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
+                  padding: '3px 10px',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
                   color: 'var(--text-primary)',
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 3,
+                  gap: 4,
                 }}
-                aria-label={isChallengeCollapsed ? 'Buka detail petunjuk' : 'Ciutkan petunjuk'}
+                aria-label={isChallengeCollapsed ? 'Buka detail pola ketukan' : 'Tutup dan ciutkan petunjuk'}
               >
                 {isChallengeCollapsed ? (
                   <>
-                    <span>Detail</span>
-                    <ChevronDown size={13} />
+                    <span>Buka Pola</span>
+                    <ChevronDown size={14} />
                   </>
                 ) : (
                   <>
                     <span>Tutup</span>
-                    <ChevronUp size={13} />
+                    <ChevronUp size={14} />
                   </>
                 )}
               </button>
@@ -587,8 +586,8 @@ export const EditorPage: React.FC<EditorPageProps> = ({
                   border: '1.5px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-pill)',
                   padding: '3px 8px',
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
                   color: 'var(--text-primary)',
                   cursor: 'pointer',
                   display: 'inline-flex',
@@ -597,60 +596,96 @@ export const EditorPage: React.FC<EditorPageProps> = ({
                 }}
                 title="Keluar dari mode tantangan"
               >
-                <X size={13} />
+                <X size={14} />
               </button>
             </div>
           </div>
 
-          {/* Baris 2: Tombol Aksi Sejajar (Hanya muncul jika tidak diciutkan) */}
+          {/* Konten Lengkap (Hanya tampil saat mode detail / tidak ditutup) */}
           {!isChallengeCollapsed && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, paddingTop: 2 }}>
-              <button
-                type="button"
-                onClick={handleTogglePlayFinalChallengeTarget}
+            <>
+              {/* Notasi Ketukan Utuh Tanpa Terpotong */}
+              <div
                 style={{
-                  minHeight: 34,
-                  padding: '0 12px',
-                  background: isPlayingFinalChallengeTarget ? '#fee2e2' : 'var(--color-yellow-tint)',
-                  color: isPlayingFinalChallengeTarget ? '#dc2626' : 'var(--text-primary)',
-                  border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid var(--color-yellow)',
-                  borderRadius: 'var(--radius-pill)',
-                  fontWeight: 800,
-                  fontSize: '0.78rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
+                  background: 'var(--bg-app)',
+                  border: '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-card)',
+                  padding: '8px 12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
                 }}
               >
-                {isPlayingFinalChallengeTarget ? <Square size={13} fill="currentColor" /> : <Volume2 size={13} />}
-                <span>{isPlayingFinalChallengeTarget ? 'Berhenti' : 'Dengar Target'}</span>
-              </button>
+                <div style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Target Pola Lancaran (8 Ketukan):
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.98rem',
+                    fontWeight: 800,
+                    color: 'var(--text-primary)',
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.35,
+                  }}
+                >
+                  3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
+                </div>
+              </div>
 
-              <button
-                type="button"
-                onClick={handleCheckFinalChallenge}
-                style={{
-                  minHeight: 34,
-                  padding: '0 14px',
-                  background: 'var(--color-pink)',
-                  color: 'var(--text-primary)',
-                  border: '1.5px solid var(--text-primary)',
-                  borderRadius: 'var(--radius-pill)',
-                  fontWeight: 800,
-                  fontSize: '0.78rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <CheckCircle2 size={14} />
-                <span>Periksa Tabuhanku</span>
-              </button>
-            </div>
+              {/* Baris Tombol Aksi */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 2 }}>
+                <button
+                  type="button"
+                  onClick={handleTogglePlayFinalChallengeTarget}
+                  style={{
+                    flex: 1,
+                    minHeight: 38,
+                    padding: '0 12px',
+                    background: isPlayingFinalChallengeTarget ? '#fee2e2' : 'var(--color-yellow-tint)',
+                    color: isPlayingFinalChallengeTarget ? '#dc2626' : 'var(--text-primary)',
+                    border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid var(--color-yellow)',
+                    borderRadius: 'var(--radius-pill)',
+                    fontWeight: 800,
+                    fontSize: '0.8rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {isPlayingFinalChallengeTarget ? <Square size={14} fill="currentColor" /> : <Volume2 size={14} />}
+                  <span>{isPlayingFinalChallengeTarget ? 'Hentikan Contoh' : 'Dengar Target'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCheckFinalChallenge}
+                  style={{
+                    flex: 1.2,
+                    minHeight: 38,
+                    padding: '0 14px',
+                    background: 'var(--color-pink)',
+                    color: 'var(--text-primary)',
+                    border: '1.5px solid var(--text-primary)',
+                    borderRadius: 'var(--radius-pill)',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <CheckCircle2 size={15} />
+                  <span>Periksa Tabuhanku</span>
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
