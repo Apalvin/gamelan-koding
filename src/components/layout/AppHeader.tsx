@@ -42,30 +42,38 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   return (
     <>
       <header className="app-header">
-        <div className="app-title-group">
+        <div className="app-title-group" style={{ minWidth: 0, flex: 1 }}>
           <div
             style={{
-              width: 38,
-              height: 38,
-              borderRadius: 13,
+              width: 36,
+              height: 36,
+              minWidth: 36,
+              borderRadius: 12,
               background: '#FFB2DD',
               color: '#2D2D2B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               border: '1.5px solid rgba(45, 45, 43, 0.1)',
+              flexShrink: 0,
             }}
           >
-            <Music size={20} strokeWidth={2.5} />
+            <Music size={19} strokeWidth={2.5} />
           </div>
-          <div>
-            <h1 className="app-title" style={{ margin: 0, lineHeight: 1.15 }}>Gamelan Koding</h1>
-            <div style={{ fontSize: '0.68rem', color: '#6C6B66', fontWeight: 600 }}>Musik Tradisi & Logika Blok</div>
+          <div style={{ minWidth: 0, overflow: 'hidden' }}>
+            <h1 className="app-title" style={{ margin: 0, lineHeight: 1.15, fontSize: '1.12rem', whiteSpace: 'nowrap' }}>
+              GamelanCode
+            </h1>
+            <div style={{ fontSize: '0.66rem', color: '#6C6B66', fontWeight: 600, whiteSpace: 'nowrap' }}>
+              Musik Tradisi & Logika Blok
+            </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span className="app-badge-pill">SD Kelas 4–6</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <span className="app-badge-pill" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+            SD Kelas 4–6
+          </span>
           <button
             type="button"
             className="icon-btn-profile"

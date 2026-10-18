@@ -211,7 +211,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <Sparkles size={14} /> Belajar Musik & Koding Seru
               </div>
               <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: '0 0 8px', color: '#0f172a' }}>
-                Sugeng Rawuh di Gamelan Koding!
+                Sugeng Rawuh di GamelanCode!
               </h2>
               <p style={{ fontSize: '0.88rem', color: '#475569', margin: 0, lineHeight: 1.5 }}>
                 Di sini kamu bisa belajar menyusun algoritma koding blok seperti puzzle sambil membunyikan alat musik

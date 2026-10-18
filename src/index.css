@@ -180,15 +180,17 @@ h1, h2, h3, h4 {
 .app-title-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .app-title {
   font-family: var(--font-display);
-  font-size: 1.22rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1.15;
+  white-space: nowrap;
 }
 
 .app-badge-pill {
@@ -198,6 +200,8 @@ h1, h2, h3, h4 {
   color: var(--text-primary);
   padding: 4px 10px;
   border-radius: var(--radius-pill);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .icon-btn-profile {
@@ -355,31 +359,34 @@ h1, h2, h3, h4 {
 
 /* Toolbar Kontrol Editor (Flat Warm Style) */
 .editor-toolbar {
-  height: 58px;
+  height: 52px;
   background: var(--bg-app);
   border-bottom: 1.5px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  gap: 8px;
+  padding: 0 10px;
+  gap: 6px;
   z-index: 10;
 }
 
 .btn-add-block {
-  min-height: 42px;
-  padding: 0 16px;
+  min-height: 38px;
+  height: 38px;
+  padding: 0 12px;
   background-color: var(--color-blue-tint);
   border: 1.5px solid var(--color-periwinkle);
   color: var(--text-primary);
   border-radius: var(--radius-pill);
   font-family: var(--font-main);
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s ease;
 }
 
@@ -388,18 +395,43 @@ h1, h2, h3, h4 {
   background-color: var(--color-periwinkle);
 }
 
+.editor-tool-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.editor-tool-btn:active {
+  transform: scale(0.92);
+  background: var(--color-sand);
+}
+
 .btn-play-toggle {
-  min-height: 42px;
-  padding: 0 18px;
+  min-height: 38px;
+  height: 38px;
+  padding: 0 14px;
   border-radius: var(--radius-pill);
-  border: none;
+  border: 1.5px solid var(--text-primary);
   font-family: var(--font-main);
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s ease;
 }
 
@@ -413,8 +445,9 @@ h1, h2, h3, h4 {
 }
 
 .btn-play-toggle.stop {
-  background-color: #fecaca;
+  background-color: #fee2e2;
   color: #991b1b;
+  border-color: #ef4444;
 }
 
 .btn-play-toggle.stop:active {

@@ -245,11 +245,11 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
               style={{
                 background: 'var(--bg-surface)',
                 borderRadius: 'var(--radius-card)',
-                padding: '16px',
+                padding: '14px 16px',
                 border: '1.5px solid var(--border-card)',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                flexDirection: 'column',
+                gap: 12,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
               }}
@@ -260,60 +260,93 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                 e.currentTarget.style.borderColor = 'var(--border-card)';
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 'var(--radius-squircle)',
-                    background: 'var(--color-yellow-tint)',
-                    border: '1.5px solid var(--color-yellow)',
-                    color: 'var(--text-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Music size={22} strokeWidth={2.5} />
-                </div>
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <h4
+              {/* Baris Atas: Info Proyek & Tombol Hapus */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
+                  <div
                     style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '1rem',
-                      fontWeight: 800,
-                      margin: 0,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 'var(--radius-squircle)',
+                      background: 'var(--color-yellow-tint)',
+                      border: '1.5px solid var(--color-yellow)',
                       color: 'var(--text-primary)',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
                     }}
                   >
-                    {proj.title}
-                  </h4>
-                  <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: 2, fontWeight: 600 }}>
-                    {proj.date} • {proj.notesCount} ketukan tabuhan
+                    <Music size={20} strokeWidth={2.5} />
                   </div>
-                  {proj.description ? (
-                    <div
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <h4
                       style={{
-                        fontSize: '0.74rem',
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '0.98rem',
+                        fontWeight: 800,
+                        margin: 0,
                         color: 'var(--text-primary)',
-                        opacity: 0.75,
-                        marginTop: 2,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                       }}
                     >
-                      {proj.description}
+                      {proj.title}
+                    </h4>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: 2, fontWeight: 600, whiteSpace: 'nowrap' }}>
+                      {proj.date} • {proj.notesCount} ketukan tabuhan
                     </div>
-                  ) : null}
+                  </div>
                 </div>
+
+                {/* Tombol Hapus Pojok Kanan Atas */}
+                <button
+                  type="button"
+                  onClick={(e) => handleDelete(proj.id, e)}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    minWidth: 34,
+                    minHeight: 34,
+                    borderRadius: '50%',
+                    border: '1.5px solid #fecaca',
+                    background: '#fef2f2',
+                    color: '#dc2626',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                  title="Hapus karya"
+                  aria-label="Hapus karya"
+                >
+                  <Trash2 size={15} />
+                </button>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 12, flexShrink: 0 }}>
+              {/* Deskripsi opsional */}
+              {proj.description ? (
+                <div
+                  style={{
+                    fontSize: '0.76rem',
+                    color: 'var(--text-primary)',
+                    opacity: 0.85,
+                    lineHeight: 1.35,
+                    background: 'var(--bg-app)',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-squircle)',
+                    border: '1px solid var(--border-subtle)',
+                  }}
+                >
+                  {proj.description}
+                </div>
+              ) : null}
+
+              {/* Baris Bawah: Aksi Utama (Mainkan) & Aksi Tambahan (Notasi & Unduh) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 4, borderTop: '1px dashed var(--border-subtle)' }}>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -321,7 +354,8 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                     handleOpen(proj, true);
                   }}
                   style={{
-                    minHeight: 40,
+                    flex: 1,
+                    minHeight: 38,
                     padding: '0 14px',
                     borderRadius: 'var(--radius-pill)',
                     border: '1.5px solid var(--text-primary)',
@@ -330,9 +364,11 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: 6,
                     fontWeight: 800,
                     fontSize: '0.82rem',
+                    whiteSpace: 'nowrap',
                   }}
                   title="Buka dan mainkan di Editor"
                   aria-label={`Buka dan mainkan ${proj.title} di Editor`}
@@ -345,72 +381,52 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                   type="button"
                   onClick={(e) => handleShowKepatihan(proj, e)}
                   style={{
-                    width: 40,
-                    height: 40,
-                    minWidth: 40,
-                    minHeight: 40,
-                    borderRadius: '50%',
+                    minHeight: 38,
+                    padding: '0 12px',
+                    borderRadius: 'var(--radius-pill)',
                     border: '1.5px solid var(--border-subtle)',
                     background: 'var(--bg-app)',
                     color: 'var(--text-primary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    gap: 5,
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap',
                     transition: 'all 0.15s ease',
                   }}
                   title="Lihat Partitur Notasi Kepatihan"
                   aria-label={`Lihat Partitur Notasi Kepatihan ${proj.title}`}
                 >
-                  <FileMusic size={17} />
+                  <FileMusic size={15} />
+                  <span>Notasi</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={(e) => handleDownload(proj, e)}
                   style={{
-                    width: 40,
-                    height: 40,
-                    minWidth: 40,
-                    minHeight: 40,
-                    borderRadius: '50%',
+                    minHeight: 38,
+                    padding: '0 12px',
+                    borderRadius: 'var(--radius-pill)',
                     border: '1.5px solid var(--border-subtle)',
                     background: 'var(--bg-app)',
                     color: 'var(--text-primary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    gap: 5,
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap',
                     transition: 'all 0.15s ease',
                   }}
                   title="Unduh Berkas Proyek .gamelan"
                   aria-label={`Unduh Berkas ${proj.title}`}
                 >
-                  <Download size={17} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={(e) => handleDelete(proj.id, e)}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    minWidth: 40,
-                    minHeight: 40,
-                    borderRadius: '50%',
-                    border: '1.5px solid #fecaca',
-                    background: '#fef2f2',
-                    color: '#dc2626',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.15s ease',
-                  }}
-                  title="Hapus karya"
-                  aria-label="Hapus karya"
-                >
-                  <Trash2 size={17} />
+                  <Download size={15} />
+                  <span>Unduh</span>
                 </button>
               </div>
             </div>

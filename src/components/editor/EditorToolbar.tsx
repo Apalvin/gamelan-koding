@@ -27,91 +27,47 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         onClick={onOpenPalette}
         aria-label="Tambah Blok Koding"
       >
-        <Plus size={20} strokeWidth={2.5} />
-        <span>+ Blok</span>
+        <Plus size={18} strokeWidth={2.5} />
+        <span>Blok</span>
       </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        {/* Tombol Notasi Kepatihan */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+        {/* Tombol Notasi Kepatihan (Icon Button) */}
         {onShowKepatihan && (
           <button
             type="button"
+            className="editor-tool-btn"
             onClick={onShowKepatihan}
-            style={{
-              minHeight: 42,
-              padding: '0 14px',
-              borderRadius: 'var(--radius-pill)',
-              border: '1.5px solid rgba(45, 45, 43, 0.12)',
-              background: 'var(--bg-surface)',
-              color: 'var(--text-primary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
             title="Lihat Notasi Kepatihan"
             aria-label="Lihat Notasi Kepatihan"
           >
-            <FileMusic size={16} />
-            <span>Notasi</span>
+            <FileMusic size={17} />
           </button>
         )}
 
-        {/* Tombol Simpan Karya ke Karyaku */}
+        {/* Tombol Simpan Karya ke Karyaku (Icon Button) */}
         <button
           type="button"
+          className="editor-tool-btn"
           onClick={onSavePattern}
-          style={{
-            minHeight: 42,
-            padding: '0 14px',
-            borderRadius: 'var(--radius-pill)',
-            border: '1.5px solid var(--color-pink)',
-            background: 'var(--color-pink-tint)',
-            color: 'var(--text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            fontWeight: 800,
-            fontSize: '0.84rem',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
           title="Simpan Pola ke Karyaku"
           aria-label="Simpan Pola ke Karyaku"
         >
-          <Bookmark size={16} />
-          <span>Simpan</span>
+          <Bookmark size={17} />
         </button>
 
-        {/* Tombol Reset (Circular Flat) */}
+        {/* Tombol Reset Lembar Kerja (Icon Button) */}
         <button
           type="button"
+          className="editor-tool-btn"
           onClick={onResetWorkspace}
-          style={{
-            width: 42,
-            height: 42,
-            minWidth: 42,
-            minHeight: 42,
-            borderRadius: '50%',
-            border: '1.5px solid rgba(45, 45, 43, 0.12)',
-            background: 'var(--bg-surface)',
-            color: 'var(--text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
           title="Bersihkan Lembar Kerja"
           aria-label="Bersihkan Lembar Kerja"
         >
           <RotateCcw size={17} />
         </button>
 
-        {/* Tombol Mainkan / Berhenti (Selalu Terlihat Sesuai PRD) */}
+        {/* Tombol Mainkan / Berhenti (Primary Pill CTA - Selalu Terlihat & Menonjol) */}
         <button
           type="button"
           className={`btn-play-toggle ${isPlaying ? 'stop' : 'play'}`}
@@ -120,12 +76,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         >
           {isPlaying ? (
             <>
-              <Square size={17} fill="currentColor" />
+              <Square size={15} fill="currentColor" />
               <span>Berhenti</span>
             </>
           ) : (
             <>
-              <Play size={17} fill="currentColor" />
+              <Play size={15} fill="currentColor" />
               <span>Mainkan</span>
             </>
           )}

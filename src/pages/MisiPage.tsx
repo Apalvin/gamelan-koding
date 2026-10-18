@@ -41,12 +41,12 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
   return (
     <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
       {/* Header Halaman Misi */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
           <div
             style={{
-              width: 42,
-              height: 42,
+              width: 38,
+              height: 38,
               borderRadius: 'var(--radius-squircle)',
               background: 'var(--color-yellow-tint)',
               border: '1.5px solid var(--color-yellow)',
@@ -54,24 +54,28 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <Target size={22} strokeWidth={2.5} />
+            <Target size={20} strokeWidth={2.5} />
           </div>
-          <div>
+          <div style={{ minWidth: 0, overflow: 'hidden' }}>
             <h2
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '1.25rem',
+                fontSize: '1.12rem',
                 fontWeight: 800,
                 margin: 0,
                 color: 'var(--text-primary)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              Misi Koding Gamelan
+              Misi GamelanCode
             </h2>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              Taksonomi Bloom Bertingkat (C1–C6)
+            <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+              Taksonomi Bloom (C1–C6)
             </div>
           </div>
         </div>
@@ -84,12 +88,14 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
             gap: 6,
             background: 'var(--color-yellow-tint)',
             border: '1.5px solid var(--color-yellow)',
-            padding: '6px 12px',
+            padding: '5px 12px',
             borderRadius: 'var(--radius-pill)',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
           }}
         >
           <Star size={16} fill="var(--color-yellow)" color="var(--text-primary)" />
-          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+          <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>
             {totalStars} / 18
           </span>
         </div>
