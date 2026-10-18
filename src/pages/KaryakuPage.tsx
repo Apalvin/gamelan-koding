@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Sparkles, Music, Trash2, Plus, Play, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import * as Blockly from 'blockly';
+import { Sparkles, Music, Trash2, Plus, Play, Download, Upload, FileMusic } from 'lucide-react';
 import { TabId } from '../types/navigation';
 import { karyakuService, SavedProject } from '../services/karyakuService';
+import { downloadProjectFile, parseProjectJson } from '../services/projectExportImportService';
+import { convertEventsToKepatihan } from '../compiler/kepatihanConverter';
+import { compileWorkspace } from '../compiler/compileWorkspace';
+import { KepatihanModal } from '../components/karyaku/KepatihanModal';
 
 interface KaryakuPageProps {
   onNavigate: (tab: TabId) => void;
@@ -13,6 +18,8 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
   onOpenProject,
 }) => {
   const [projects, setProjects] = useState<SavedProject[]>([]);
+  const [activeKepatihanProject, setActiveKepatihanProject] = useState<{ title: string; text: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const refreshProjects = () => {
     setProjects(karyakuService.getAllProjects());
@@ -40,9 +47,61 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
     }
   };
 
+  const handleDownload = (proj: SavedProject, e: React.MouseEvent) => {
+    e.stopPropagation();
+    downloadProjectFile(proj);
+  };
+
+  const handleShowKepatihan = (proj: SavedProject, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      const headlessWs = new Blockly.Workspace();
+      const dom = Blockly.utils.xml.textToDom(proj.xml);
+      Blockly.Xml.domToWorkspace(dom, headlessWs);
+      const res = compileWorkspace(headlessWs);
+      headlessWs.dispose();
+      if (res.success) {
+        const text = convertEventsToKepatihan(res.events);
+        setActiveKepatihanProject({ title: proj.title, text });
+      } else {
+        setActiveKepatihanProject({ title: proj.title, text: `// Belum dapat diekstrak: ${res.error}` });
+      }
+    } catch (err) {
+      console.error('Failed to parse XML for Kepatihan', err);
+      setActiveKepatihanProject({ title: proj.title, text: '// Belum dapat membaca blok untuk notasi kepatihan' });
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (!content) return;
+
+      const res = parseProjectJson(content);
+      if (res.success && res.project) {
+        karyakuService.saveProject({
+          title: res.project.title,
+          description: res.project.description,
+          notesCount: res.project.notesCount,
+          xml: res.project.xml,
+        });
+        refreshProjects();
+        alert(`Berhasil mengimpor proyek: "${res.project.title}"!`);
+      } else {
+        alert(res.error || 'Gagal mengimpor berkas proyek.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   return (
     <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
@@ -59,7 +118,7 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
             <Sparkles size={22} />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: '#1e293b' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#1e293b' }}>
               Karyaku
             </h2>
             <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
@@ -68,26 +127,59 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onNavigate('editor')}
-          style={{
-            minHeight: 44,
-            padding: '0 14px',
-            background: '#10b981',
-            color: 'white',
-            border: 'none',
-            borderRadius: 12,
-            fontWeight: 700,
-            fontSize: '0.88rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            cursor: 'pointer',
-          }}
-        >
-          <Plus size={18} /> Buat Baru
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Input Tersembunyi Berkas Proyek */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileInputChange}
+            accept=".gamelan,.json"
+            style={{ display: 'none' }}
+          />
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              minHeight: 44,
+              padding: '0 12px',
+              background: '#f1f5f9',
+              color: '#334155',
+              border: '1.5px solid #cbd5e1',
+              borderRadius: 12,
+              fontWeight: 700,
+              fontSize: '0.84rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              cursor: 'pointer',
+            }}
+            title="Unggah berkas proyek .gamelan"
+          >
+            <Upload size={16} /> Impor
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('editor')}
+            style={{
+              minHeight: 44,
+              padding: '0 14px',
+              background: '#10b981',
+              color: 'white',
+              border: 'none',
+              borderRadius: 12,
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              cursor: 'pointer',
+            }}
+          >
+            <Plus size={18} /> Buat Baru
+          </button>
+        </div>
       </div>
 
       <div className="culture-disclaimer">
@@ -239,6 +331,48 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
 
                 <button
                   type="button"
+                  onClick={(e) => handleShowKepatihan(proj, e)}
+                  style={{
+                    minWidth: 44,
+                    minHeight: 44,
+                    borderRadius: 10,
+                    border: '1.5px solid #cbd5e1',
+                    background: '#f8fafc',
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  title="Lihat Partitur Notasi Kepatihan"
+                  aria-label={`Lihat Partitur Notasi Kepatihan ${proj.title}`}
+                >
+                  <FileMusic size={18} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => handleDownload(proj, e)}
+                  style={{
+                    minWidth: 44,
+                    minHeight: 44,
+                    borderRadius: 10,
+                    border: '1.5px solid #cbd5e1',
+                    background: '#f8fafc',
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  title="Unduh Berkas Proyek .gamelan"
+                  aria-label={`Unduh Berkas ${proj.title}`}
+                >
+                  <Download size={18} />
+                </button>
+
+                <button
+                  type="button"
                   onClick={(e) => handleDelete(proj.id, e)}
                   style={{
                     minWidth: 44,
@@ -261,6 +395,14 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
             </div>
           ))}
         </div>
+      )}
+
+      {activeKepatihanProject && (
+        <KepatihanModal
+          title={activeKepatihanProject.title}
+          kepatihanText={activeKepatihanProject.text}
+          onClose={() => setActiveKepatihanProject(null)}
+        />
       )}
     </div>
   );

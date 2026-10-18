@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Square, Plus, RotateCcw, Bookmark } from 'lucide-react';
+import { Play, Square, Plus, RotateCcw, Bookmark, FileMusic } from 'lucide-react';
 
 interface EditorToolbarProps {
   isPlaying: boolean;
@@ -7,6 +7,7 @@ interface EditorToolbarProps {
   onOpenPalette: () => void;
   onResetWorkspace: () => void;
   onSavePattern: () => void;
+  onShowKepatihan?: () => void;
 }
 
 export const EditorToolbar: React.FC<EditorToolbarProps> = ({
@@ -15,6 +16,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
   onOpenPalette,
   onResetWorkspace,
   onSavePattern,
+  onShowKepatihan,
 }) => {
   return (
     <div className="editor-toolbar" role="toolbar" aria-label="Alat Kontrol Editor">
@@ -30,6 +32,34 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       </button>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {/* Tombol Notasi Kepatihan */}
+        {onShowKepatihan && (
+          <button
+            type="button"
+            onClick={onShowKepatihan}
+            style={{
+              minHeight: 44,
+              padding: '0 10px',
+              borderRadius: 14,
+              border: '2px solid #e2e8f0',
+              background: '#f8fafc',
+              color: '#334155',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+              fontWeight: 700,
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            title="Lihat Notasi Kepatihan"
+            aria-label="Lihat Notasi Kepatihan"
+          >
+            <FileMusic size={16} />
+            <span>Notasi</span>
+          </button>
+        )}
+
         {/* Tombol Simpan Karya ke Karyaku */}
         <button
           type="button"

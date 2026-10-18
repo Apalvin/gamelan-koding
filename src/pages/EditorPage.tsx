@@ -21,6 +21,8 @@ import { FINAL_CHALLENGE_PLAYBACK_EVENTS } from '../services/onboardingService';
 import { missionProgressService } from '../services/missionProgressService';
 import { karyakuService, SavedProject } from '../services/karyakuService';
 import { TabId } from '../types/navigation';
+import { convertEventsToKepatihan } from '../compiler/kepatihanConverter';
+import { KepatihanModal } from '../components/karyaku/KepatihanModal';
 
 type EditorTopTab = 'editor' | 'output';
 
@@ -71,6 +73,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
   const [isCreativeModalOpen, setIsCreativeModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isKepatihanModalOpen, setIsKepatihanModalOpen] = useState(false);
   const [saveSuccessToast, setSaveSuccessToast] = useState<SaveSuccessToast | null>(null);
   const [isPlayingFinalChallengeTarget, setIsPlayingFinalChallengeTarget] = useState(false);
 
@@ -421,6 +424,16 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     }
   };
 
+  const handleOpenKepatihan = () => {
+    if (workspaceRef.current) {
+      const res = compileWorkspace(workspaceRef.current);
+      if (res.success) {
+        setCompiledEvents(res.events);
+      }
+    }
+    setIsKepatihanModalOpen(true);
+  };
+
   // Navigasi saat misi atau tantangan akhir selesai/ditindaklanjuti
   const handleNextMission = () => {
     setEvalResult(null);
@@ -624,6 +637,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         onOpenPalette={() => setIsPaletteOpen(true)}
         onResetWorkspace={handleResetWorkspace}
         onSavePattern={handleOpenSaveModal}
+        onShowKepatihan={handleOpenKepatihan}
       />
 
       {/* Toast Notifikasi Berhasil Simpan ke Karyaku */}
@@ -827,6 +841,15 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         onClose={() => setIsSaveModalOpen(false)}
         onSave={handleConfirmSaveGeneralPattern}
       />
+
+      {/* Modal Notasi Kepatihan */}
+      {isKepatihanModalOpen && (
+        <KepatihanModal
+          title={activeMission ? `Misi ${activeMission.code}: ${activeMission.name}` : (projectToLoad?.title || 'Karya Editor')}
+          kepatihanText={convertEventsToKepatihan(compiledEvents)}
+          onClose={() => setIsKepatihanModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
