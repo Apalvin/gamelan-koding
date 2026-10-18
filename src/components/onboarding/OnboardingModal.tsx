@@ -47,6 +47,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   };
 
   const handlePrev = () => {
+    digitalSimOutput.stop();
+    setIsPlayingTarget(false);
     if (currentSlide > 0) {
       setCurrentSlide((prev) => prev - 1);
     }
@@ -586,6 +588,30 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               >
                 <span>Lewati & Mulai Misi C1</span>
                 <ArrowRight size={16} />
+              </button>
+
+              <button
+                type="button"
+                onClick={handlePrev}
+                style={{
+                  minHeight: 40,
+                  background: 'transparent',
+                  color: '#64748b',
+                  border: 'none',
+                  borderRadius: 12,
+                  fontWeight: 700,
+                  fontSize: '0.84rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                  cursor: 'pointer',
+                  padding: '6px 12px',
+                }}
+                aria-label="Kembali ke slide sebelumnya"
+              >
+                <ArrowLeft size={16} />
+                <span>Kembali ke Slide Sebelumnya</span>
               </button>
             </div>
           </div>
