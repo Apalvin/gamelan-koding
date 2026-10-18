@@ -10,6 +10,7 @@ import { DebugAudioPage } from './pages/DebugAudioPage';
 import { SavedProject } from './services/karyakuService';
 import { onboardingService } from './services/onboardingService';
 import { OnboardingModal } from './components/onboarding/OnboardingModal';
+import { JuryShowcaseModal } from './components/showcase/JuryShowcaseModal';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabId>('editor');
@@ -18,11 +19,12 @@ export function App() {
       (window.location.pathname === '/debug-audio' || window.location.hash === '#debug-audio')
   );
 
-  // Status modal onboarding & tantangan akhir
+  // Status modal onboarding & tantangan akhir & showcase
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(() => {
     return !onboardingService.isOnboardingCompleted();
   });
   const [isFinalChallengeActive, setIsFinalChallengeActive] = useState(false);
+  const [isJuryShowcaseOpen, setIsJuryShowcaseOpen] = useState(false);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -105,6 +107,7 @@ export function App() {
           <BerandaPage
             onNavigate={setActiveTab}
             onOpenOnboarding={() => setIsOnboardingOpen(true)}
+            onOpenJuryShowcase={() => setIsJuryShowcaseOpen(true)}
           />
         );
       case 'belajar':
@@ -160,6 +163,7 @@ export function App() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onOpenOnboarding={() => setIsOnboardingOpen(true)}
+        onOpenJuryShowcase={() => setIsJuryShowcaseOpen(true)}
         onResetAllData={handleResetAllData}
       >
         {renderCurrentPage()}
@@ -171,6 +175,20 @@ export function App() {
         onClose={() => setIsOnboardingOpen(false)}
         onStartChallenge={handleStartFinalChallenge}
         onSkipToMissions={handleSkipToMissions}
+      />
+
+      {/* Modal Showcase Dewan Juri Berdasarkan Esai TLP */}
+      <JuryShowcaseModal
+        isOpen={isJuryShowcaseOpen}
+        onClose={() => setIsJuryShowcaseOpen(false)}
+        onNavigate={(tab) => {
+          setIsJuryShowcaseOpen(false);
+          setActiveTab(tab);
+        }}
+        onStartBloomMission={(code) => {
+          setIsJuryShowcaseOpen(false);
+          handleStartMission(code);
+        }}
       />
     </>
   );

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Settings, User, X, Volume2, Globe, Music, BookOpen, RotateCcw } from 'lucide-react';
+import { Settings, User, X, Volume2, Globe, Music, BookOpen, RotateCcw, Award } from 'lucide-react';
 import { onboardingService } from '../../services/onboardingService';
 
 interface AppHeaderProps {
   onOpenSettings?: () => void;
   onOpenOnboarding?: () => void;
+  onOpenJuryShowcase?: () => void;
   onResetAllData?: () => void;
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
   onOpenOnboarding,
+  onOpenJuryShowcase,
   onResetAllData,
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -61,6 +63,31 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {onOpenJuryShowcase && (
+            <button
+              type="button"
+              onClick={onOpenJuryShowcase}
+              style={{
+                minHeight: 38,
+                padding: '0 10px',
+                borderRadius: 10,
+                border: '1.5px solid #fde047',
+                background: '#fefce8',
+                color: '#854d0e',
+                fontWeight: 800,
+                fontSize: '0.78rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                cursor: 'pointer',
+                boxShadow: '0 2px 5px rgba(234, 179, 8, 0.2)',
+              }}
+              title="Buka Showcase Presentasi Dewan Juri"
+            >
+              <Award size={15} color="#d97706" />
+              <span>🏆 Esai Juri</span>
+            </button>
+          )}
           <span className="app-badge-pill">SD Kelas 4–6</span>
           <button
             type="button"
@@ -212,6 +239,35 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                   }}
                 >
                   <BookOpen size={16} /> Buka Panduan Onboarding
+                </button>
+              )}
+
+              {/* Showcase Dewan Juri */}
+              {onOpenJuryShowcase && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    onOpenJuryShowcase();
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: '#fefce8',
+                    border: '1.5px solid #fde047',
+                    borderRadius: 12,
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    color: '#854d0e',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Award size={16} /> Showcase Esai Dewan Juri
                 </button>
               )}
 

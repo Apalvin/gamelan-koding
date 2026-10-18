@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Sparkles, BookOpen, Target, ArrowRight } from 'lucide-react';
+import { Play, Sparkles, BookOpen, Target, ArrowRight, Award } from 'lucide-react';
 import { TabId } from '../types/navigation';
 import { onboardingService } from '../services/onboardingService';
 import { missionProgressService } from '../services/missionProgressService';
@@ -7,11 +7,13 @@ import { missionProgressService } from '../services/missionProgressService';
 interface BerandaPageProps {
   onNavigate: (tab: TabId) => void;
   onOpenOnboarding?: () => void;
+  onOpenJuryShowcase?: () => void;
 }
 
 export const BerandaPage: React.FC<BerandaPageProps> = ({
   onNavigate,
   onOpenOnboarding,
+  onOpenJuryShowcase,
 }) => {
   const studentName = onboardingService.getStudentName();
   const totalStars = missionProgressService.getTotalStars();
@@ -73,6 +75,77 @@ export const BerandaPage: React.FC<BerandaPageProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Kartu Showcase Presentasi Dewan Juri */}
+      {onOpenJuryShowcase && (
+        <div
+          onClick={onOpenJuryShowcase}
+          style={{
+            background: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)',
+            borderRadius: 18,
+            padding: '16px',
+            border: '2px solid #fde047',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(234, 179, 8, 0.15)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(234, 179, 8, 0.25)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'none';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(234, 179, 8, 0.15)';
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                background: 'linear-gradient(135deg, #d97706, #b45309)',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: '0 3px 8px rgba(217, 119, 6, 0.3)',
+              }}
+            >
+              <Award size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#92400e', textTransform: 'uppercase' }}>
+                Mode Dewan Juri • Esai Lomba
+              </div>
+              <h3 style={{ margin: '2px 0 0', fontSize: '1rem', fontWeight: 800, color: '#78350f' }}>
+                Showcase Presentasi GamelanCode 🏆
+              </h3>
+              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: '#854d0e' }}>
+                PISA 427, UNESCO 2021, Taksonomi Bloom C1-C6, & Hardware Solenoid
+              </p>
+            </div>
+          </div>
+          <div
+            style={{
+              minWidth: 40,
+              minHeight: 40,
+              borderRadius: 10,
+              background: '#fef3c7',
+              color: '#92400e',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ArrowRight size={20} />
+          </div>
+        </div>
+      )}
 
       {/* Kartu Lanjutkan Misi */}
       <div
