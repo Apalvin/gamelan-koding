@@ -52,8 +52,8 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 9998,
         display: 'flex',
         alignItems: 'center',
@@ -63,41 +63,29 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-app)',
           borderRadius: 24,
-          padding: '24px 20px',
+          padding: '22px 18px',
           width: '100%',
           maxWidth: 480,
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           gap: 16,
           position: 'relative',
         }}
       >
+        {/* Dark Circular Close Button */}
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 16, right: 16 }}
           aria-label="Tutup"
         >
-          <X size={20} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         {/* Header Misi */}
@@ -107,21 +95,31 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              background: '#fef3c7',
-              color: '#b45309',
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              background: 'var(--color-yellow)',
+              color: 'var(--text-primary)',
+              fontSize: '0.74rem',
+              fontWeight: 800,
               padding: '3px 10px',
-              borderRadius: 999,
-              marginBottom: 6,
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid rgba(45, 45, 43, 0.15)',
+              marginBottom: 8,
             }}
           >
             <Sparkles size={13} /> {mission.code} • {mission.bloomLevel}
           </div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 4px', color: '#0f172a' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.2rem',
+              fontWeight: 800,
+              margin: '0 0 4px',
+              color: 'var(--text-primary)',
+              paddingRight: 40,
+            }}
+          >
             {mission.name}
           </h2>
-          <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>
             {mission.activity}
           </p>
         </div>
@@ -129,10 +127,10 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
         {/* Kotak Dengarkan Target */}
         <div
           style={{
-            background: '#f0fdf4',
-            border: '1.5px solid #bbf7d0',
-            borderRadius: 18,
-            padding: '14px',
+            background: 'var(--bg-surface)',
+            border: '1.5px solid var(--border-card)',
+            borderRadius: 'var(--radius-card)',
+            padding: '14px 16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -140,10 +138,18 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
           }}
         >
           <div>
-            <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#166534', textTransform: 'uppercase' }}>
+            <div style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
               Target Tabuhan
             </div>
-            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#14532d', marginTop: 2 }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '0.94rem',
+                fontWeight: 800,
+                color: 'var(--text-primary)',
+                marginTop: 2,
+              }}
+            >
               {puzzle?.targetDescription}
             </div>
           </div>
@@ -151,14 +157,14 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
             type="button"
             onClick={handlePlayFullTarget}
             style={{
-              minHeight: 42,
+              minHeight: 38,
               padding: '0 14px',
-              background: '#16a34a',
-              color: 'white',
-              border: 'none',
-              borderRadius: 12,
-              fontSize: '0.82rem',
-              fontWeight: 700,
+              background: 'var(--color-yellow-tint)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--color-yellow)',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.8rem',
+              fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
@@ -173,18 +179,20 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
         {/* Area Puzzle Susun Potongan */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#334155' }}>
+            <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>
               Susun Urutan Potongan:
             </span>
             <button
               type="button"
               onClick={handleSwap}
               style={{
-                background: 'none',
-                border: 'none',
-                color: '#2563eb',
+                background: 'var(--color-blue-tint)',
+                border: '1.5px solid var(--color-periwinkle)',
+                borderRadius: 'var(--radius-pill)',
+                color: 'var(--text-primary)',
                 fontSize: '0.78rem',
-                fontWeight: 700,
+                fontWeight: 800,
+                padding: '4px 12px',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 4,
@@ -199,26 +207,27 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
             <div
               key={piece.id}
               style={{
-                background: '#fafaf9',
-                border: '1.5px solid #d6d3d1',
-                borderRadius: 16,
+                background: 'var(--bg-surface)',
+                border: '1.5px solid var(--border-card)',
+                borderRadius: 'var(--radius-card)',
                 padding: '12px 14px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <span
                   style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 999,
-                    background: '#e7e5e4',
-                    color: '#44403c',
+                    width: 32,
+                    height: 32,
+                    borderRadius: 'var(--radius-squircle)',
+                    background: 'var(--bg-app)',
+                    border: '1.5px solid var(--border-subtle)',
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-display)',
                     fontWeight: 800,
-                    fontSize: '0.8rem',
+                    fontSize: '0.88rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -227,10 +236,10 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
                   {idx + 1}
                 </span>
                 <div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1c1917' }}>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                     {piece.label}
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: '#78716c', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                     Nada: {piece.notesText}
                   </div>
                 </div>
@@ -240,14 +249,14 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
                 type="button"
                 onClick={() => handlePlayPiece(piece.events)}
                 style={{
-                  minHeight: 36,
-                  padding: '0 10px',
-                  background: '#fef9c3',
-                  color: '#854d0e',
-                  border: '1px solid #fde047',
-                  borderRadius: 10,
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
+                  minHeight: 34,
+                  padding: '0 12px',
+                  background: 'var(--color-yellow-tint)',
+                  color: 'var(--text-primary)',
+                  border: '1.5px solid var(--color-yellow)',
+                  borderRadius: 'var(--radius-pill)',
+                  fontSize: '0.76rem',
+                  fontWeight: 800,
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 4,
@@ -260,28 +269,28 @@ export const MissionModalC2: React.FC<MissionModalC2Props> = ({
           ))}
         </div>
 
-        {/* Tombol Periksa Susunan */}
+        {/* Tombol Periksa Susunan Full-Pill CTA */}
         <button
           type="button"
           onClick={handleCheck}
           style={{
             minHeight: 48,
             width: '100%',
-            background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: 16,
-            fontWeight: 700,
-            fontSize: '0.95rem',
+            background: 'var(--color-pink)',
+            color: 'var(--text-primary)',
+            border: '1.5px solid var(--text-primary)',
+            borderRadius: 'var(--radius-pill)',
+            fontWeight: 800,
+            fontSize: '0.94rem',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
             cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)',
+            transition: 'all 0.15s ease',
           }}
         >
-          <CheckCircle2 size={18} /> Periksa Susunan Pola
+          <CheckCircle2 size={18} strokeWidth={2.5} /> Periksa Susunan Pola
         </button>
 
         {/* Modal Hasil */}

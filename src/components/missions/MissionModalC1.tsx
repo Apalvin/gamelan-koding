@@ -53,8 +53,8 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 9998,
         display: 'flex',
         alignItems: 'center',
@@ -64,41 +64,29 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-app)',
           borderRadius: 24,
-          padding: '24px 20px',
+          padding: '22px 18px',
           width: '100%',
           maxWidth: 480,
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           gap: 16,
           position: 'relative',
         }}
       >
+        {/* Dark Circular Back/Close Button */}
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 16, right: 16 }}
           aria-label="Tutup"
         >
-          <X size={20} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         {/* Header Misi */}
@@ -108,71 +96,117 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              background: '#fef3c7',
-              color: '#b45309',
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              background: 'var(--color-yellow)',
+              color: 'var(--text-primary)',
+              fontSize: '0.74rem',
+              fontWeight: 800,
               padding: '3px 10px',
-              borderRadius: 999,
-              marginBottom: 6,
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid rgba(45, 45, 43, 0.15)',
+              marginBottom: 8,
             }}
           >
             <Sparkles size={13} /> {mission.code} • {mission.bloomLevel}
           </div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 4px', color: '#0f172a' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.2rem',
+              fontWeight: 800,
+              margin: '0 0 4px',
+              color: 'var(--text-primary)',
+              paddingRight: 40,
+            }}
+          >
             {mission.name}
           </h2>
-          <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>
             {mission.activity}
           </p>
+        </div>
+
+        {/* Horizontal Step Pills Sesuai Moodboard Classly */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+            Langkah:
+          </span>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {questions.map((q, idx) => {
+              const isAnswered = !!answers[q.id];
+              return (
+                <div
+                  key={q.id}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 'var(--radius-pill)',
+                    background: isAnswered ? 'var(--color-pink)' : 'var(--bg-surface)',
+                    border: `1.5px solid ${isAnswered ? 'var(--text-primary)' : 'var(--border-card)'}`,
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {idx + 1}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Konteks Budaya */}
         <div
           style={{
-            background: '#f8fafc',
-            borderLeft: '4px solid #f59e0b',
+            background: 'var(--bg-surface)',
+            borderLeft: '4px solid var(--color-yellow)',
             padding: '10px 12px',
             borderRadius: '0 12px 12px 0',
             fontSize: '0.8rem',
-            color: '#475569',
+            color: 'var(--text-primary)',
             lineHeight: 1.45,
+            border: '1.5px solid var(--border-subtle)',
+            borderLeftWidth: 4,
           }}
         >
           <strong>Konteks Karawitan:</strong> {mission.cultureContext}
         </div>
 
         {/* Daftar Pertanyaan Kuis */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {questions.map((q, idx) => (
             <div
               key={q.id}
               style={{
-                background: '#fafaf9',
-                border: '1.5px solid #e7e5e4',
-                borderRadius: 18,
-                padding: '14px',
+                background: 'var(--bg-surface)',
+                border: '1.5px solid var(--border-card)',
+                borderRadius: 'var(--radius-card)',
+                padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 12,
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1c1917', lineHeight: 1.4 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.94rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.4 }}>
                   {idx + 1}. {q.prompt}
                 </div>
                 <button
                   type="button"
                   onClick={() => handlePlaySound(q.soundInstrument, q.soundNote)}
                   style={{
-                    minHeight: 40,
+                    minHeight: 36,
                     padding: '0 12px',
-                    background: '#fef08a',
-                    color: '#713f12',
-                    border: '1.5px solid #eab308',
-                    borderRadius: 12,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
+                    background: 'var(--color-yellow-tint)',
+                    color: 'var(--text-primary)',
+                    border: '1.5px solid var(--color-yellow)',
+                    borderRadius: 'var(--radius-pill)',
+                    fontSize: '0.76rem',
+                    fontWeight: 800,
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 6,
@@ -180,11 +214,11 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
                     flexShrink: 0,
                   }}
                 >
-                  <Volume2 size={16} /> Dengarkan
+                  <Volume2 size={15} /> Dengarkan
                 </button>
               </div>
 
-              {/* Opsi Jawaban */}
+              {/* Opsi Jawaban Radio Pills Sesuai Classly */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                 {q.options.map((opt) => {
                   const isSelected = answers[q.id] === opt.id;
@@ -194,29 +228,54 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
                       type="button"
                       onClick={() => handleSelectOption(q.id, opt.id)}
                       style={{
-                        minHeight: 46,
+                        minHeight: 48,
                         padding: '8px 12px',
-                        background: isSelected ? '#dcfce7' : 'white',
-                        border: isSelected ? '2px solid #16a34a' : '1.5px solid #d6d3d1',
-                        borderRadius: 14,
+                        background: isSelected ? 'var(--color-pink-tint)' : 'var(--bg-app)',
+                        border: isSelected ? '2px solid var(--text-primary)' : '1.5px solid var(--border-subtle)',
+                        borderRadius: 'var(--radius-card)',
                         display: 'flex',
                         alignItems: 'center',
+                        justifyContent: 'space-between',
                         gap: 8,
                         cursor: 'pointer',
                         textAlign: 'left',
-                        transition: 'all 0.15s ease',
+                        transition: 'all 0.12s ease',
                       }}
                     >
-                      <span style={{ fontSize: '1.2rem' }}>{opt.imageEmoji || '🎵'}</span>
-                      <span
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                        <span style={{ fontSize: '1.15rem' }}>{opt.imageEmoji || '🎵'}</span>
+                        <span
+                          style={{
+                            fontSize: '0.84rem',
+                            fontWeight: isSelected ? 800 : 700,
+                            color: 'var(--text-primary)',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {opt.label}
+                        </span>
+                      </div>
+
+                      {/* Radio Bullet Indicator */}
+                      <div
                         style={{
-                          fontSize: '0.84rem',
-                          fontWeight: isSelected ? 700 : 600,
-                          color: isSelected ? '#166534' : '#292524',
+                          width: 18,
+                          height: 18,
+                          borderRadius: '50%',
+                          border: `1.5px solid ${isSelected ? 'var(--text-primary)' : 'rgba(45, 45, 43, 0.3)'}`,
+                          background: isSelected ? 'var(--color-pink)' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
                         }}
                       >
-                        {opt.label}
-                      </span>
+                        {isSelected && (
+                          <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--text-primary)' }} />
+                        )}
+                      </div>
                     </button>
                   );
                 })}
@@ -225,7 +284,7 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
           ))}
         </div>
 
-        {/* Tombol Periksa Jawaban */}
+        {/* Tombol Periksa Jawaban Full-Pill CTA */}
         <button
           type="button"
           disabled={!allAnswered}
@@ -233,23 +292,21 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
           style={{
             minHeight: 48,
             width: '100%',
-            background: allAnswered
-              ? 'linear-gradient(135deg, #10b981 0%, #047857 100%)'
-              : '#cbd5e1',
-            color: 'white',
-            border: 'none',
-            borderRadius: 16,
-            fontWeight: 700,
-            fontSize: '0.95rem',
+            background: allAnswered ? 'var(--color-pink)' : 'var(--bg-surface)',
+            color: allAnswered ? 'var(--text-primary)' : 'var(--text-muted)',
+            border: allAnswered ? '1.5px solid var(--text-primary)' : '1.5px solid var(--border-subtle)',
+            borderRadius: 'var(--radius-pill)',
+            fontWeight: 800,
+            fontSize: '0.94rem',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
             cursor: allAnswered ? 'pointer' : 'not-allowed',
-            boxShadow: allAnswered ? '0 4px 14px rgba(16, 185, 129, 0.3)' : 'none',
+            transition: 'all 0.15s ease',
           }}
         >
-          <CheckCircle2 size={18} /> Periksa Jawaban
+          <CheckCircle2 size={18} strokeWidth={2.5} /> Periksa Jawaban
         </button>
 
         {/* Modal Hasil */}

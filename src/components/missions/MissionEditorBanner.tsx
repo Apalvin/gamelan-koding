@@ -27,13 +27,12 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
   return (
     <div
       style={{
-        background: 'linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%)',
-        borderBottom: '2px solid #fde047',
-        padding: '10px 14px',
+        background: 'var(--bg-surface)',
+        borderBottom: '1.5px solid var(--border-card)',
+        padding: '12px 14px',
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+        gap: 10,
         position: 'relative',
         zIndex: 10,
       }}
@@ -42,12 +41,13 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
           <div
             style={{
-              background: '#f59e0b',
-              color: 'white',
+              background: 'var(--color-yellow)',
+              color: 'var(--text-primary)',
               fontSize: '0.74rem',
               fontWeight: 800,
-              padding: '2px 8px',
-              borderRadius: 8,
+              padding: '3px 8px',
+              borderRadius: 'var(--radius-squircle)',
+              border: '1px solid rgba(45, 45, 43, 0.15)',
               flexShrink: 0,
             }}
           >
@@ -55,9 +55,10 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
           </div>
           <span
             style={{
-              fontSize: '0.92rem',
+              fontFamily: 'var(--font-display)',
+              fontSize: '0.94rem',
               fontWeight: 800,
-              color: '#78350f',
+              color: 'var(--text-primary)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -71,43 +72,43 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
           type="button"
           onClick={onExit}
           style={{
-            background: 'none',
-            border: 'none',
-            color: '#92400e',
+            background: 'var(--bg-app)',
+            border: '1.5px solid var(--border-subtle)',
+            color: 'var(--text-primary)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 4,
             fontSize: '0.74rem',
-            fontWeight: 700,
+            fontWeight: 800,
             cursor: 'pointer',
-            padding: '4px 8px',
-            borderRadius: 6,
+            padding: '4px 10px',
+            borderRadius: 'var(--radius-pill)',
           }}
           title="Keluar dari mode misi ke editor bebas"
         >
-          <X size={15} /> Keluar Misi
+          <X size={14} /> Keluar
         </button>
       </div>
 
-      <div style={{ fontSize: '0.8rem', color: '#92400e', lineHeight: 1.4 }}>
-        <strong>Target: </strong>
+      <div style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.45 }}>
+        <strong style={{ color: 'var(--text-primary)' }}>Target: </strong>
         {isC6 ? mission.creativeCriteria?.prompt : mission.editorTarget?.targetDescription}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
         {!isC6 && mission.editorTarget?.targetEvents && (
           <button
             type="button"
             onClick={handlePlayTarget}
             style={{
-              minHeight: 36,
-              padding: '0 12px',
-              background: '#fde047',
-              color: '#713f12',
-              border: '1.5px solid #eab308',
-              borderRadius: 10,
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              minHeight: 38,
+              padding: '0 14px',
+              background: 'var(--color-yellow-tint)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--color-yellow)',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.8rem',
+              fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
@@ -123,20 +124,19 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
             type="button"
             onClick={onSaveCreative}
             style={{
-              minHeight: 36,
-              padding: '0 14px',
-              background: 'linear-gradient(135deg, #db2777 0%, #be185d 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 10,
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              minHeight: 38,
+              padding: '0 16px',
+              background: 'var(--color-pink)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--text-primary)',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.82rem',
+              fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
               cursor: 'pointer',
               marginLeft: 'auto',
-              boxShadow: '0 2px 6px rgba(219, 39, 119, 0.25)',
             }}
           >
             <BookmarkCheck size={16} /> Simpan ke Karyaku
@@ -146,20 +146,19 @@ export const MissionEditorBanner: React.FC<MissionEditorBannerProps> = ({
             type="button"
             onClick={onCheck}
             style={{
-              minHeight: 36,
-              padding: '0 14px',
-              background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 10,
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              minHeight: 38,
+              padding: '0 16px',
+              background: 'var(--color-pink)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--text-primary)',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.82rem',
+              fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
               cursor: 'pointer',
               marginLeft: 'auto',
-              boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)',
             }}
           >
             <CheckCircle2 size={16} /> Periksa Hasil

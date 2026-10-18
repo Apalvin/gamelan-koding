@@ -35,8 +35,8 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -46,12 +46,12 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-app)',
           borderRadius: 24,
           padding: '24px 20px',
           width: '100%',
           maxWidth: 420,
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           gap: 16,
@@ -61,24 +61,11 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 16, right: 16 }}
           aria-label="Tutup"
         >
-          <X size={20} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         <div>
@@ -87,21 +74,30 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              background: '#fdf2f8',
-              color: '#db2777',
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              background: 'var(--color-pink)',
+              color: 'var(--text-primary)',
+              fontSize: '0.74rem',
+              fontWeight: 800,
               padding: '3px 10px',
-              borderRadius: 999,
-              marginBottom: 6,
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid rgba(45, 45, 43, 0.15)',
+              marginBottom: 8,
             }}
           >
             <Sparkles size={13} /> {badgeLabel || 'Koleksi Karyaku • Simpan Pola'}
           </div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 4px', color: '#0f172a' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.25rem',
+              fontWeight: 800,
+              margin: '0 0 4px',
+              color: 'var(--text-primary)',
+            }}
+          >
             Simpan ke Karyaku
           </h2>
-          <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>
             Pola tabuhanmu memiliki <strong>{notesCount} ketukan tabuhan</strong>. Beri nama agar tersimpan rapi di koleksi Karyaku!
           </p>
         </div>
@@ -110,7 +106,7 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
           <div>
             <label
               htmlFor="karya-title"
-              style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}
+              style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 4 }}
             >
               Judul Gending *
             </label>
@@ -125,8 +121,10 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
                 width: '100%',
                 boxSizing: 'border-box',
                 padding: '10px 14px',
-                borderRadius: 12,
-                border: '1.5px solid #cbd5e1',
+                borderRadius: 'var(--radius-squircle)',
+                background: 'var(--bg-surface)',
+                border: '1.5px solid var(--border-card)',
+                color: 'var(--text-primary)',
                 fontSize: '0.9rem',
                 outline: 'none',
               }}
@@ -136,7 +134,7 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
           <div>
             <label
               htmlFor="karya-desc"
-              style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#334155', marginBottom: 4 }}
+              style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 4 }}
             >
               Cerita / Inspirasi (Opsional)
             </label>
@@ -150,8 +148,10 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
                 width: '100%',
                 boxSizing: 'border-box',
                 padding: '10px 14px',
-                borderRadius: 12,
-                border: '1.5px solid #cbd5e1',
+                borderRadius: 'var(--radius-squircle)',
+                background: 'var(--bg-surface)',
+                border: '1.5px solid var(--border-card)',
+                color: 'var(--text-primary)',
                 fontSize: '0.86rem',
                 outline: 'none',
                 resize: 'none',
@@ -166,20 +166,18 @@ export const SaveCreativeModal: React.FC<SaveCreativeModalProps> = ({
               marginTop: 6,
               minHeight: 46,
               width: '100%',
-              background: title.trim()
-                ? 'linear-gradient(135deg, #db2777 0%, #be185d 100%)'
-                : '#cbd5e1',
-              color: 'white',
-              border: 'none',
-              borderRadius: 14,
-              fontWeight: 700,
+              background: title.trim() ? 'var(--color-pink)' : 'var(--bg-surface)',
+              color: title.trim() ? 'var(--text-primary)' : 'var(--text-muted)',
+              border: title.trim() ? '1.5px solid var(--text-primary)' : '1.5px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-pill)',
+              fontWeight: 800,
               fontSize: '0.92rem',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 8,
               cursor: title.trim() ? 'pointer' : 'not-allowed',
-              boxShadow: title.trim() ? '0 4px 12px rgba(219, 39, 119, 0.3)' : 'none',
+              transition: 'all 0.15s ease',
             }}
           >
             <BookmarkCheck size={18} /> Simpan Sekarang

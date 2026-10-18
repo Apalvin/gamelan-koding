@@ -39,7 +39,7 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
   };
 
   return (
-    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
       {/* Header Halaman Misi */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -47,21 +47,32 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
             style={{
               width: 42,
               height: 42,
-              borderRadius: 14,
-              background: '#fef3c7',
-              color: '#b45309',
+              borderRadius: 'var(--radius-squircle)',
+              background: 'var(--color-yellow-tint)',
+              border: '1.5px solid var(--color-yellow)',
+              color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Target size={24} />
+            <Target size={22} strokeWidth={2.5} />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.25rem',
+                fontWeight: 800,
+                margin: 0,
+                color: 'var(--text-primary)',
+              }}
+            >
               Misi Koding Gamelan
             </h2>
-            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Taksonomi Bloom Bertingkat (C1–C6)</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+              Taksonomi Bloom Bertingkat (C1–C6)
+            </div>
           </div>
         </div>
 
@@ -71,51 +82,60 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            background: '#fef3c7',
-            border: '1.5px solid #fde047',
+            background: 'var(--color-yellow-tint)',
+            border: '1.5px solid var(--color-yellow)',
             padding: '6px 12px',
-            borderRadius: 999,
+            borderRadius: 'var(--radius-pill)',
           }}
         >
-          <Star size={16} fill="#f59e0b" color="#f59e0b" />
-          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#b45309' }}>
+          <Star size={16} fill="var(--color-yellow)" color="var(--text-primary)" />
+          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-primary)' }}>
             {totalStars} / 18
           </span>
         </div>
       </div>
 
-      {/* Ringkasan Progres & Disclaimer */}
+      {/* Ringkasan Progres Homework Style */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
-          border: '1.5px solid #bbf7d0',
-          borderRadius: 16,
-          padding: '12px 14px',
+          background: 'var(--bg-surface)',
+          border: '1.5px solid var(--border-card)',
+          borderRadius: 'var(--radius-card)',
+          padding: '14px 16px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
         <div>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#166534', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Progres Belajar
           </div>
-          <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#14532d', marginTop: 2 }}>
+          <div
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.02rem',
+              fontWeight: 800,
+              color: 'var(--text-primary)',
+              marginTop: 2,
+            }}
+          >
             {completedCount} dari 6 Misi Selesai
           </div>
         </div>
 
         <span
           style={{
-            fontSize: '0.74rem',
-            background: '#dcfce7',
-            color: '#15803d',
-            padding: '4px 10px',
-            borderRadius: 999,
-            fontWeight: 700,
+            fontSize: '0.76rem',
+            background: 'var(--color-olive-tint)',
+            border: '1.5px solid var(--color-olive)',
+            color: 'var(--text-primary)',
+            padding: '4px 12px',
+            borderRadius: 'var(--radius-pill)',
+            fontWeight: 800,
           }}
         >
-          Semua Level Terbuka
+          Semua Terbuka
         </span>
       </div>
 
@@ -123,7 +143,7 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
         <span>ℹ️ Pola tabuhan berstatus contoh simulasi — belum divalidasi praktisi karawitan.</span>
       </div>
 
-      {/* Daftar Kartu Misi C1 - C6 */}
+      {/* Daftar Kartu Misi C1 - C6 (Homework style) */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {missions.map((misi) => {
           const mProgress = progress[misi.code] || { status: 'belum', stars: 0 };
@@ -135,22 +155,17 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
             <div
               key={misi.code}
               style={{
-                background: 'white',
-                borderRadius: 20,
+                background: 'var(--bg-surface)',
+                borderRadius: 'var(--radius-card)',
                 padding: '16px',
                 border: isDone
-                  ? '2px solid #86efac'
+                  ? '1.5px solid var(--color-olive)'
                   : misi.isRecommended
-                  ? '2px solid #f59e0b'
-                  : '2px solid #e2e8f0',
-                boxShadow: isDone
-                  ? '0 4px 12px rgba(34, 197, 94, 0.1)'
-                  : misi.isRecommended
-                  ? '0 4px 12px rgba(245, 158, 11, 0.15)'
-                  : '0 2px 6px rgba(0,0,0,0.03)',
+                  ? '2px solid var(--color-yellow)'
+                  : '1.5px solid var(--border-card)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 12,
                 position: 'relative',
               }}
             >
@@ -161,18 +176,18 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
                     position: 'absolute',
                     top: -10,
                     right: 16,
-                    background: '#16a34a',
+                    background: 'var(--color-olive)',
                     color: 'white',
-                    fontSize: '0.7rem',
+                    fontSize: '0.72rem',
                     fontWeight: 800,
-                    padding: '2px 10px',
-                    borderRadius: 999,
+                    padding: '3px 12px',
+                    borderRadius: 'var(--radius-pill)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 4,
                   }}
                 >
-                  <CheckCircle2 size={12} /> Selesai
+                  <CheckCircle2 size={13} strokeWidth={2.5} /> Selesai
                 </div>
               ) : misi.isRecommended ? (
                 <div
@@ -180,12 +195,13 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
                     position: 'absolute',
                     top: -10,
                     right: 16,
-                    background: '#f59e0b',
-                    color: 'white',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    padding: '2px 8px',
-                    borderRadius: 999,
+                    background: 'var(--color-yellow)',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    padding: '3px 12px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid rgba(45, 45, 43, 0.15)',
                   }}
                 >
                   ⭐ Mulai Dari Sini
@@ -196,13 +212,15 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 10,
-                      background: isDone ? '#dcfce7' : '#f1f5f9',
-                      color: isDone ? '#166534' : '#334155',
+                      width: 38,
+                      height: 38,
+                      borderRadius: 'var(--radius-squircle)',
+                      background: isDone ? 'var(--color-olive-tint)' : 'var(--bg-app)',
+                      border: '1.5px solid var(--border-subtle)',
+                      color: 'var(--text-primary)',
+                      fontFamily: 'var(--font-display)',
                       fontWeight: 800,
-                      fontSize: '0.92rem',
+                      fontSize: '0.96rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -211,67 +229,77 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
                     {misi.code}
                   </span>
                   <div>
-                    <h3 style={{ fontSize: '1.02rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+                    <h3
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '1.02rem',
+                        fontWeight: 800,
+                        margin: 0,
+                        color: 'var(--text-primary)',
+                      }}
+                    >
                       {misi.name}
                     </h3>
-                    <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                       Tingkat: {misi.bloomLevel}
                     </span>
                   </div>
                 </div>
 
                 {/* Indikator 3 Bintang */}
-                <div style={{ display: 'flex', gap: 3 }}>
+                <div style={{ display: 'flex', gap: 4 }}>
                   {[1, 2, 3].map((starIdx) => (
                     <Star
                       key={starIdx}
-                      size={17}
-                      fill={starIdx <= starsCount ? '#f59e0b' : '#f1f5f9'}
-                      color={starIdx <= starsCount ? '#f59e0b' : '#cbd5e1'}
+                      size={18}
+                      fill={starIdx <= starsCount ? 'var(--color-yellow)' : 'transparent'}
+                      color={starIdx <= starsCount ? 'var(--color-yellow)' : 'rgba(45, 45, 43, 0.25)'}
                     />
                   ))}
                 </div>
               </div>
 
-              <p style={{ fontSize: '0.84rem', color: '#475569', margin: 0, lineHeight: 1.45 }}>
+              <p style={{ fontSize: '0.84rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.45, opacity: 0.85 }}>
                 {misi.activity}
               </p>
 
-              {/* Tombol Buka Misi */}
+              {/* Tombol Buka Misi Full-Pill */}
               <button
                 type="button"
                 onClick={() => handleOpenMission(misi)}
                 style={{
-                  marginTop: 4,
+                  marginTop: 2,
                   minHeight: 44,
                   background: isDone
-                    ? '#f0fdf4'
+                    ? 'var(--color-olive-tint)'
                     : misi.isRecommended
-                    ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
-                    : '#f8fafc',
-                  color: isDone ? '#15803d' : misi.isRecommended ? 'white' : '#1e293b',
+                    ? 'var(--color-pink)'
+                    : 'var(--bg-app)',
+                  color: 'var(--text-primary)',
                   border: isDone
-                    ? '1.5px solid #86efac'
+                    ? '1.5px solid var(--color-olive)'
                     : misi.isRecommended
-                    ? 'none'
-                    : '1.5px solid #cbd5e1',
-                  borderRadius: 12,
-                  fontWeight: 700,
+                    ? '1.5px solid var(--text-primary)'
+                    : '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-pill)',
+                  fontWeight: 800,
                   fontSize: '0.88rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 6,
+                  gap: 8,
                   cursor: 'pointer',
-                  boxShadow: misi.isRecommended && !isDone ? '0 4px 10px rgba(245, 158, 11, 0.25)' : 'none',
+                  transition: 'all 0.15s ease',
                 }}
               >
-                <Play size={15} />
-                {isDone
-                  ? 'Mainkan Ulang'
-                  : isEditorMission
-                  ? 'Buka Misi di Editor'
-                  : 'Buka Aktivitas'}
+                <Play size={16} fill="currentColor" />
+                <span>
+                  {isDone
+                    ? 'Mainkan Ulang'
+                    : isEditorMission
+                    ? 'Buka Misi di Editor'
+                    : 'Buka Aktivitas'}
+                </span>
               </button>
             </div>
           );

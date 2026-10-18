@@ -20,8 +20,8 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -31,12 +31,12 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-app)',
           borderRadius: 24,
           padding: '24px 20px',
           width: '100%',
           maxWidth: 420,
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -48,50 +48,41 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 16, right: 16 }}
           aria-label="Tutup"
         >
-          <X size={20} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         {/* Bintang Apresiasi */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 12, marginTop: 4 }}>
-          {[1, 2, 3].map((starIdx) => (
-            <div
-              key={starIdx}
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 14,
-                background: starIdx <= result.stars ? '#fef3c7' : '#f1f5f9',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: starIdx <= result.stars ? '#f59e0b' : '#cbd5e1',
-                transform: starIdx <= result.stars ? 'scale(1.05)' : 'scale(0.95)',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              <Star
-                size={26}
-                fill={starIdx <= result.stars ? '#f59e0b' : 'transparent'}
-              />
-            </div>
-          ))}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 14, marginTop: 6 }}>
+          {[1, 2, 3].map((starIdx) => {
+            const isEarned = starIdx <= result.stars;
+            return (
+              <div
+                key={starIdx}
+                style={{
+                  width: 46,
+                  height: 46,
+                  borderRadius: 'var(--radius-squircle)',
+                  background: isEarned ? 'var(--color-yellow-tint)' : 'var(--bg-surface)',
+                  border: `1.5px solid ${isEarned ? 'var(--color-yellow)' : 'var(--border-subtle)'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: isEarned ? 'var(--color-yellow)' : 'rgba(45, 45, 43, 0.25)',
+                  transform: isEarned ? 'scale(1.05)' : 'scale(0.95)',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                <Star
+                  size={26}
+                  fill={isEarned ? 'var(--color-yellow)' : 'transparent'}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Badge status */}
@@ -100,13 +91,14 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            background: result.isCorrect ? '#dcfce7' : '#fef3c7',
-            color: result.isCorrect ? '#166534' : '#92400e',
+            background: result.isCorrect ? 'var(--color-olive-tint)' : 'var(--color-yellow-tint)',
+            border: `1.5px solid ${result.isCorrect ? 'var(--color-olive)' : 'var(--color-yellow)'}`,
+            color: 'var(--text-primary)',
             fontSize: '0.8rem',
-            fontWeight: 700,
-            padding: '4px 12px',
-            borderRadius: 999,
-            marginBottom: 8,
+            fontWeight: 800,
+            padding: '4px 14px',
+            borderRadius: 'var(--radius-pill)',
+            marginBottom: 10,
           }}
         >
           <Sparkles size={14} />
@@ -115,9 +107,10 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
 
         <h3
           style={{
+            fontFamily: 'var(--font-display)',
             fontSize: '1.25rem',
             fontWeight: 800,
-            color: '#0f172a',
+            color: 'var(--text-primary)',
             margin: '0 0 8px',
           }}
         >
@@ -126,10 +119,11 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
 
         <p
           style={{
-            fontSize: '0.9rem',
-            color: '#334155',
+            fontSize: '0.88rem',
+            color: 'var(--text-primary)',
             lineHeight: 1.5,
             margin: '0 0 16px',
+            opacity: 0.9,
           }}
         >
           {result.message}
@@ -138,24 +132,24 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
         {result.hint && (
           <div
             style={{
-              background: '#eff6ff',
-              border: '1.5px solid #bfdbfe',
-              color: '#1e40af',
-              padding: '10px 14px',
-              borderRadius: 14,
+              background: 'var(--bg-surface)',
+              border: '1.5px solid var(--color-yellow)',
+              color: 'var(--text-primary)',
+              padding: '12px 14px',
+              borderRadius: 'var(--radius-card)',
               fontSize: '0.82rem',
               textAlign: 'left',
               width: '100%',
               boxSizing: 'border-box',
               marginBottom: 16,
-              lineHeight: 1.4,
+              lineHeight: 1.45,
             }}
           >
             <strong>💡 Petunjuk:</strong> {result.hint}
           </div>
         )}
 
-        {/* Tombol Aksi */}
+        {/* Tombol Aksi Full-Pill */}
         <div style={{ display: 'flex', gap: 10, width: '100%' }}>
           {onRetry && !result.isCorrect && (
             <button
@@ -164,11 +158,11 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
               style={{
                 flex: 1,
                 minHeight: 46,
-                background: '#f1f5f9',
-                color: '#334155',
-                border: 'none',
-                borderRadius: 14,
-                fontWeight: 700,
+                background: 'var(--bg-surface)',
+                color: 'var(--text-primary)',
+                border: '1.5px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-pill)',
+                fontWeight: 800,
                 fontSize: '0.92rem',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -188,18 +182,17 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
               style={{
                 flex: 1,
                 minHeight: 46,
-                background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 14,
-                fontWeight: 700,
+                background: 'var(--color-pink)',
+                color: 'var(--text-primary)',
+                border: '1.5px solid var(--text-primary)',
+                borderRadius: 'var(--radius-pill)',
+                fontWeight: 800,
                 fontSize: '0.92rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
               }}
             >
               Lanjut Misi <ArrowRight size={18} />
@@ -211,11 +204,11 @@ export const MissionSuccessModal: React.FC<MissionSuccessModalProps> = ({
               style={{
                 flex: 1,
                 minHeight: 46,
-                background: result.isCorrect ? '#10b981' : '#f59e0b',
-                color: 'white',
-                border: 'none',
-                borderRadius: 14,
-                fontWeight: 700,
+                background: result.isCorrect ? 'var(--color-pink)' : 'var(--color-yellow)',
+                color: 'var(--text-primary)',
+                border: '1.5px solid var(--text-primary)',
+                borderRadius: 'var(--radius-pill)',
+                fontWeight: 800,
                 fontSize: '0.92rem',
                 display: 'inline-flex',
                 alignItems: 'center',
