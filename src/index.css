@@ -1,53 +1,84 @@
 /* ==========================================================================
-   GAMELAN KODING — STYLESHEET DESAIN RAMAH ANAK
-   Kriteria PRD:
-   - Target sentuh minimal 44px x 44px
-   - Font besar, kontras jelas, ramah anak SD (Fredoka & Quicksand)
-   - Layout portrait-first, responsif di tablet & laptop (centered max-w-480px)
-   - Navigasi bawah 5 tab dengan tab aktif tampil lebih besar
+   GAMELAN KODING — CLASSLY DESIGN SYSTEM (WARM PASTEL & FLAT PLAYFUL UI)
+   Spesifikasi Desain Moodboard:
+   - Background Utama (Warm Alabaster): #FFFCF5
+   - Card & Surface (Warm Sand/Cream): #F8F3E7
+   - Primary Text (Deep Charcoal): #2D2D2B
+   - Aksen Utama (Brand Pink): #FFB2DD & Tint: #FAE0E4
+   - Aksen Kuning (Warm Yellow): #F7D66E & Tint: #FEEFBF
+   - Aksen Hijau (Olive Green): #9AAB65 & Tint: #E1E6D1
+   - Aksen Biru (Periwinkle Blue): #B6CAEB & Tint: #EAF0F9
+   - Tipografi: Display 'Bricolage Grotesque'/'Syne', Body 'Plus Jakarta Sans'
+   - Shapes: Full Pill (9999px), Soft Rounded Card (22px), Squircle (13px)
+   - Tanpa Drop Shadow gelap & tanpa gradien mencolok (Flat Playful)
    ========================================================================== */
 
 :root {
-  --font-main: 'Fredoka', 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Tipografi */
+  --font-display: 'Bricolage Grotesque', 'Syne', -apple-system, sans-serif;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
-  /* Palet Warna Gamelan & Ramah Anak */
-  --color-primary: #10b981;       /* Hijau Ceria khas tab Editor di sketsa */
-  --color-primary-dark: #059669;
-  --color-primary-light: #d1fae5;
+  /* Palet Warna Alami & Pastel Hangat */
+  --bg-app: #FFFCF5;
+  --bg-surface: #F8F3E7;
+  --text-primary: #2D2D2B;
+  --text-muted: #6C6B66;
+  --border-subtle: rgba(45, 45, 43, 0.08);
+  --border-card: rgba(45, 45, 43, 0.12);
+  --border-focus: #2D2D2B;
   
-  --color-misi: #f59e0b;          /* Kuning/Amber hangat khas tab Misi di sketsa */
-  --color-misi-dark: #d97706;
-  --color-misi-light: #fef3c7;
+  /* Brand Pink */
+  --color-pink: #FFB2DD;
+  --color-pink-tint: #FAE0E4;
   
-  --color-gold: #facc15;          /* Kuningan bilah gamelan */
-  --color-gold-dark: #ca8a04;
-  --color-gold-glow: #fef08a;
+  /* Warm Yellow */
+  --color-yellow: #F7D66E;
+  --color-yellow-tint: #FEEFBF;
   
-  --color-wood: #78350f;          /* Kayu rancakan saron */
-  --color-wood-light: #92400e;
-  --color-wood-frame: #451a03;
+  /* Olive Green */
+  --color-olive: #9AAB65;
+  --color-olive-tint: #E1E6D1;
   
+  /* Periwinkle Blue */
+  --color-periwinkle: #B6CAEB;
+  --color-blue-tint: #EAF0F9;
+  
+  /* Legacy/Semantic fallback mappings */
+  --color-primary: #FFB2DD;
+  --color-primary-dark: #2D2D2B;
+  --color-primary-light: #FAE0E4;
+  --color-misi: #F7D66E;
+  --color-misi-dark: #2D2D2B;
+  --color-misi-light: #FEEFBF;
+  --color-gold: #F7D66E;
+  --color-gold-dark: #2D2D2B;
+  --color-wood: #2D2D2B;
   --color-danger: #ef4444;
-  --color-danger-light: #fee2e2;
-  --color-info: #0284c7;
-  --color-info-light: #e0f2fe;
+  --color-danger-light: #FAE0E4;
+  --color-info: #B6CAEB;
+  --color-info-light: #EAF0F9;
 
-  --color-bg-app: #f8fafc;
-  --color-bg-card: #ffffff;
-  --color-text-main: #1e293b;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-bg-app: #FFFCF5;
+  --color-bg-card: #F8F3E7;
+  --color-text-main: #2D2D2B;
+  --color-text-muted: #6C6B66;
+  --color-border: rgba(45, 45, 43, 0.08);
 
+  /* Dimensi & Radius Khas Classly */
   --touch-target-min: 44px;
   --radius-sm: 8px;
+  --radius-squircle: 13px;
   --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-card: 22px;
+  --radius-lg: 22px;
+  --radius-pill: 9999px;
   --radius-full: 9999px;
   
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
-  --shadow-active-tab: 0 -4px 14px rgba(16, 185, 129, 0.25);
+  /* Flat UI Shadows (Halus / Nyaris Flat) */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 4px 16px rgba(45, 45, 43, 0.06);
+  --shadow-active-tab: none;
 }
 
 * {
@@ -68,12 +99,18 @@ html, body {
 
 body {
   font-family: var(--font-main);
-  background-color: #0f172a; /* Latar gelap di luar frame untuk tampilan laptop/tablet */
-  color: var(--color-text-main);
+  background-color: #2D2D2B; /* Background di luar frame HP pada layar desktop */
+  color: var(--text-primary);
   display: flex;
   justify-content: center;
   align-items: stretch;
   user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 #root {
@@ -85,7 +122,7 @@ body {
   justify-content: center;
 }
 
-/* Container Frame Portrait-First (Penuh di HP, Fixed di Desktop) */
+/* Container Frame Portrait Mobile-First (Penuh di HP, Centered di Desktop) */
 .app-container {
   width: 100%;
   max-width: 480px;
@@ -93,16 +130,16 @@ body {
   height: -webkit-fill-available;
   height: 100dvh;
   max-height: 100dvh;
-  background-color: var(--color-bg-app);
+  background-color: var(--bg-app);
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
   overflow: hidden;
+  border-left: 1.5px solid rgba(45, 45, 43, 0.08);
+  border-right: 1.5px solid rgba(45, 45, 43, 0.08);
 }
 
 @media (min-width: 768px) {
-  /* Tampilan di Tablet & Laptop: Frame elevated elegan di tengah */
   html, body {
     overflow: auto;
   }
@@ -121,16 +158,17 @@ body {
     height: 94vh;
     min-height: 720px;
     max-height: 900px;
-    border-radius: 28px;
-    border: 4px solid #334155;
+    border-radius: 32px;
+    border: 3px solid #2D2D2B;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
   }
 }
 
-/* Header Aplikasi */
+/* Header Aplikasi (Clean Flat Style) */
 .app-header {
   height: 60px;
-  background: white;
-  border-bottom: 2px solid var(--color-border);
+  background: var(--bg-app);
+  border-bottom: 1.5px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -142,43 +180,66 @@ body {
 .app-title-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .app-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #0f766e;
-  letter-spacing: -0.3px;
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
 }
 
 .app-badge-pill {
   font-size: 0.72rem;
-  font-weight: 600;
-  background-color: var(--color-misi-light);
-  color: var(--color-misi-dark);
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
+  font-weight: 700;
+  background-color: var(--color-pink-tint);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
 }
 
 .icon-btn-profile {
-  min-width: var(--touch-target-min);
-  min-height: var(--touch-target-min);
-  border-radius: var(--radius-full);
-  background-color: #f1f5f9;
-  border: 2px solid var(--color-border);
+  min-width: 38px;
+  min-height: 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--color-text-main);
+  color: var(--text-primary);
   transition: all 0.15s ease;
 }
 
-.icon-btn-profile:hover,
 .icon-btn-profile:active {
-  background-color: #e2e8f0;
-  transform: scale(0.96);
+  transform: scale(0.95);
+  background-color: var(--color-pink-tint);
+}
+
+/* Circular Dark Back Button Khas Classly */
+.btn-back-circle {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--radius-pill);
+  background-color: var(--text-primary);
+  color: var(--bg-app);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.btn-back-circle:active {
+  transform: scale(0.92);
 }
 
 /* Area Konten Utama */
@@ -190,28 +251,28 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-app);
   -webkit-overflow-scrolling: touch;
 }
 
-/* Navigasi Bawah 5 Tab (Selalu Menempel di Bawah Layar HP) */
+/* Navigasi Bawah (Classly Minimalist Surface Style) */
 .bottom-nav {
   height: calc(64px + env(safe-area-inset-bottom, 0px));
   min-height: 64px;
-  background: white;
-  border-top: 2px solid var(--color-border);
+  background: var(--bg-surface);
+  border-top: 1.5px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 6px env(safe-area-inset-bottom, 0px) 6px;
+  padding: 0 8px env(safe-area-inset-bottom, 0px) 8px;
   z-index: 30;
   flex-shrink: 0;
 }
 
 .nav-tab-btn {
   flex: 1;
-  height: 56px;
+  height: 52px;
   min-width: var(--touch-target-min);
-  min-height: var(--touch-target-min);
   background: none;
   border: none;
   display: flex;
@@ -220,54 +281,30 @@ body {
   justify-content: center;
   gap: 3px;
   cursor: pointer;
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
+  border-radius: var(--radius-squircle);
+  color: var(--text-primary);
+  opacity: 0.45;
   font-family: var(--font-main);
   font-size: 0.72rem;
   font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.15s ease;
   position: relative;
 }
 
 .nav-tab-btn:hover {
-  color: var(--color-text-main);
+  opacity: 0.8;
 }
 
-/* Tab Aktif Tampil Lebih Besar (sesuai PRD) */
+/* Tab Aktif Solid & Tebal */
 .nav-tab-btn.active {
-  transform: translateY(-4px) scale(1.12);
-  font-size: 0.75rem;
-  font-weight: 700;
+  opacity: 1;
+  font-weight: 800;
 }
 
-.nav-tab-btn.active.tab-editor {
-  color: #047857;
-}
-
-.nav-tab-btn.active.tab-editor .tab-icon-wrapper {
-  background-color: var(--color-primary);
-  color: white;
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
-}
-
-.nav-tab-btn.active.tab-misi {
-  color: #b45309;
-}
-
-.nav-tab-btn.active.tab-misi .tab-icon-wrapper {
-  background-color: var(--color-misi);
-  color: white;
-  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
-}
-
-.nav-tab-btn.active:not(.tab-editor):not(.tab-misi) {
-  color: #0284c7;
-}
-
-.nav-tab-btn.active:not(.tab-editor):not(.tab-misi) .tab-icon-wrapper {
-  background-color: #0284c7;
-  color: white;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+.nav-tab-btn.active .tab-icon-wrapper {
+  background-color: var(--color-pink);
+  color: var(--text-primary);
+  border-radius: var(--radius-pill);
 }
 
 .tab-icon-wrapper {
@@ -276,18 +313,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
-  transition: all 0.2s ease;
+  border-radius: var(--radius-squircle);
+  transition: all 0.15s ease;
 }
 
-/* Dua Tab Atas di Layar Editor (PRD 4.2: Sketsa 1) */
+/* Dua Tab Atas di Layar Editor (Classly Segmented Pill) */
 .editor-top-tabs {
-  height: 48px;
-  background: #f1f5f9;
+  height: 50px;
+  background: var(--bg-surface);
+  margin: 12px 14px 4px;
+  border-radius: var(--radius-pill);
   display: flex;
   padding: 4px;
-  gap: 6px;
-  border-bottom: 1px solid var(--color-border);
+  gap: 4px;
+  border: 1.5px solid var(--border-subtle);
 }
 
 .editor-tab-item {
@@ -295,11 +334,11 @@ body {
   min-height: 40px;
   border: none;
   background: transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-family: var(--font-main);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -309,35 +348,34 @@ body {
 }
 
 .editor-tab-item.active {
-  background: white;
-  color: #0f172a;
-  box-shadow: var(--shadow-sm);
-  font-weight: 700;
+  background: var(--color-pink);
+  color: var(--text-primary);
+  font-weight: 800;
 }
 
-/* Toolbar Tombol Mainkan/Berhenti & + Blok (PRD 4.2) */
+/* Toolbar Kontrol Editor (Flat Warm Style) */
 .editor-toolbar {
-  height: 56px;
-  background: white;
-  border-bottom: 2px solid var(--color-border);
+  height: 58px;
+  background: var(--bg-app);
+  border-bottom: 1.5px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
+  padding: 0 14px;
   gap: 8px;
   z-index: 10;
 }
 
 .btn-add-block {
-  min-height: var(--touch-target-min);
+  min-height: 42px;
   padding: 0 16px;
-  background-color: #eff6ff;
-  border: 2px solid #3b82f6;
-  color: #1d4ed8;
-  border-radius: var(--radius-full);
+  background-color: var(--color-blue-tint);
+  border: 1.5px solid var(--color-periwinkle);
+  color: var(--text-primary);
+  border-radius: var(--radius-pill);
   font-family: var(--font-main);
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 0.88rem;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -345,44 +383,42 @@ body {
   transition: all 0.15s ease;
 }
 
-.btn-add-block:hover,
 .btn-add-block:active {
-  background-color: #dbeafe;
-  transform: scale(0.98);
+  transform: scale(0.96);
+  background-color: var(--color-periwinkle);
 }
 
 .btn-play-toggle {
-  min-height: var(--touch-target-min);
+  min-height: 42px;
   padding: 0 18px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   border: none;
   font-family: var(--font-main);
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 0.88rem;
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
-  box-shadow: var(--shadow-md);
 }
 
 .btn-play-toggle.play {
-  background-color: #10b981;
-  color: white;
+  background-color: var(--color-pink);
+  color: var(--text-primary);
 }
 
-.btn-play-toggle.play:hover {
-  background-color: #059669;
+.btn-play-toggle.play:active {
+  transform: scale(0.96);
 }
 
 .btn-play-toggle.stop {
-  background-color: #ef4444;
-  color: white;
+  background-color: #fecaca;
+  color: #991b1b;
 }
 
-.btn-play-toggle.stop:hover {
-  background-color: #dc2626;
+.btn-play-toggle.stop:active {
+  transform: scale(0.96);
 }
 
 /* Bottom Sheet / Drawer Palet Blok */
@@ -392,7 +428,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(45, 45, 43, 0.45);
   backdrop-filter: blur(2px);
   z-index: 50;
   display: flex;
@@ -402,22 +438,22 @@ body {
 }
 
 .sheet-drawer {
-  background: white;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  padding: 16px 16px 24px;
+  background: var(--bg-surface);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 16px 16px 28px;
   max-height: 75vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-top: 2px solid var(--border-card);
+  animation: slideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sheet-handle {
   width: 44px;
   height: 5px;
-  background: #cbd5e1;
-  border-radius: var(--radius-full);
+  background: rgba(45, 45, 43, 0.2);
+  border-radius: var(--radius-pill);
   margin: 0 auto 12px;
   cursor: pointer;
 }
@@ -432,13 +468,12 @@ body {
   to { transform: translateY(0); }
 }
 
-/* Bilah Saron Visualizer */
+/* Bilah Saron Visualizer (Flat Pastel Color-Coded) */
 .saron-chassis {
-  background: linear-gradient(180deg, #92400e 0%, #78350f 70%, #451a03 100%);
-  border-radius: 16px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-card);
   padding: 18px 12px 14px;
-  box-shadow: 0 8px 16px rgba(69, 26, 3, 0.3);
-  border: 3px solid #b45309;
+  border: 2px solid var(--border-subtle);
 }
 
 .saron-keys-grid {
@@ -450,30 +485,30 @@ body {
 
 .saron-key {
   flex: 1;
-  background: linear-gradient(180deg, #fef08a 0%, #facc15 45%, #ca8a04 100%);
-  border: 2px solid #a16207;
-  border-radius: 8px;
+  border-radius: var(--radius-squircle);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 10px 4px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+  border: 1.5px solid rgba(45, 45, 43, 0.15);
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: transform 0.1s ease, filter 0.1s ease;
+  min-height: 48px;
 }
 
 .saron-key:active,
 .saron-key.active {
-  transform: translateY(3px);
-  filter: brightness(1.2);
-  box-shadow: 0 0 16px #facc15;
+  transform: translateY(3px) scale(0.97);
+  filter: brightness(0.92);
+  border-color: var(--text-primary);
 }
 
 .saron-key-label {
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 800;
   font-size: 1.15rem;
-  color: #713f12;
+  color: var(--text-primary);
 }
 
 .gong-stand-container {
@@ -488,15 +523,14 @@ body {
 .gong-gayor-beam {
   width: 100%;
   height: 12px;
-  background: linear-gradient(180deg, #92400e 0%, #451a03 100%);
-  border-radius: 6px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  background: var(--text-primary);
+  border-radius: var(--radius-pill);
   position: relative;
 }
 
 .gong-ropes {
   width: 110px;
-  height: 24px;
+  height: 20px;
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
@@ -505,7 +539,7 @@ body {
 .gong-rope {
   width: 3px;
   height: 100%;
-  background: #d97706;
+  background: #6C6B66;
   border-radius: 2px;
 }
 
@@ -517,37 +551,33 @@ body {
 }
 
 .gong-instrument {
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, #fde047 12%, #eab308 45%, #78350f 85%, #451a03 100%);
+  width: 136px;
+  height: 136px;
+  background: var(--color-yellow);
   border-radius: 50%;
   margin: 0 auto;
-  border: 6px solid #92400e;
+  border: 4px solid var(--text-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px rgba(69, 26, 3, 0.45);
   cursor: pointer;
   position: relative;
   z-index: 2;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .gong-instrument:active,
 .gong-instrument.active {
-  transform: scale(0.97);
-  filter: brightness(1.2);
-  box-shadow: 0 0 35px #facc15, 0 10px 25px rgba(69, 26, 3, 0.6);
+  transform: scale(0.95);
+  background: var(--color-pink);
 }
 
 .gong-boss {
-  width: 40px;
-  height: 40px;
-  background: radial-gradient(circle, #fef08a 25%, #ca8a04 70%, #78350f 100%);
+  width: 38px;
+  height: 38px;
+  background: var(--text-primary);
   border-radius: 50%;
-  border: 3px solid #451a03;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 3;
 }
@@ -557,12 +587,12 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 140px;
-  height: 140px;
-  margin-top: -70px;
-  margin-left: -70px;
+  width: 136px;
+  height: 136px;
+  margin-top: -68px;
+  margin-left: -68px;
   border-radius: 50%;
-  border: 2px solid #facc15;
+  border: 2px solid var(--color-yellow);
   pointer-events: none;
   animation: gongRippleWave 2.8s cubic-bezier(0.1, 0.7, 0.1, 1) infinite;
   z-index: 1;
@@ -578,17 +608,17 @@ body {
 
 @keyframes gongRippleWave {
   0% {
-    transform: scale(0.85);
+    transform: scale(0.9);
     opacity: 0.9;
-    border-color: #fde047;
+    border-color: var(--color-yellow);
   }
   50% {
     opacity: 0.45;
   }
   100% {
-    transform: scale(1.65);
+    transform: scale(1.6);
     opacity: 0;
-    border-color: #d97706;
+    border-color: var(--color-pink);
   }
 }
 
@@ -597,47 +627,41 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: #fffbeb;
-  border: 1px dashed #f59e0b;
-  color: #92400e;
+  background-color: var(--bg-surface);
+  border: 1.5px dashed rgba(45, 45, 43, 0.2);
+  color: var(--text-muted);
   font-size: 0.76rem;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  border-radius: var(--radius-squircle);
   margin-top: 8px;
 }
 
-/* Milestone 4: Penyorotan Blok Aktif Saat Suara Berbunyi */
+/* Penyorotan Blok Aktif Saat Suara Berbunyi */
 .blockly-block-playing {
-  filter: drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 4px #fbbf24) brightness(1.15) !important;
+  filter: drop-shadow(0 0 8px var(--color-yellow)) brightness(1.1) !important;
   transition: filter 0.12s ease-out;
 }
 
 .blocklyHighlightedConnectionPath {
-  stroke: #f59e0b !important;
+  stroke: var(--text-primary) !important;
   stroke-width: 4px !important;
 }
 
-/* Milestone 8: Aksesibilitas Fokus Keyboard & Responsivitas Multi-Device */
+/* Aksesibilitas Fokus Keyboard & Responsivitas Multi-Device */
 :focus-visible {
-  outline: 3px solid #10b981;
+  outline: 2px solid var(--text-primary);
   outline-offset: 2px;
 }
 
 @media (min-width: 768px) {
   .app-container {
-    max-width: 520px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .app-container {
-    max-width: 560px;
+    max-width: 480px;
   }
 }
 
 @media (max-width: 360px) {
   .bottom-nav {
-    padding: 0 2px env(safe-area-inset-bottom, 0px) 2px;
+    padding: 0 4px env(safe-area-inset-bottom, 0px) 4px;
   }
   .nav-tab-btn {
     font-size: 0.68rem;
@@ -647,5 +671,3 @@ body {
     padding: 0 10px;
   }
 }
-
-
