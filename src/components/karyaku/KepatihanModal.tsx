@@ -109,10 +109,6 @@ export const KepatihanModal: React.FC<KepatihanModalProps> = ({
           *Tanda kurung <strong>(5)</strong> menandai tabuhan nada bersamaan dengan pukulan Gong Ageng sebagai penutup gongan.
         </div>
 
-        <div className="culture-disclaimer" style={{ margin: 0 }}>
-          <span>Contoh — belum divalidasi praktisi karawitan</span>
-        </div>
-
         {/* Aksi Salin Full-Pill */}
         <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
           <button

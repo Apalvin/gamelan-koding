@@ -226,8 +226,25 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
               </div>
             </div>
 
-            <div className="culture-disclaimer" style={{ marginBottom: 14 }}>
-              <span>ℹ️ Suara simulasi hanyalah pendekatan digital, bukan representasi penuh gamelan asli.</span>
+            {/* Peringatan Integritas Budaya Khusus di Pengaturan */}
+            <div
+              style={{
+                background: '#FFFCF5',
+                border: '1.5px solid rgba(45, 45, 43, 0.12)',
+                borderRadius: 14,
+                padding: '12px 14px',
+                marginBottom: 14,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                <span style={{ fontSize: '0.9rem' }}>⚠️</span>
+                <strong style={{ fontSize: '0.8rem', color: '#2D2D2B', fontWeight: 800 }}>
+                  Integritas Budaya
+                </strong>
+              </div>
+              <p style={{ margin: 0, fontSize: '0.73rem', color: '#6C6B66', lineHeight: 1.45 }}>
+                Pola tabuhan prototipe adalah contoh simulasi (belum divalidasi praktisi karawitan). Media ini melatih berpikir komputasional, bukan menggantikan estetika rasa penabuh gamelan asli.
+              </p>
             </div>
 
             {/* Buka Panduan Onboarding */}

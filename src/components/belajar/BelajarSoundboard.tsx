@@ -218,16 +218,6 @@ export const BelajarSoundboard: React.FC = () => {
         <span>Tabuh Gong Ageng (Penutup Gongan)</span>
       </button>
 
-      <div
-        style={{
-          fontSize: '0.72rem',
-          color: '#6C6B66',
-          textAlign: 'center',
-          fontStyle: 'italic',
-        }}
-      >
-        Contoh — belum divalidasi praktisi karawitan
-      </div>
     </div>
   );
 };

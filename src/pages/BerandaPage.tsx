@@ -548,12 +548,6 @@ export const BerandaPage: React.FC<BerandaPageProps> = ({
             <BookOpen size={16} /> Putar Ulang Panduan Onboarding
           </button>
         )}
-
-        <div className="culture-disclaimer">
-          <span>
-            ⚠️ <strong>Integritas Budaya:</strong> Pola tabuhan prototipe adalah contoh simulasi (belum divalidasi praktisi karawitan). Media ini melatih berpikir komputasional, bukan menggantikan estetika rasa penabuh gamelan asli.
-          </span>
-        </div>
       </div>
     </div>
   );

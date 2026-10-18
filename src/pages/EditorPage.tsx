@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import * as Blockly from 'blockly';
-import { Code2, Music, AlertTriangle, CheckCircle2, X, Sparkles, Volume2, Square } from 'lucide-react';
+import { Code2, Music, AlertTriangle, CheckCircle2, X, Sparkles, Volume2, Square, ChevronDown, ChevronUp } from 'lucide-react';
 import { BlocklyWorkspace, addBlockToWorkspace } from '../components/editor/BlocklyWorkspace';
 import { EditorToolbar } from '../components/editor/EditorToolbar';
 import { BlockPaletteDrawer } from '../components/editor/BlockPaletteDrawer';
@@ -76,6 +76,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const [isKepatihanModalOpen, setIsKepatihanModalOpen] = useState(false);
   const [saveSuccessToast, setSaveSuccessToast] = useState<SaveSuccessToast | null>(null);
   const [isPlayingFinalChallengeTarget, setIsPlayingFinalChallengeTarget] = useState(false);
+  const [isChallengeCollapsed, setIsChallengeCollapsed] = useState(false);
 
   // Compiler results
   const [compiledEvents, setCompiledEvents] = useState<GamelanEvent[]>([]);
@@ -497,109 +498,160 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         />
       )}
 
-      {/* Banner Tantangan Gending Akhir jika diaktifkan dari Onboarding */}
+      {/* Banner Tantangan Gending Akhir (Compact & Collapsible) */}
       {isFinalChallengeActive && (
         <div
           style={{
             background: 'var(--bg-surface)',
             borderBottom: '1.5px solid var(--border-card)',
-            padding: '12px 14px',
+            padding: '8px 12px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 10,
+            gap: isChallengeCollapsed ? 0 : 8,
             zIndex: 11,
+            transition: 'all 0.2s ease',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-            <div>
+          {/* Header Baris 1: Status, Pola Ringkas & Kontrol Lipat/Keluar */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: 1 }}>
               <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 6,
+                  gap: 4,
                   background: 'var(--color-yellow)',
                   color: 'var(--text-primary)',
-                  fontSize: '0.74rem',
+                  fontSize: '0.72rem',
                   fontWeight: 800,
-                  padding: '3px 10px',
+                  padding: '2px 8px',
                   borderRadius: 'var(--radius-pill)',
-                  marginBottom: 6,
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                 }}
               >
-                <Sparkles size={13} /> Tantangan Awal • Gending Akhir
+                <Sparkles size={12} /> Tantangan Awal
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                Pola Lancaran 8 Ketukan: 3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
-              </div>
-              <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                Susun blok saron dan gong untuk membunyikan pola penutup ini! (Contoh — belum divalidasi praktisi karawitan)
-              </div>
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '0.82rem',
+                  fontWeight: 800,
+                  color: 'var(--text-primary)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                Pola 8 Ketuk: 3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
+              </span>
             </div>
 
-            <button
-              type="button"
-              onClick={onExitFinalChallenge}
-              style={{
-                background: 'var(--bg-app)',
-                border: '1.5px solid var(--border-subtle)',
-                borderRadius: 'var(--radius-pill)',
-                padding: '4px 12px',
-                fontSize: '0.78rem',
-                fontWeight: 800,
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                flexShrink: 0,
-              }}
-            >
-              Keluar
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+              <button
+                type="button"
+                onClick={() => setIsChallengeCollapsed(!isChallengeCollapsed)}
+                style={{
+                  background: 'var(--bg-app)',
+                  border: '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-pill)',
+                  padding: '3px 8px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 3,
+                }}
+                aria-label={isChallengeCollapsed ? 'Buka detail petunjuk' : 'Ciutkan petunjuk'}
+              >
+                {isChallengeCollapsed ? (
+                  <>
+                    <span>Detail</span>
+                    <ChevronDown size={13} />
+                  </>
+                ) : (
+                  <>
+                    <span>Tutup</span>
+                    <ChevronUp size={13} />
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={onExitFinalChallenge}
+                style={{
+                  background: 'var(--bg-app)',
+                  border: '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-pill)',
+                  padding: '3px 8px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 3,
+                }}
+                title="Keluar dari mode tantangan"
+              >
+                <X size={13} />
+              </button>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={handleTogglePlayFinalChallengeTarget}
-              style={{
-                minHeight: 40,
-                padding: '0 14px',
-                background: isPlayingFinalChallengeTarget ? '#fee2e2' : 'var(--color-yellow-tint)',
-                color: isPlayingFinalChallengeTarget ? '#dc2626' : 'var(--text-primary)',
-                border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid var(--color-yellow)',
-                borderRadius: 'var(--radius-pill)',
-                fontWeight: 800,
-                fontSize: '0.82rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                cursor: 'pointer',
-              }}
-            >
-              {isPlayingFinalChallengeTarget ? <Square size={15} fill="currentColor" /> : <Volume2 size={15} />}
-              <span>{isPlayingFinalChallengeTarget ? 'Hentikan Contoh' : 'Dengarkan Target'}</span>
-            </button>
+          {/* Baris 2: Tombol Aksi Sejajar (Hanya muncul jika tidak diciutkan) */}
+          {!isChallengeCollapsed && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, paddingTop: 2 }}>
+              <button
+                type="button"
+                onClick={handleTogglePlayFinalChallengeTarget}
+                style={{
+                  minHeight: 34,
+                  padding: '0 12px',
+                  background: isPlayingFinalChallengeTarget ? '#fee2e2' : 'var(--color-yellow-tint)',
+                  color: isPlayingFinalChallengeTarget ? '#dc2626' : 'var(--text-primary)',
+                  border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid var(--color-yellow)',
+                  borderRadius: 'var(--radius-pill)',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {isPlayingFinalChallengeTarget ? <Square size={13} fill="currentColor" /> : <Volume2 size={13} />}
+                <span>{isPlayingFinalChallengeTarget ? 'Berhenti' : 'Dengar Target'}</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={handleCheckFinalChallenge}
-              style={{
-                minHeight: 40,
-                padding: '0 16px',
-                background: 'var(--color-pink)',
-                color: 'var(--text-primary)',
-                border: '1.5px solid var(--text-primary)',
-                borderRadius: 'var(--radius-pill)',
-                fontWeight: 800,
-                fontSize: '0.84rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                cursor: 'pointer',
-              }}
-            >
-              <CheckCircle2 size={16} />
-              <span>Periksa Tabuhanku</span>
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={handleCheckFinalChallenge}
+                style={{
+                  minHeight: 34,
+                  padding: '0 14px',
+                  background: 'var(--color-pink)',
+                  color: 'var(--text-primary)',
+                  border: '1.5px solid var(--text-primary)',
+                  borderRadius: 'var(--radius-pill)',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <CheckCircle2 size={14} />
+                <span>Periksa Tabuhanku</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
 

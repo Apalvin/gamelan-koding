@@ -537,10 +537,6 @@ export const BelajarPage: React.FC<BelajarPageProps> = ({ onNavigate }) => {
               );
             })}
           </div>
-
-          <div className="culture-disclaimer">
-            <span>Contoh — belum divalidasi praktisi karawitan</span>
-          </div>
         </div>
       )}
 

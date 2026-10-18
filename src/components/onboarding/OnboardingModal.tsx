@@ -554,10 +554,6 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   </>
                 )}
               </button>
-
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
-                Contoh — belum divalidasi praktisi karawitan
-              </div>
             </div>
 
             {/* Pilihan Aksi Coba / Lewati / Kembali */}

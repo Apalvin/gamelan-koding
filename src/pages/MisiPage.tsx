@@ -145,10 +145,6 @@ export const MisiPage: React.FC<MisiPageProps> = ({ onNavigate, onStartMission }
         </span>
       </div>
 
-      <div className="culture-disclaimer">
-        <span>ℹ️ Pola tabuhan berstatus contoh simulasi — belum divalidasi praktisi karawitan.</span>
-      </div>
-
       {/* Daftar Kartu Misi C1 - C6 (Homework style) */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {missions.map((misi) => {
