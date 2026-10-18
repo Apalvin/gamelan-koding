@@ -116,6 +116,36 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
           position: 'relative',
         }}
       >
+        {/* Tombol Kembali Header (muncul di slide > 0) */}
+        {currentSlide > 0 && (
+          <button
+            type="button"
+            onClick={handlePrev}
+            style={{
+              position: 'absolute',
+              top: 14,
+              left: 14,
+              background: '#f1f5f9',
+              border: 'none',
+              borderRadius: 999,
+              height: 36,
+              padding: '0 12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              color: '#475569',
+              cursor: 'pointer',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              zIndex: 10,
+            }}
+            aria-label="Kembali ke slide sebelumnya"
+          >
+            <ArrowLeft size={16} />
+            <span>Kembali</span>
+          </button>
+        )}
+
         {/* Tombol Tutup */}
         <button
           type="button"
@@ -544,7 +574,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               </div>
             </div>
 
-            {/* Pilihan Aksi Coba / Lewati */}
+            {/* Pilihan Aksi Coba / Lewati / Kembali */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
               <button
                 type="button"
@@ -568,51 +598,56 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <Play size={18} fill="white" /> Coba Dulu di Editor! 🚀
               </button>
 
-              <button
-                type="button"
-                onClick={handleFinishWithMissions}
-                style={{
-                  minHeight: 44,
-                  background: '#f8fafc',
-                  color: '#475569',
-                  border: '1.5px solid #cbd5e1',
-                  borderRadius: 14,
-                  fontWeight: 700,
-                  fontSize: '0.86rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  cursor: 'pointer',
-                }}
-              >
-                <span>Lewati & Mulai Misi C1</span>
-                <ArrowRight size={16} />
-              </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  style={{
+                    flex: '0 0 auto',
+                    minHeight: 44,
+                    padding: '0 16px',
+                    background: '#f1f5f9',
+                    color: '#334155',
+                    border: '1.5px solid #cbd5e1',
+                    borderRadius: 14,
+                    fontWeight: 700,
+                    fontSize: '0.86rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                  }}
+                  aria-label="Kembali ke slide sebelumnya"
+                >
+                  <ArrowLeft size={16} />
+                  <span>Kembali</span>
+                </button>
 
-              <button
-                type="button"
-                onClick={handlePrev}
-                style={{
-                  minHeight: 40,
-                  background: 'transparent',
-                  color: '#64748b',
-                  border: 'none',
-                  borderRadius: 12,
-                  fontWeight: 700,
-                  fontSize: '0.84rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  cursor: 'pointer',
-                  padding: '6px 12px',
-                }}
-                aria-label="Kembali ke slide sebelumnya"
-              >
-                <ArrowLeft size={16} />
-                <span>Kembali ke Slide Sebelumnya</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={handleFinishWithMissions}
+                  style={{
+                    flex: 1,
+                    minHeight: 44,
+                    padding: '0 12px',
+                    background: '#f8fafc',
+                    color: '#475569',
+                    border: '1.5px solid #cbd5e1',
+                    borderRadius: 14,
+                    fontWeight: 700,
+                    fontSize: '0.86rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span>Lewati & Mulai Misi C1</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
             </div>
           </div>
         )}
