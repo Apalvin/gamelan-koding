@@ -63,31 +63,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {onOpenJuryShowcase && (
-            <button
-              type="button"
-              onClick={onOpenJuryShowcase}
-              style={{
-                minHeight: 38,
-                padding: '0 10px',
-                borderRadius: 10,
-                border: '1.5px solid #fde047',
-                background: '#fefce8',
-                color: '#854d0e',
-                fontWeight: 800,
-                fontSize: '0.78rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                cursor: 'pointer',
-                boxShadow: '0 2px 5px rgba(234, 179, 8, 0.2)',
-              }}
-              title="Buka Showcase Presentasi Dewan Juri"
-            >
-              <Award size={15} color="#d97706" />
-              <span>🏆 Esai Juri</span>
-            </button>
-          )}
           <span className="app-badge-pill">SD Kelas 4–6</span>
           <button
             type="button"
