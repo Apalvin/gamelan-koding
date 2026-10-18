@@ -9,6 +9,7 @@ import { HardwareSimulationPanel, OutputMode } from '../components/output/Hardwa
 import { SlendroNote, GamelanEvent } from '../types/gamelan';
 import { compileWorkspace } from '../compiler/compileWorkspace';
 import { digitalSimOutput } from '../audio/digitalSimOutput';
+import { hardwareSimOutput, HardwarePacket } from '../audio/hardwareSimOutput';
 import { MissionEditorBanner } from '../components/missions/MissionEditorBanner';
 import { MissionSuccessModal } from '../components/missions/MissionSuccessModal';
 import { SaveCreativeModal } from '../components/missions/SaveCreativeModal';
@@ -81,13 +82,20 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const [previewNote, setPreviewNote] = useState<SlendroNote | null>(null);
   const [previewGong, setPreviewGong] = useState(false);
 
+  // Hardware simulation stream state
+  const [activeHardwareChannel, setActiveHardwareChannel] = useState<number | null>(null);
+  const [streamedPackets, setStreamedPackets] = useState<HardwarePacket[]>([]);
+  const [latestPacket, setLatestPacket] = useState<HardwarePacket | null>(null);
+
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
 
   const stopPlayback = () => {
     digitalSimOutput.stop();
+    hardwareSimOutput.stop();
     setIsPlaying(false);
     setPreviewNote(null);
     setPreviewGong(false);
+    setActiveHardwareChannel(null);
   };
 
   const loadBuggyXmlIfC4 = (ws: Blockly.WorkspaceSvg) => {
@@ -246,13 +254,35 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       message: `Program siap! Memainkan ${result.events.length} tabuhan...`,
     });
 
-    // 2. Putar melalui DigitalSimOutput (audio Web Audio + visualisasi menyala)
+    // 2. Putar melalui Output yang dipilih (DigitalSimOutput atau HardwareSimOutput)
     try {
       setIsPlaying(true);
-      await digitalSimOutput.play(result.events);
-      setIsPlaying(false);
+
+      if (outputMode === 'hardware') {
+        setStreamedPackets([]);
+        setLatestPacket(null);
+
+        hardwareSimOutput.setOnPacketEmit((packet) => {
+          setActiveHardwareChannel(packet.ch);
+          setLatestPacket(packet);
+          setStreamedPackets((prev) => [...prev, packet]);
+          setTimeout(() => {
+            setActiveHardwareChannel((curr) => (curr === packet.ch ? null : curr));
+          }, packet.pulseMs);
+        });
+
+        hardwareSimOutput.setOnStop(() => {
+          setIsPlaying(false);
+          setActiveHardwareChannel(null);
+        });
+
+        await hardwareSimOutput.play(result.events);
+      } else {
+        await digitalSimOutput.play(result.events);
+        setIsPlaying(false);
+      }
     } catch (err) {
-      console.error('Audio playback error', err);
+      console.error('Playback error', err);
       setIsPlaying(false);
     }
   };
@@ -738,12 +768,24 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         {/* Tab 2: Output Gamelan & Simulasi Hardware */}
         {activeTopTab === 'output' && (
           <div style={{ height: '100%', overflowY: 'auto' }}>
-            <GamelanVisualizer activeNote={previewNote} isGongActive={previewGong} />
-            <div style={{ padding: '0 12px 20px' }}>
+            {outputMode === 'digital' && (
+              <GamelanVisualizer activeNote={previewNote} isGongActive={previewGong} />
+            )}
+            <div style={{ padding: '0 12px 20px', marginTop: outputMode === 'hardware' ? 12 : 0 }}>
               <HardwareSimulationPanel
                 mode={outputMode}
-                onModeChange={setOutputMode}
+                onModeChange={(newMode) => {
+                  stopPlayback();
+                  setOutputMode(newMode);
+                }}
                 compiledEvents={compiledEvents}
+                activeChannel={activeHardwareChannel}
+                streamedPackets={streamedPackets}
+                latestPacket={latestPacket}
+                onClearLogs={() => {
+                  setStreamedPackets([]);
+                  setLatestPacket(null);
+                }}
               />
             </div>
           </div>
