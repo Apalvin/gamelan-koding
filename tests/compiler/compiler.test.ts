@@ -55,7 +55,7 @@ describe('compileWorkspace', () => {
     }
   });
 
-  it('harus menghitung jeda, tempo, dan nada seleh bersamaan dengan gong dengan tepat', () => {
+  it('harus menghitung jeda, tempo, nada tabuh, dan gong secara berurutan dengan tepat', () => {
     const hat = workspace.newBlock('ketika_mulai');
     const tempo = workspace.newBlock('atur_tempo');
     tempo.setFieldValue('120', 'BPM'); // 120 BPM = 500ms per beat
@@ -67,7 +67,7 @@ describe('compileWorkspace', () => {
     jeda.setFieldValue('2', 'BEATS'); // jeda 2 ketuk = 1000ms
 
     const hit2 = workspace.newBlock('tabuh_saron');
-    hit2.setFieldValue('5', 'NOTE'); // nada seleh
+    hit2.setFieldValue('5', 'NOTE');
 
     const gong = workspace.newBlock('tabuh_gong');
 
@@ -88,11 +88,11 @@ describe('compileWorkspace', () => {
       // hit1 (500ms) + jeda 2 ketuk (1000ms) -> hit2 pada t = 1500ms
       expect(result.events[1].tMs).toBe(1500);
       expect(result.events[1].note).toBe('5');
-      // gong berbunyi bersamaan dengan hit2 (nada seleh) di tMs yang sama (1500ms)
-      expect(result.events[2].tMs).toBe(1500);
+      // gong berbunyi setelah hit2 (1500ms + 500ms = 2000ms)
+      expect(result.events[2].tMs).toBe(2000);
       expect(result.events[2].instrument).toBe('gong');
-      // totalDurationMs: hit1 (500ms) + jeda (1000ms) + hit2 (500ms) = 2000ms (gong tidak menambah durasi)
-      expect(result.totalDurationMs).toBe(2000);
+      // totalDurationMs: hit1 (500ms) + jeda (1000ms) + hit2 (500ms) + gong (500ms) = 2500ms
+      expect(result.totalDurationMs).toBe(2500);
     }
   });
 

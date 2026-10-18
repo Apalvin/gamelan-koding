@@ -73,35 +73,39 @@ describe('VirtualClockSimulator', () => {
     }).toThrowError('EVENT_OVERFLOW');
   });
 
-  it('gong tidak menambah totalDurationMs dan berbunyi bersamaan dengan event terakhir sebelumnya (nada seleh) di tMs yang sama', () => {
+  it('tabuh nada dilanjutkan dengan gong harus berbunyi secara berurutan tanpa menimpa nada sebelumnya', () => {
     const clock = new VirtualClockSimulator({ defaultBpm: 60 }); // 1 ketuk = 1000ms
 
-    // Pola 4 ketukan balungan saron: 1 -> 2 -> 3 -> 5 (seleh) + Gong
-    clock.recordHit('saron', '1', 'b1', 1); // t = 0ms
-    clock.recordHit('saron', '2', 'b2', 1); // t = 1000ms
-    clock.recordHit('saron', '3', 'b3', 1); // t = 2000ms
-    clock.recordHit('saron', '5', 'b4', 1); // t = 3000ms (seleh)
-    
-    // Sebelum gong dimasukkan
-    const durationBeforeGong = clock.getResult().totalDurationMs;
-    expect(durationBeforeGong).toBe(4000);
-
-    // Masukkan blok tabuh gong (beatsDuration = 0)
-    clock.recordHit('gong', undefined, 'bgong', 0);
+    // Pola: 3 blok demung dilanjutkan dengan blok gong (masing-masing 1 ketukan)
+    clock.recordHit('demung', '1', 'b1', 1); // t = 0ms
+    clock.recordHit('demung', '2', 'b2', 1); // t = 1000ms
+    clock.recordHit('demung', '3', 'b3', 1); // t = 2000ms
+    clock.recordHit('gong', undefined, 'bgong', 1); // t = 3000ms
 
     const result = clock.getResult();
-    expect(result.events).toHaveLength(5);
+    expect(result.events).toHaveLength(4);
 
-    // Event ke-4 (saron 5) dan event ke-5 (gong) harus memiliki tMs yang sama (3000ms)
-    const selehEvent = result.events[3];
-    const gongEvent = result.events[4];
+    expect(result.events[0]).toMatchObject({ tMs: 0, instrument: 'demung', note: '1' });
+    expect(result.events[1]).toMatchObject({ tMs: 1000, instrument: 'demung', note: '2' });
+    expect(result.events[2]).toMatchObject({ tMs: 2000, instrument: 'demung', note: '3' });
+    expect(result.events[3]).toMatchObject({ tMs: 3000, instrument: 'gong' });
 
-    expect(selehEvent.tMs).toBe(3000);
-    expect(gongEvent.tMs).toBe(3000);
-    expect(gongEvent.instrument).toBe('gong');
-
-    // Total durasi TIDAK bertambah karena gong berdurasi 0 ketukan
-    expect(result.totalDurationMs).toBe(durationBeforeGong);
+    // Total durasi bertambah secara tepat: 4 ketukan = 4000ms
     expect(result.totalDurationMs).toBe(4000);
+  });
+
+  it('3 blok gong berurutan harus berbunyi secara sekuensial pada tMs yang berbeda (tidak saling menimpa)', () => {
+    const clock = new VirtualClockSimulator({ defaultBpm: 60 }); // 1 ketuk = 1000ms
+
+    clock.recordHit('gong', undefined, 'g1', 1); // t = 0ms
+    clock.recordHit('gong', undefined, 'g2', 1); // t = 1000ms
+    clock.recordHit('gong', undefined, 'g3', 1); // t = 2000ms
+
+    const result = clock.getResult();
+    expect(result.events).toHaveLength(3);
+    expect(result.events[0].tMs).toBe(0);
+    expect(result.events[1].tMs).toBe(1000);
+    expect(result.events[2].tMs).toBe(2000);
+    expect(result.totalDurationMs).toBe(3000);
   });
 });

@@ -42,7 +42,7 @@ export function initGamelanGenerators() {
   // 5. Blok Gong: tabuh gong
   javascriptGenerator.forBlock['tabuh_gong'] = function (block) {
     const blockId = block.id;
-    return `clock.recordHit('gong', undefined, ${JSON.stringify(blockId)}, 0);\n`;
+    return `clock.recordHit('gong', undefined, ${JSON.stringify(blockId)}, 1);\n`;
   };
 
   // 6. Overwrite loop bawaan: controls_repeat_ext agar menyisipkan clock.step() pengaman loop

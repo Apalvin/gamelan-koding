@@ -70,21 +70,15 @@ export class VirtualClockSimulator {
 
     const velocity = instrument === 'gong' ? 110 : 90;
 
-    // Gong berbunyi bersamaan dengan event terakhir sebelumnya (nada seleh) di tMs yang sama
-    let hitTimeMs = this.currentTimeMs;
-    if (instrument === 'gong' && this.events.length > 0) {
-      hitTimeMs = this.events[this.events.length - 1].tMs;
-    }
-
     this.events.push({
-      tMs: Math.round(hitTimeMs),
+      tMs: Math.round(this.currentTimeMs),
       instrument,
       note,
       velocity,
       blockId,
     });
 
-    // Otomatis memajukan waktu sebesar durasi ketukan nada (0 jika gong)
+    // Otomatis memajukan waktu sebesar durasi ketukan nada
     const beatDurationMs = (60 / this.currentBpm) * 1000;
     this.currentTimeMs += beatsDuration * beatDurationMs;
     this.maxScheduledTimeMs = Math.max(this.maxScheduledTimeMs, this.currentTimeMs);

@@ -108,4 +108,20 @@ describe('GamelanAudioSynth & GamelanTuning (Tahap 2 & 3)', () => {
       synth.stopAll();
     }).not.toThrow();
   });
+
+  it('harus dapat memainkan blok instrumen yang sama secara berurutan (misal: 3 demung atau 3 gong) tanpa saling meredam prematur', () => {
+    expect(() => {
+      // 3 blok Demung berurutan dengan jeda lookahead
+      synth.playNote('demung', '1', 0.0);
+      synth.playNote('demung', '2', 0.6);
+      synth.playNote('demung', '3', 1.2);
+
+      // 3 blok Gong berurutan
+      synth.playGong(0.0);
+      synth.playGong(1.0);
+      synth.playGong(2.0);
+
+      synth.stopAll();
+    }).not.toThrow();
+  });
 });

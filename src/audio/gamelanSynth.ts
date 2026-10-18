@@ -45,7 +45,6 @@ export const SARON_MODES = {
 
 interface VoiceControl {
   stop: () => void;
-  damp: () => void;
   instrument: string;
 }
 
@@ -54,7 +53,6 @@ export class GamelanAudioSynth {
   private masterGain: GainNode | null = null;
   private compressor: DynamicsCompressorNode | null = null;
   private activeVoices: VoiceControl[] = [];
-  private lastVoicePerInstrument: Map<string, VoiceControl> = new Map();
   private sampleBuffers: Map<string, AudioBuffer> = new Map();
 
   constructor() {
@@ -178,12 +176,6 @@ export class GamelanAudioSynth {
     const humanizedVel = velocity * (0.95 + Math.random() * 0.1);
     const velFactor = Math.min(1.2, Math.max(0.2, humanizedVel / 100));
 
-    // Peredaman bilah sebelumnya (teknik 'mathet')
-    const prevVoice = this.lastVoicePerInstrument.get(instrument);
-    if (prevVoice) {
-      prevVoice.damp();
-    }
-
     // Karakteristik Envelope & Timbre Berdasarkan Instrumen
     let decayDuration = 1.8;
     let gainFundPeak = 0.52 * velFactor;
@@ -278,26 +270,13 @@ export class GamelanAudioSynth {
           voiceGain.disconnect();
         } catch {}
       },
-      damp: () => {
-        // Redam bilah dalam waktu 40ms saat bilah berikutnya dipukul
-        try {
-          const now = Math.max(ctx.currentTime, t0);
-          voiceGain.gain.cancelScheduledValues(now);
-          voiceGain.gain.setValueAtTime(voiceGain.gain.value, now);
-          voiceGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
-        } catch {}
-      },
     };
 
     this.activeVoices.push(voiceControl);
-    this.lastVoicePerInstrument.set(instrument, voiceControl);
 
     // Pembersihan otomatis saat selesai
     oscFund.onended = () => {
       this.activeVoices = this.activeVoices.filter((v) => v !== voiceControl);
-      if (this.lastVoicePerInstrument.get(instrument) === voiceControl) {
-        this.lastVoicePerInstrument.delete(instrument);
-      }
     };
   }
 
@@ -405,12 +384,6 @@ export class GamelanAudioSynth {
           gongMasterGain.disconnect();
         } catch {}
       },
-      damp: () => {
-        try {
-          const now = Math.max(ctx.currentTime, t0);
-          gongMasterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
-        } catch {}
-      },
     };
 
     this.activeVoices.push(voiceControl);
@@ -465,11 +438,6 @@ export class GamelanAudioSynth {
           osc.stop();
           lfo.stop();
           gain.disconnect();
-        } catch {}
-      },
-      damp: () => {
-        try {
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
         } catch {}
       },
     };
@@ -528,11 +496,6 @@ export class GamelanAudioSynth {
           kGain.disconnect();
         } catch {}
       },
-      damp: () => {
-        try {
-          kGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
-        } catch {}
-      },
     };
     this.activeVoices.push(voice);
   }
@@ -574,11 +537,6 @@ export class GamelanAudioSynth {
         try {
           osc.stop();
           pGain.disconnect();
-        } catch {}
-      },
-      damp: () => {
-        try {
-          pGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
         } catch {}
       },
     };
@@ -629,7 +587,6 @@ export class GamelanAudioSynth {
           kGain.disconnect();
         } catch {}
       },
-      damp: () => {},
     };
     this.activeVoices.push(voice);
   }
@@ -678,7 +635,6 @@ export class GamelanAudioSynth {
       } catch {}
     });
     this.activeVoices = [];
-    this.lastVoicePerInstrument.clear();
   }
 }
 
