@@ -1,8 +1,23 @@
 import React from 'react';
-import { Play, Sparkles, BookOpen, Target, ArrowRight, Award } from 'lucide-react';
+import {
+  Play,
+  Sparkles,
+  BookOpen,
+  Target,
+  ArrowRight,
+  Award,
+  Volume2,
+  Code2,
+} from 'lucide-react';
 import { TabId } from '../types/navigation';
 import { onboardingService } from '../services/onboardingService';
 import { missionProgressService } from '../services/missionProgressService';
+import {
+  FlowerShape,
+  StarShape,
+  ZigZagShape,
+  CircularProgressRing,
+} from '../components/ui/AbstractDecorations';
 
 interface BerandaPageProps {
   onNavigate: (tab: TabId) => void;
@@ -17,284 +32,526 @@ export const BerandaPage: React.FC<BerandaPageProps> = ({
 }) => {
   const studentName = onboardingService.getStudentName();
   const totalStars = missionProgressService.getTotalStars();
+  const progressMap = missionProgressService.getAllProgress();
+  const completedMissionsCount = Object.values(progressMap).filter(
+    (p) => p.status === 'selesai'
+  ).length;
 
   return (
-    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Kartu Sapaan Ramah */}
+    <div
+      style={{
+        padding: '18px 16px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        backgroundColor: '#FFFCF5',
+      }}
+    >
+      {/* 1. Header Sapaan Ramah Anak dengan Dekorasi Geometris Classly */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-          color: 'white',
-          borderRadius: 20,
-          padding: '20px',
-          boxShadow: '0 8px 18px rgba(16, 185, 129, 0.25)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
           position: 'relative',
-          overflow: 'hidden',
         }}
       >
-        <div style={{ position: 'relative', zIndex: 2 }}>
+        <div>
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              background: 'rgba(255,255,255,0.2)',
-              padding: '4px 10px',
-              borderRadius: 999,
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              background: '#FAE0E4',
+              color: '#2D2D2B',
+              padding: '4px 12px',
+              borderRadius: 9999,
+              fontSize: '0.74rem',
+              fontWeight: 800,
               marginBottom: 8,
             }}
           >
-            <Sparkles size={14} /> Selamat Datang!
+            <span>Kreator Muda</span>
           </div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 6px' }}>Halo, {studentName}! 👋</h2>
-          <p style={{ fontSize: '0.88rem', opacity: 0.95, margin: '0 0 16px', lineHeight: 1.4 }}>
-            Ayo belajar menyusun alur logika coding sambil membunyikan tabuhan gamelan Jawa!
-          </p>
-          <button
-            type="button"
-            onClick={() => onNavigate('editor')}
+          <h2
             style={{
-              minHeight: 44,
-              padding: '0 20px',
-              backgroundColor: '#facc15',
-              color: '#713f12',
-              border: 'none',
-              borderRadius: 12,
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              cursor: 'pointer',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+              fontSize: '1.45rem',
+              fontWeight: 800,
+              margin: '0 0 4px',
+              color: '#2D2D2B',
+              letterSpacing: '-0.02em',
             }}
           >
-            <Play size={18} fill="#713f12" /> Buka Editor Bebas
-          </button>
+            Halo, {studentName}! 👋
+          </h2>
+          <p
+            style={{
+              fontSize: '0.86rem',
+              color: '#6C6B66',
+              margin: 0,
+              lineHeight: 1.35,
+            }}
+          >
+            Ayo rangkai logika koding dan bunyikan gamelan Jawa!
+          </p>
+        </div>
+
+        {/* Dekorasi Bunga & Bintang Abstrak */}
+        <div style={{ position: 'relative', width: 44, height: 44, flexShrink: 0 }}>
+          <FlowerShape size={42} color="#FFB2DD" opacity={0.8} />
+          <div style={{ position: 'absolute', bottom: -4, right: -4 }}>
+            <StarShape size={18} color="#9AAB65" />
+          </div>
         </div>
       </div>
 
-      {/* Kartu Showcase Presentasi Dewan Juri */}
+      {/* 2. Highlight Banner / Terakhir Dimainkan (Classly Flat Horizontal Card) */}
+      <div
+        style={{
+          background: '#F8F3E7',
+          borderRadius: 22,
+          padding: '16px',
+          border: '1.5px solid rgba(45, 45, 43, 0.08)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: -10,
+            right: -10,
+            opacity: 0.12,
+            pointerEvents: 'none',
+          }}
+        >
+          <ZigZagShape width={100} height={40} color="#2D2D2B" />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 13,
+                background: '#FFB2DD',
+                color: '#2D2D2B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Code2 size={20} strokeWidth={2.5} />
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  color: '#6C6B66',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Arena Koding Bebas
+              </div>
+              <h3
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 800,
+                  margin: 0,
+                  color: '#2D2D2B',
+                }}
+              >
+                Susun & Bunyikan Gending
+              </h3>
+            </div>
+          </div>
+
+          <div
+            style={{
+              background: '#FEEFBF',
+              color: '#2D2D2B',
+              padding: '4px 10px',
+              borderRadius: 9999,
+              fontSize: '0.75rem',
+              fontWeight: 800,
+            }}
+          >
+            {totalStars} ⭐ Bintang
+          </div>
+        </div>
+
+        <p
+          style={{
+            fontSize: '0.84rem',
+            color: '#6C6B66',
+            margin: 0,
+            lineHeight: 1.4,
+          }}
+        >
+          Tarik blok tabuh saron, atur tempo, dan dengarkan perulangan irama gending secara langsung.
+        </p>
+
+        <button
+          type="button"
+          onClick={() => onNavigate('editor')}
+          style={{
+            minHeight: 44,
+            padding: '0 20px',
+            backgroundColor: '#FFB2DD',
+            color: '#2D2D2B',
+            border: 'none',
+            borderRadius: 9999,
+            fontWeight: 800,
+            fontSize: '0.9rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            cursor: 'pointer',
+            transition: 'transform 0.15s ease',
+          }}
+          onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.98)')}
+          onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
+        >
+          <Play size={17} fill="#2D2D2B" color="#2D2D2B" />
+          <span>Buka Editor Bebas</span>
+        </button>
+      </div>
+
+      {/* 3. Bento Grid Modul (2 Kolom Khas Moodboard Classly) */}
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 10,
+          }}
+        >
+          <h3
+            style={{
+              fontSize: '1.05rem',
+              fontWeight: 800,
+              color: '#2D2D2B',
+              margin: 0,
+            }}
+          >
+            Pilihan Modul Belajar
+          </h3>
+          <span style={{ fontSize: '0.75rem', color: '#6C6B66', fontWeight: 600 }}>
+            4 Area Interaktif
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+          {/* Bento 1: Eksplorasi Gamelan (Yellow) */}
+          <div
+            onClick={() => onNavigate('belajar')}
+            style={{
+              background: '#FEEFBF',
+              borderRadius: 22,
+              padding: '16px 14px',
+              border: '1.5px solid rgba(247, 214, 110, 0.45)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: 140,
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease',
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
+          >
+            <div>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 12,
+                  background: '#F7D66E',
+                  color: '#2D2D2B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10,
+                }}
+              >
+                <Volume2 size={20} strokeWidth={2.5} />
+              </div>
+              <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#2D2D2B', margin: '0 0 2px' }}>
+                Eksplorasi Gamelan
+              </h4>
+              <p style={{ fontSize: '0.74rem', color: '#6C6B66', margin: 0, lineHeight: 1.3 }}>
+                Tuts Saron, Demung & Gong
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+              <CircularProgressRing progressPercent={100} size={28} ringColor="#F7D66E" />
+            </div>
+          </div>
+
+          {/* Bento 2: Susun Koding (Pink) */}
+          <div
+            onClick={() => onNavigate('editor')}
+            style={{
+              background: '#FAE0E4',
+              borderRadius: 22,
+              padding: '16px 14px',
+              border: '1.5px solid rgba(255, 178, 221, 0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: 140,
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease',
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
+          >
+            <div>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 12,
+                  background: '#FFB2DD',
+                  color: '#2D2D2B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10,
+                }}
+              >
+                <Code2 size={20} strokeWidth={2.5} />
+              </div>
+              <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#2D2D2B', margin: '0 0 2px' }}>
+                Susun Koding
+              </h4>
+              <p style={{ fontSize: '0.74rem', color: '#6C6B66', margin: 0, lineHeight: 1.3 }}>
+                Blok Logika & Tempo
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+              <CircularProgressRing progressPercent={80} size={28} ringColor="#FFB2DD" />
+            </div>
+          </div>
+
+          {/* Bento 3: Tantangan Misi (Blue) */}
+          <div
+            onClick={() => onNavigate('misi')}
+            style={{
+              background: '#EAF0F9',
+              borderRadius: 22,
+              padding: '16px 14px',
+              border: '1.5px solid rgba(182, 202, 235, 0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: 140,
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease',
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
+          >
+            <div>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 12,
+                  background: '#B6CAEB',
+                  color: '#2D2D2B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10,
+                }}
+              >
+                <Target size={20} strokeWidth={2.5} />
+              </div>
+              <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#2D2D2B', margin: '0 0 2px' }}>
+                Tantangan Misi
+              </h4>
+              <p style={{ fontSize: '0.74rem', color: '#6C6B66', margin: 0, lineHeight: 1.3 }}>
+                {completedMissionsCount} / 6 Level Selesai
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+              <CircularProgressRing
+                progressPercent={Math.round((completedMissionsCount / 6) * 100)}
+                size={28}
+                ringColor="#B6CAEB"
+              />
+            </div>
+          </div>
+
+          {/* Bento 4: Koleksi Karyaku (Olive Green) */}
+          <div
+            onClick={() => onNavigate('karyaku')}
+            style={{
+              background: '#E1E6D1',
+              borderRadius: 22,
+              padding: '16px 14px',
+              border: '1.5px solid rgba(154, 171, 101, 0.45)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: 140,
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease',
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
+          >
+            <div>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 12,
+                  background: '#9AAB65',
+                  color: '#2D2D2B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10,
+                }}
+              >
+                <Sparkles size={20} strokeWidth={2.5} />
+              </div>
+              <h4 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#2D2D2B', margin: '0 0 2px' }}>
+                Koleksi Karyaku
+              </h4>
+              <p style={{ fontSize: '0.74rem', color: '#6C6B66', margin: 0, lineHeight: 1.3 }}>
+                Partitur Kepatihan & File
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+              <CircularProgressRing progressPercent={100} size={28} ringColor="#9AAB65" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Kartu Showcase Esai Dewan Juri (Warm Cream Surface) */}
       {onOpenJuryShowcase && (
         <div
           onClick={onOpenJuryShowcase}
           style={{
-            background: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)',
-            borderRadius: 18,
+            background: '#F8F3E7',
+            borderRadius: 22,
             padding: '16px',
-            border: '2px solid #fde047',
+            border: '1.5px solid rgba(45, 45, 43, 0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(234, 179, 8, 0.15)',
-            transition: 'all 0.15s ease',
+            transition: 'transform 0.15s ease',
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 6px 16px rgba(234, 179, 8, 0.25)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'none';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(234, 179, 8, 0.15)';
-          }}
+          onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.98)')}
+          onMouseUp={(e) => (e.currentTarget.style.transform = 'none')}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: 12,
-                background: 'linear-gradient(135deg, #d97706, #b45309)',
-                color: 'white',
+                borderRadius: 14,
+                background: '#FFB2DD',
+                color: '#2D2D2B',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                boxShadow: '0 3px 8px rgba(217, 119, 6, 0.3)',
               }}
             >
-              <Award size={24} />
+              <Award size={22} strokeWidth={2.5} />
             </div>
             <div>
-              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#92400e', textTransform: 'uppercase' }}>
-                Mode Dewan Juri • Esai Lomba
+              <div
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  color: '#6C6B66',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Esai Lomba • 5 Babak
               </div>
-              <h3 style={{ margin: '2px 0 0', fontSize: '1rem', fontWeight: 800, color: '#78350f' }}>
-                Showcase Presentasi GamelanCode 🏆
+              <h3
+                style={{
+                  margin: '2px 0 0',
+                  fontSize: '0.98rem',
+                  fontWeight: 800,
+                  color: '#2D2D2B',
+                }}
+              >
+                Showcase Presentasi Dewan Juri 🏆
               </h3>
-              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: '#854d0e' }}>
-                PISA 427, UNESCO 2021, Taksonomi Bloom C1-C6, & Hardware Solenoid
+              <p style={{ margin: '2px 0 0', fontSize: '0.76rem', color: '#6C6B66' }}>
+                PISA 427, UNESCO 2021, Taksonomi Bloom & Hardware
               </p>
             </div>
           </div>
           <div
             style={{
-              minWidth: 40,
-              minHeight: 40,
-              borderRadius: 10,
-              background: '#fef3c7',
-              color: '#92400e',
+              width: 36,
+              height: 36,
+              borderRadius: 9999,
+              background: '#2D2D2B',
+              color: '#FFFCF5',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <ArrowRight size={20} />
+            <ArrowRight size={18} />
           </div>
         </div>
       )}
 
-      {/* Kartu Lanjutkan Misi */}
-      <div
-        style={{
-          background: 'white',
-          borderRadius: 18,
-          padding: '16px',
-          border: '2px solid #e2e8f0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: 8,
-                background: '#fef3c7',
-                color: '#d97706',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Target size={20} />
-            </div>
-            <div>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase' }}>
-                Misi Rekomendasi
-              </div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: '#1e293b' }}>
-                C1: Kenali Gamelan
-              </h3>
-            </div>
-          </div>
-          <span
-            style={{
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              background: '#e0f2fe',
-              color: '#0369a1',
-              padding: '3px 8px',
-              borderRadius: 999,
-            }}
-          >
-            Mulai Dari Sini
-          </span>
-        </div>
-        <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-          Mengenal bilah saron slendro dan bunyi penanda gong dalam tradisi karawitan.
-        </p>
-        <button
-          type="button"
-          onClick={() => onNavigate('misi')}
-          style={{
-            minHeight: 44,
-            background: '#f8fafc',
-            border: '2px solid #cbd5e1',
-            borderRadius: 12,
-            fontWeight: 700,
-            fontSize: '0.9rem',
-            color: '#1e293b',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            cursor: 'pointer',
-          }}
-        >
-          Lihat Semua Misi <ArrowRight size={16} />
-        </button>
-      </div>
-
-      {/* Ringkasan Progres & Catatan Budaya */}
-      <div
-        style={{
-          background: 'white',
-          borderRadius: 18,
-          padding: '16px',
-          border: '2px solid #e2e8f0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-        }}
-      >
-        <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#334155', margin: 0 }}>
-          Ringkasan Belajar Siswa
-        </h4>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <div
-            style={{
-              flex: 1,
-              background: '#f0fdf4',
-              padding: '12px',
-              borderRadius: 12,
-              border: '1px solid #bbf7d0',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#15803d' }}>6</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#166534' }}>Misi Tersedia</div>
-          </div>
-          <div
-            style={{
-              flex: 1,
-              background: '#fefce8',
-              padding: '12px',
-              borderRadius: 12,
-              border: '1px solid #fef08a',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#a16207' }}>{totalStars}</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#854d0e' }}>Bintang Diraih</div>
-          </div>
-        </div>
-
-        {/* Tombol Putar Ulang Panduan Onboarding */}
+      {/* 5. Tombol Putar Ulang Onboarding & Etika Budaya */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {onOpenOnboarding && (
           <button
             type="button"
             onClick={onOpenOnboarding}
             style={{
               minHeight: 44,
-              background: '#f8fafc',
-              border: '1.5px solid #cbd5e1',
-              borderRadius: 12,
-              padding: '0 14px',
-              color: '#475569',
+              background: '#F8F3E7',
+              border: '1.5px solid rgba(45, 45, 43, 0.08)',
+              borderRadius: 9999,
+              padding: '0 16px',
+              color: '#2D2D2B',
               fontSize: '0.84rem',
-              fontWeight: 700,
+              fontWeight: 800,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 8,
               cursor: 'pointer',
+              transition: 'transform 0.15s ease',
             }}
           >
-            <BookOpen size={16} /> Putar Ulang Panduan Awal & Tantangan
+            <BookOpen size={16} /> Putar Ulang Panduan Onboarding
           </button>
         )}
 
         <div className="culture-disclaimer">
           <span>
-            ⚠️ <strong>Integritas Budaya:</strong> Pola tabuhan di aplikasi ini adalah contoh simulasi (belum divalidasi
-            praktisi karawitan).
+            ⚠️ <strong>Integritas Budaya:</strong> Pola tabuhan prototipe adalah contoh simulasi (belum divalidasi praktisi karawitan). Media ini melatih berpikir komputasional, bukan menggantikan estetika rasa penabuh gamelan asli.
           </span>
         </div>
       </div>
