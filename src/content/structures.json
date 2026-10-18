@@ -1,0 +1,30 @@
+{
+  "structures": [
+    {
+      "id": "lancaran",
+      "name": "Bentuk Lancaran (16 Ketukan)",
+      "cycleBeats": 16,
+      "validatedBy": null,
+      "sourceNote": "Contoh pola struktur bentuk lancaran baku (16 ketukan) karawitan Jawa laras slendro — belum divalidasi praktisi karawitan.",
+      "description": "Bentuk gending berirama lancar dengan siklus 16 ketukan per gongan. Kenong membagi gongan menjadi 4, kempul membagi tiap bagian menjadi 2, dan kethuk mengisi ketukan ganjil.",
+      "beats": [
+        { "beat": 1, "instruments": ["kethuk"] },
+        { "beat": 2, "instruments": [] },
+        { "beat": 3, "instruments": ["kethuk"] },
+        { "beat": 4, "instruments": ["kenong"] },
+        { "beat": 5, "instruments": ["kethuk"] },
+        { "beat": 6, "instruments": ["kempul"] },
+        { "beat": 7, "instruments": ["kethuk"] },
+        { "beat": 8, "instruments": ["kenong"] },
+        { "beat": 9, "instruments": ["kethuk"] },
+        { "beat": 10, "instruments": ["kempul"] },
+        { "beat": 11, "instruments": ["kethuk"] },
+        { "beat": 12, "instruments": ["kenong"] },
+        { "beat": 13, "instruments": ["kethuk"] },
+        { "beat": 14, "instruments": ["kempul"] },
+        { "beat": 15, "instruments": ["kethuk"] },
+        { "beat": 16, "instruments": ["kenong", "gong"] }
+      ]
+    }
+  ]
+}

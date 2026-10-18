@@ -169,9 +169,35 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
               </div>
             </div>
 
-            <div className="culture-disclaimer" style={{ marginBottom: 16 }}>
-              <span>ℹ️ Suara simulasi hanyalah pendekatan, bukan representasi penuh gamelan asli.</span>
-            </div>
+              <div className="culture-disclaimer" style={{ marginBottom: 12 }}>
+                <span>ℹ️ Suara simulasi hanyalah pendekatan digital, bukan representasi penuh gamelan asli.</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowModal(false);
+                  window.location.hash = '#debug-audio';
+                }}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  background: '#f8fafc',
+                  border: '1.5px solid #cbd5e1',
+                  borderRadius: 12,
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: '#475569',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                  marginBottom: 14,
+                }}
+              >
+                🛠️ Buka Lab / Debug Audio
+              </button>
 
             <button
               type="button"

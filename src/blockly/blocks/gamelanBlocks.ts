@@ -17,7 +17,7 @@ export function registerGamelanBlocks() {
       hat: 'cap',
     },
 
-    // 2. Blok Aksi: tabuh [instrumen] nada [1|2|3|5|6]
+    // 2. Blok Aksi: tabuh [instrumen] nada [6|1|2|3|5|6'|1']
     {
       type: 'tabuh_saron',
       message0: 'tabuh %1 nada %2',
@@ -35,25 +35,27 @@ export function registerGamelanBlocks() {
           type: 'field_dropdown',
           name: 'NOTE',
           options: [
+            ['6 (nem rendah)', '6'],
             ['1 (ji)', '1'],
             ['2 (ro)', '2'],
             ['3 (lu)', '3'],
             ['5 (ma)', '5'],
-            ['6 (nem)', '6'],
+            ["6' (nem tinggi)", "6'"],
+            ["1' (ji tinggi)", "1'"],
           ],
         },
       ],
       previousStatement: null,
       nextStatement: null,
       style: 'gamelan_blocks',
-      tooltip: 'Memukul satu bilah saron pada laras slendro (1, 2, 3, 5, 6).',
+      tooltip: 'Memukul satu bilah saron, demung, atau peking pada laras slendro (6, 1, 2, 3, 5, 6\', 1\').',
       helpUrl: '',
     },
 
-    // 3. Blok Jeda: jeda [n] ketuk
+    // 3. Blok Jeda: jeda [n] ketukan (kethuk adalah instrumen, gunakan ketukan)
     {
       type: 'jeda_ketuk',
-      message0: 'jeda %1 ketuk',
+      message0: 'jeda %1 ketukan',
       args0: [
         {
           type: 'field_number',
@@ -100,6 +102,26 @@ export function registerGamelanBlocks() {
       nextStatement: null,
       style: 'gamelan_gong',
       tooltip: 'Memukul gong ageng sebagai penanda akhir siklus kalimat tabuhan.',
+      helpUrl: '',
+    },
+
+    // 6. Blok Struktur: mainkan struktur [lancaran]
+    {
+      type: 'mainkan_struktur',
+      message0: 'mainkan struktur %1 🎵',
+      args0: [
+        {
+          type: 'field_dropdown',
+          name: 'STRUCTURE',
+          options: [
+            ['Lancaran (16 ketukan)', 'lancaran'],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      style: 'gamelan_blocks',
+      tooltip: 'Memainkan lapisan instrumen kolotomik (kethuk, kempul, kenong, gong) selaras dengan tabuhan balungan.',
       helpUrl: '',
     },
   ]);

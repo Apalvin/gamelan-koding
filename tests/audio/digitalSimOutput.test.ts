@@ -12,7 +12,9 @@ describe('DigitalSimOutput (Milestone 4)', () => {
 
     mockSynth = {
       initAudio: vi.fn().mockResolvedValue(null),
+      getAudioContext: vi.fn().mockReturnValue(null),
       playSaronNote: vi.fn(),
+      playNote: vi.fn(),
       playGong: vi.fn(),
       stopAll: vi.fn(),
     };
@@ -96,5 +98,19 @@ describe('DigitalSimOutput (Milestone 4)', () => {
     // Maju ke waktu t = 1000 ms, event kedua tidak boleh diputar
     await vi.advanceTimersByTimeAsync(1000);
     expect(mockSynth.playSaronNote).toHaveBeenCalledTimes(1); // Hanya nada pertama
+  });
+
+  it('harus memutar instrumen demung dan peking melalui synth.playNote', async () => {
+    const events: GamelanEvent[] = [
+      { tMs: 0, instrument: 'demung', note: '6', velocity: 90, blockId: 'b_demung' },
+      { tMs: 500, instrument: 'peking', note: "1'", velocity: 95, blockId: 'b_peking' },
+    ];
+
+    digitalOutput.play(events);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(mockSynth.playNote).toHaveBeenCalledWith('demung', '6', 0, 90);
+
+    await vi.advanceTimersByTimeAsync(500);
+    expect(mockSynth.playNote).toHaveBeenCalledWith('peking', "1'", 0, 95);
   });
 });

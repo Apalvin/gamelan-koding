@@ -55,7 +55,7 @@ describe('compileWorkspace', () => {
     }
   });
 
-  it('harus menghitung jeda dan tempo dengan tepat', () => {
+  it('harus menghitung jeda, tempo, dan nada seleh bersamaan dengan gong dengan tepat', () => {
     const hat = workspace.newBlock('ketika_mulai');
     const tempo = workspace.newBlock('atur_tempo');
     tempo.setFieldValue('120', 'BPM'); // 120 BPM = 500ms per beat
@@ -66,24 +66,62 @@ describe('compileWorkspace', () => {
     const jeda = workspace.newBlock('jeda_ketuk');
     jeda.setFieldValue('2', 'BEATS'); // jeda 2 ketuk = 1000ms
 
+    const hit2 = workspace.newBlock('tabuh_saron');
+    hit2.setFieldValue('5', 'NOTE'); // nada seleh
+
     const gong = workspace.newBlock('tabuh_gong');
 
-    // Hubungkan rantai blok
+    // Hubungkan rantai blok: hat -> tempo -> hit1 -> jeda -> hit2 -> gong
     hat.nextConnection.connect(tempo.previousConnection);
     tempo.nextConnection.connect(hit1.previousConnection);
     hit1.nextConnection.connect(jeda.previousConnection);
-    jeda.nextConnection.connect(gong.previousConnection);
+    jeda.nextConnection.connect(hit2.previousConnection);
+    hit2.nextConnection.connect(gong.previousConnection);
 
     const result = compileWorkspace(workspace);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.events).toHaveLength(2); // hit1 dan gong
+      expect(result.events).toHaveLength(3); // hit1, hit2, dan gong
       // hit1 pada t = 0
       expect(result.events[0].tMs).toBe(0);
       expect(result.events[0].note).toBe('1');
-      // hit1 (500ms) + jeda 2 ketuk (1000ms) -> gong pada t = 1500ms
+      // hit1 (500ms) + jeda 2 ketuk (1000ms) -> hit2 pada t = 1500ms
       expect(result.events[1].tMs).toBe(1500);
-      expect(result.events[1].instrument).toBe('gong');
+      expect(result.events[1].note).toBe('5');
+      // gong berbunyi bersamaan dengan hit2 (nada seleh) di tMs yang sama (1500ms)
+      expect(result.events[2].tMs).toBe(1500);
+      expect(result.events[2].instrument).toBe('gong');
+      // totalDurationMs: hit1 (500ms) + jeda (1000ms) + hit2 (500ms) = 2000ms (gong tidak menambah durasi)
+      expect(result.totalDurationMs).toBe(2000);
+    }
+  });
+
+  it('harus mendukung pemilihan instrumen Demung/Peking dan 7 nada slendro (6, 1, 2, 3, 5, 6\', 1\')', () => {
+    const hat = workspace.newBlock('ketika_mulai');
+    
+    const bDemung = workspace.newBlock('tabuh_saron');
+    bDemung.setFieldValue('demung', 'INSTRUMENT');
+    bDemung.setFieldValue('6', 'NOTE'); // 6 rendah
+
+    const bPeking = workspace.newBlock('tabuh_saron');
+    bPeking.setFieldValue('peking', 'INSTRUMENT');
+    bPeking.setFieldValue("6'", 'NOTE'); // 6' tinggi
+
+    const bSaron = workspace.newBlock('tabuh_saron');
+    bSaron.setFieldValue('saron', 'INSTRUMENT');
+    bSaron.setFieldValue("1'", 'NOTE'); // 1' tinggi
+
+    hat.nextConnection.connect(bDemung.previousConnection);
+    bDemung.nextConnection.connect(bPeking.previousConnection);
+    bPeking.nextConnection.connect(bSaron.previousConnection);
+
+    const result = compileWorkspace(workspace);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.events).toHaveLength(3);
+      expect(result.events[0]).toMatchObject({ instrument: 'demung', note: '6' });
+      expect(result.events[1]).toMatchObject({ instrument: 'peking', note: "6'" });
+      expect(result.events[2]).toMatchObject({ instrument: 'saron', note: "1'" });
     }
   });
 

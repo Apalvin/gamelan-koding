@@ -19,12 +19,12 @@ export function initGamelanGenerators() {
     return '// Titik Mulai Program\n';
   };
 
-  // 2. Blok Aksi: tabuh [instrumen] nada [1|2|3|5|6]
+  // 2. Blok Aksi: tabuh [instrumen] nada [6|1|2|3|5|6'|1']
   javascriptGenerator.forBlock['tabuh_saron'] = function (block) {
     const instrument = block.getFieldValue('INSTRUMENT') || 'saron';
     const note = block.getFieldValue('NOTE') || '1';
     const blockId = block.id;
-    return `clock.recordHit('${instrument}', '${note}', '${blockId}', 1);\n`;
+    return `clock.recordHit(${JSON.stringify(instrument)}, ${JSON.stringify(note)}, ${JSON.stringify(blockId)}, 1);\n`;
   };
 
   // 3. Blok Jeda: jeda [n] ketuk
@@ -42,7 +42,7 @@ export function initGamelanGenerators() {
   // 5. Blok Gong: tabuh gong
   javascriptGenerator.forBlock['tabuh_gong'] = function (block) {
     const blockId = block.id;
-    return `clock.recordHit('gong', undefined, '${blockId}', 2);\n`;
+    return `clock.recordHit('gong', undefined, ${JSON.stringify(blockId)}, 0);\n`;
   };
 
   // 6. Overwrite loop bawaan: controls_repeat_ext agar menyisipkan clock.step() pengaman loop
@@ -65,5 +65,12 @@ export function initGamelanGenerators() {
       branch +
       `}\n`
     );
+  };
+
+  // 7. Blok Struktur: mainkan struktur [lancaran]
+  javascriptGenerator.forBlock['mainkan_struktur'] = function (block) {
+    const structure = block.getFieldValue('STRUCTURE') || 'lancaran';
+    const blockId = block.id;
+    return `clock.recordColotomicStructure(${JSON.stringify(structure)}, ${JSON.stringify(blockId)});\n`;
   };
 }

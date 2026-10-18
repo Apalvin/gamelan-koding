@@ -22,16 +22,16 @@ export const PALETTE_BLOCKS: PaletteBlockItem[] = [
   },
   {
     type: 'tabuh_saron',
-    label: 'tabuh [Saron] nada [1..6]',
-    description: 'Pukul satu bilah saron slendro (1, 2, 3, 5, 6)',
+    label: "tabuh [Instrumen] nada [6..1']",
+    description: "Pukul satu bilah saron, demung, atau peking laras slendro (6, 1, 2, 3, 5, 6', 1')",
     category: 'gamelan',
     color: '#0d9488',
     badge: 'Bilah',
   },
   {
     type: 'jeda_ketuk',
-    label: 'jeda [n] ketuk',
-    description: 'Hening sejenak selama n ketukan',
+    label: 'jeda [n] ketukan',
+    description: 'Hening sejenak selama n ketukan nada',
     category: 'gamelan',
     color: '#0d9488',
     badge: 'Hening',
@@ -51,6 +51,14 @@ export const PALETTE_BLOCKS: PaletteBlockItem[] = [
     category: 'gamelan',
     color: '#d97706',
     badge: 'Gong',
+  },
+  {
+    type: 'mainkan_struktur',
+    label: 'mainkan struktur [Lancaran]',
+    description: 'Lapisan instrumen kolotomik (kethuk, kempul, kenong, gong)',
+    category: 'gamelan',
+    color: '#d97706',
+    badge: 'Struktur',
   },
   {
     type: 'controls_repeat_ext',
@@ -75,6 +83,7 @@ export const blocklyToolbox = {
         { kind: 'block', type: 'jeda_ketuk' },
         { kind: 'block', type: 'atur_tempo' },
         { kind: 'block', type: 'tabuh_gong' },
+        { kind: 'block', type: 'mainkan_struktur' },
       ],
     },
     {

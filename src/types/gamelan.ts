@@ -2,9 +2,43 @@
  * Definisi Model Data & Antarmuka Arsitektur Sesuai Bagian 7 PRD
  */
 
-export type InstrumentType = 'saron' | 'gong' | 'demung' | 'peking';
+export type InstrumentType =
+  | 'saron'
+  | 'demung'
+  | 'peking'
+  | 'gong'
+  | 'gong_suwukan'
+  | 'kenong'
+  | 'kempul'
+  | 'kethuk';
 
-export type SlendroNote = 1 | 2 | 3 | 5 | 6 | '1' | '2' | '3' | '5' | '6';
+/**
+ * Notasi Kepatihan Laras Slendro untuk 7 Bilah (Rendah -> Tinggi):
+ * 6 (nem rendah/ngisor), 1 (ji), 2 (ro), 3 (lu), 5 (ma), 6' (nem tinggi/cilik), 1' (ji tinggi/cilik)
+ */
+export type SlendroNote =
+  | '6'
+  | '1'
+  | '2'
+  | '3'
+  | '5'
+  | "6'"
+  | "1'"
+  | 1
+  | 2
+  | 3
+  | 5
+  | 6;
+
+export const SARON_NOTES_ORDER: readonly SlendroNote[] = [
+  '6',
+  '1',
+  '2',
+  '3',
+  '5',
+  "6'",
+  "1'",
+] as const;
 
 /**
  * Event hasil compile Blockly sebelum diputar (Bagian 7.2 PRD)
