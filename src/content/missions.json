@@ -1,0 +1,188 @@
+{
+  "missions": [
+    {
+      "id": "mission-c1",
+      "code": "C1",
+      "bloomLevel": "Mengingat",
+      "name": "Kenali Gamelan",
+      "activity": "Dengarkan bunyi bilah perunggu dan pilih instrumen gamelan yang sesuai.",
+      "cultureContext": "Dalam karawitan Jawa, instrumen balungan seperti Saron dan Demung dipukul dengan tabuh berbobot untuk menghasilkan dengungan perunggu yang khas.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "isRecommended": true,
+      "quiz": {
+        "questions": [
+          {
+            "id": "q1",
+            "prompt": "Dengarkan denting bilah ini. Instrumen balungan berbilah 7 perunggu tebal apakah yang berbunyi cerah berbobot ini?",
+            "soundInstrument": "saron",
+            "soundNote": "1",
+            "options": [
+              { "id": "saron", "label": "Saron Barung", "imageEmoji": "✨" },
+              { "id": "rebab", "label": "Rebab Kawat", "imageEmoji": "🎻" },
+              { "id": "kendang", "label": "Kendang Kulit", "imageEmoji": "🥁" },
+              { "id": "suling", "label": "Suling Bambu", "imageEmoji": "🎋" }
+            ],
+            "correctAnswerId": "saron",
+            "explanation": "Tepat sekali! Saron barung menghasilkan denting nyaring berbobot khas bilah perunggu laras Slendro."
+          },
+          {
+            "id": "q2",
+            "prompt": "Dengarkan dengungan agung berombak (~62 Hz) ini. Apakah nama instrumen gantung penanda batas kalimat tabuhan ini?",
+            "soundInstrument": "gong",
+            "options": [
+              { "id": "gong", "label": "Gong Ageng", "imageEmoji": "🔔" },
+              { "id": "bonang", "label": "Bonang Barung", "imageEmoji": "🥘" },
+              { "id": "gambang", "label": "Gambang Kayu", "imageEmoji": "🪵" },
+              { "id": "kethuk", "label": "Kethuk Pencon", "imageEmoji": "🥣" }
+            ],
+            "correctAnswerId": "gong",
+            "explanation": "Hebat! Gong Ageng adalah instrumen terbesar dengan getaran ombak penutup siklus kalimat tabuhan."
+          }
+        ]
+      }
+    },
+    {
+      "id": "mission-c2",
+      "code": "C2",
+      "bloomLevel": "Memahami",
+      "name": "Pahami Polanya",
+      "activity": "Dengarkan sekuens tabuhan, lalu susun potongan nada hingga membentuk urutan pola yang utuh.",
+      "cultureContext": "Gending karawitan tersusun dari gatra-gatra pendek yang membentuk pola repetisi teratur dan harmonis.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "patternPuzzle": {
+        "targetDescription": "Pola 4 Ketukan Slendro: 1 -> 2 -> 3 -> 5",
+        "targetEvents": [
+          { "tMs": 0, "instrument": "saron", "note": "1", "velocity": 90 },
+          { "tMs": 600, "instrument": "saron", "note": "2", "velocity": 90 },
+          { "tMs": 1200, "instrument": "saron", "note": "3", "velocity": 90 },
+          { "tMs": 1800, "instrument": "saron", "note": "5", "velocity": 90 }
+        ],
+        "pieces": [
+          {
+            "id": "piece-awal",
+            "label": "Bagian Awal",
+            "notesText": "1 - 2 (Ji - Ro)",
+            "events": [
+              { "tMs": 0, "instrument": "saron", "note": "1", "velocity": 90 },
+              { "tMs": 600, "instrument": "saron", "note": "2", "velocity": 90 }
+            ]
+          },
+          {
+            "id": "piece-akhir",
+            "label": "Bagian Akhir",
+            "notesText": "3 - 5 (Lu - Ma)",
+            "events": [
+              { "tMs": 0, "instrument": "saron", "note": "3", "velocity": 90 },
+              { "tMs": 600, "instrument": "saron", "note": "5", "velocity": 90 }
+            ]
+          }
+        ],
+        "correctSequence": ["piece-awal", "piece-akhir"]
+      }
+    },
+    {
+      "id": "mission-c3",
+      "code": "C3",
+      "bloomLevel": "Menerapkan",
+      "name": "Susun Tabuhan",
+      "activity": "Susun blok koding di kanvas editor agar menghasilkan nada berurutan: Saron 1, Saron 2, Saron 3, lalu ditutup Tabuh Gong!",
+      "cultureContext": "Di akhir sebuah kalimat lagu atau gatra karawitan, tabuhan gong berfungsi memberi ketegasan akhir yang mantap.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "editorTarget": {
+        "targetDescription": "Susun: Tabuh Saron 1 -> Saron 2 -> Saron 3 -> Tabuh Gong",
+        "targetNotation": "1  2  3  G",
+        "hint": "Gunakan blok 'tabuh saron nada' untuk 1, 2, dan 3, lalu sambungkan blok 'tabuh gong' di akhir.",
+        "targetEvents": [
+          { "tMs": 0, "instrument": "saron", "note": "1", "velocity": 90 },
+          { "tMs": 1000, "instrument": "saron", "note": "2", "velocity": 90 },
+          { "tMs": 2000, "instrument": "saron", "note": "3", "velocity": 90 },
+          { "tMs": 3000, "instrument": "gong", "velocity": 110 }
+        ]
+      }
+    },
+    {
+      "id": "mission-c4",
+      "code": "C4",
+      "bloomLevel": "Menganalisis",
+      "name": "Detektif Tabuhan",
+      "activity": "Program tabuhan ini memiliki bug! Ada nada yang salah dan jeda ketuk yang terlewat. Temukan dan perbaiki kodenya!",
+      "cultureContext": "Pemusik gamelan harus melatih kepekaan telinga untuk segera mengetahui bila ada tabuhan yang salah nada atau mendahului tempo.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "editorTarget": {
+        "targetDescription": "Target Benar: Saron 6 -> Saron 1 -> Jeda 1 Ketuk -> Saron 2 -> Gong",
+        "targetNotation": "6  1  .  2  G",
+        "hint": "Periksa nada kedua (ganti dari 5 menjadi 1) dan sisipkan blok 'jeda 1 ketuk' sebelum nada 2.",
+        "initialBuggyXml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"ketika_mulai\" id=\"hat\"><next><block type=\"tabuh_saron\" id=\"b1\"><field name=\"INSTRUMENT\">saron</field><field name=\"NOTE\">6</field><next><block type=\"tabuh_saron\" id=\"b2\"><field name=\"INSTRUMENT\">saron</field><field name=\"NOTE\">5</field><next><block type=\"tabuh_saron\" id=\"b3\"><field name=\"INSTRUMENT\">saron</field><field name=\"NOTE\">2</field><next><block type=\"tabuh_gong\" id=\"bgong\"></block></next></block></next></block></next></block></next></block></xml>",
+        "targetEvents": [
+          { "tMs": 0, "instrument": "saron", "note": "6", "velocity": 90 },
+          { "tMs": 1000, "instrument": "saron", "note": "1", "velocity": 90 },
+          { "tMs": 3000, "instrument": "saron", "note": "2", "velocity": 90 },
+          { "tMs": 4000, "instrument": "gong", "velocity": 110 }
+        ]
+      }
+    },
+    {
+      "id": "mission-c5",
+      "code": "C5",
+      "bloomLevel": "Mengevaluasi",
+      "name": "Kurator Pola",
+      "activity": "Bandingkan dua program blok: mana cara paling rapi dan efisien untuk memainkan tabuhan berulang 4 kali?",
+      "cultureContext": "Dalam gending Jawa, motif tabuhan sering diulang berkali-kali. Dalam koding, kita memakai pengulangan (loop) agar kode tidak boros baris.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "curatorTask": {
+        "prompt": "Kita ingin menabuh nada Saron 2 dan Saron 3 bergantian sebanyak 4 kali putaran. Pilihlah program yang paling rapi dan jelaskan alasannya!",
+        "options": [
+          {
+            "id": "opt-manual",
+            "title": "Program A: Tumpukan Manual 8 Blok",
+            "codeDescription": "Menyusun blok tabuh 2, tabuh 3, tabuh 2, tabuh 3... berturut-turut sebanyak 8 baris.",
+            "explanation": "Cara ini membutuhkan banyak blok yang panjang dan rawan salah susun jika jumlah pengulangannya bertambah banyak."
+          },
+          {
+            "id": "opt-loop",
+            "title": "Program B: Blok 'Ulangi 4 Kali'",
+            "codeDescription": "Menggunakan 1 blok 'ulangi 4 kali' yang membungkus tabuh saron 2 dan tabuh saron 3 di dalamnya.",
+            "explanation": "Cara ini sangat rapi, hemat ruang, dan mudah diubah cukup dengan mengganti angka pengulangannya."
+          }
+        ],
+        "correctOptionId": "opt-loop",
+        "reasons": [
+          {
+            "id": "reason-efficient",
+            "label": "Blok loop menghemat ruang blok di layar dan mencegah risiko lupa atau salah menaruh nada."
+          },
+          {
+            "id": "reason-louder",
+            "label": "Program manual membuat suara gamelan berbunyi dua kali lebih keras daripada blok loop."
+          }
+        ],
+        "correctReasonId": "reason-efficient"
+      }
+    },
+    {
+      "id": "mission-c6",
+      "code": "C6",
+      "bloomLevel": "Mencipta",
+      "name": "Ciptakan Gendingmu",
+      "activity": "Ciptakan pola gending kreasimu sendiri di Editor, beri judul karya, dan simpan langsung ke tab Karyaku!",
+      "cultureContext": "Kesenian gamelan terus lestari dari zaman ke zaman karena para pengrawit muda terus berani melahirkan karya-karya tabuhan baru.",
+      "validatedBy": null,
+      "sourceNote": "Contoh — belum divalidasi praktisi karawitan",
+      "creativeCriteria": {
+        "minEvents": 4,
+        "maxEvents": 64,
+        "prompt": "Susun minimal 4 ketukan tabuhan bebas di Editor. Kamu bebas memadukan Demung, Saron, Peking, jeda ketuk, tempo, maupun Gong!",
+        "examples": [
+          "Ladrang Cilik Slendro",
+          "Tabuhan Sahabat",
+          "Dendang Pagi Hari"
+        ]
+      }
+    }
+  ]
+}
