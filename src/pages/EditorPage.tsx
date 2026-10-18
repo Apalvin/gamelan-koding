@@ -9,6 +9,14 @@ import { HardwareSimulationPanel, OutputMode } from '../components/output/Hardwa
 import { SlendroNote, GamelanEvent } from '../types/gamelan';
 import { compileWorkspace } from '../compiler/compileWorkspace';
 import { digitalSimOutput } from '../audio/digitalSimOutput';
+import { MissionEditorBanner } from '../components/missions/MissionEditorBanner';
+import { MissionSuccessModal } from '../components/missions/MissionSuccessModal';
+import { SaveCreativeModal } from '../components/missions/SaveCreativeModal';
+import missionsData from '../content/missions.json';
+import { Mission, EvaluationResult } from '../types/mission';
+import { evaluateMission, evaluateC6 } from '../compiler/missionEvaluator';
+import { missionProgressService } from '../services/missionProgressService';
+import { TabId } from '../types/navigation';
 
 type EditorTopTab = 'editor' | 'output';
 
@@ -17,11 +25,32 @@ interface CompilerNotice {
   message: string;
 }
 
-export const EditorPage: React.FC = () => {
+interface EditorPageProps {
+  activeMissionId?: string | null;
+  onExitMission?: () => void;
+  onNavigateToTab?: (tab: TabId) => void;
+  onSelectMission?: (code: string) => void;
+}
+
+export const EditorPage: React.FC<EditorPageProps> = ({
+  activeMissionId,
+  onExitMission,
+  onNavigateToTab,
+  onSelectMission,
+}) => {
   const [activeTopTab, setActiveTopTab] = useState<EditorTopTab>('editor');
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [outputMode, setOutputMode] = useState<OutputMode>('digital');
+
+  // Misi aktif jika ada
+  const activeMission: Mission | undefined = missionsData.missions.find(
+    (m) => m.code === activeMissionId
+  ) as Mission | undefined;
+
+  // Evaluasi & Karyaku modals
+  const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
+  const [isCreativeModalOpen, setIsCreativeModalOpen] = useState(false);
 
   // Compiler results
   const [compiledEvents, setCompiledEvents] = useState<GamelanEvent[]>([]);
@@ -33,15 +62,34 @@ export const EditorPage: React.FC = () => {
 
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
 
+  const loadBuggyXmlIfC4 = (ws: Blockly.WorkspaceSvg) => {
+    if (activeMission?.code === 'C4' && activeMission.editorTarget?.initialBuggyXml) {
+      try {
+        ws.clear();
+        const dom = Blockly.utils.xml.textToDom(activeMission.editorTarget.initialBuggyXml);
+        Blockly.Xml.domToWorkspace(dom, ws);
+      } catch (err) {
+        console.error('Failed to load buggy xml', err);
+      }
+    }
+  };
+
   const handleWorkspaceReady = (ws: Blockly.WorkspaceSvg) => {
     workspaceRef.current = ws;
     digitalSimOutput.setWorkspace(ws);
+    loadBuggyXmlIfC4(ws);
   };
+
+  // Muat kode awal C4 jika berganti ke misi C4 saat workspace sudah aktif
+  useEffect(() => {
+    if (workspaceRef.current && activeMission?.code === 'C4') {
+      loadBuggyXmlIfC4(workspaceRef.current);
+    }
+  }, [activeMissionId]);
 
   const handleAddBlock = (blockType: string) => {
     if (workspaceRef.current) {
       addBlockToWorkspace(workspaceRef.current, blockType);
-      // Bersihkan notifikasi saat anak mulai menambah blok
       setCompilerNotice(null);
     }
   };
@@ -54,11 +102,14 @@ export const EditorPage: React.FC = () => {
         workspaceRef.current.clear();
         setCompilerNotice(null);
         setCompiledEvents([]);
-        // Berikan blok awal kembali
-        const startBlock = workspaceRef.current.newBlock('ketika_mulai');
-        startBlock.initSvg();
-        startBlock.render();
-        startBlock.moveBy(36, 40);
+        if (activeMission?.code === 'C4') {
+          loadBuggyXmlIfC4(workspaceRef.current);
+        } else {
+          const startBlock = workspaceRef.current.newBlock('ketika_mulai');
+          startBlock.initSvg();
+          startBlock.render();
+          startBlock.moveBy(36, 40);
+        }
       }
     }
   };
@@ -102,6 +153,79 @@ export const EditorPage: React.FC = () => {
     await digitalSimOutput.play(result.events);
   };
 
+  // Evaluasi tabuhan terhadap target misi aktif
+  const handleCheckMission = () => {
+    if (!workspaceRef.current || !activeMission) return;
+    const result = compileWorkspace(workspaceRef.current);
+
+    if (!result.success) {
+      setCompilerNotice({
+        type: result.code === 'INFINITE_LOOP' ? 'error' : 'warning',
+        message: result.error,
+      });
+      return;
+    }
+
+    const evaluation = evaluateMission(activeMission, result.events);
+    setEvalResult(evaluation);
+    if (evaluation.isCorrect) {
+      missionProgressService.saveProgress(activeMission.code, evaluation.stars, 'selesai');
+    }
+  };
+
+  // Buka dialog simpan kreasi C6
+  const handleOpenCreativeModal = () => {
+    if (!workspaceRef.current) return;
+    const result = compileWorkspace(workspaceRef.current);
+    if (!result.success) {
+      setCompilerNotice({
+        type: 'warning',
+        message: result.error,
+      });
+      return;
+    }
+    setCompiledEvents(result.events);
+    setIsCreativeModalOpen(true);
+  };
+
+  // Konfirmasi simpan karya C6 ke localStorage
+  const handleConfirmSaveCreative = (title: string, description: string) => {
+    if (!activeMission) return;
+    const evaluation = evaluateC6(compiledEvents, title, activeMission);
+    setEvalResult(evaluation);
+    setIsCreativeModalOpen(false);
+
+    if (evaluation.isCorrect) {
+      missionProgressService.saveProgress('C6', evaluation.stars, 'selesai');
+      try {
+        const stored = localStorage.getItem('gamelan_karyaku');
+        const list = stored ? JSON.parse(stored) : [];
+        const newProject = {
+          id: 'karya-' + Date.now(),
+          title,
+          description,
+          date: 'Hari ini',
+          notesCount: compiledEvents.length,
+        };
+        localStorage.setItem('gamelan_karyaku', JSON.stringify([newProject, ...list]));
+      } catch {}
+    }
+  };
+
+  // Navigasi saat misi berhasil
+  const handleNextMission = () => {
+    setEvalResult(null);
+    if (activeMission?.code === 'C3' && onSelectMission) {
+      onSelectMission('C4');
+    } else if (activeMission?.code === 'C6' && onNavigateToTab) {
+      onExitMission?.();
+      onNavigateToTab('karyaku');
+    } else if (onNavigateToTab) {
+      onExitMission?.();
+      onNavigateToTab('misi');
+    }
+  };
+
   // Daftarkan listener visual & pembersihan saat unmount
   useEffect(() => {
     digitalSimOutput.setOnVisualEvent((ev) => {
@@ -128,6 +252,16 @@ export const EditorPage: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative' }}>
+      {/* Banner Misi Aktif jika Editor dibuka dari Misi C3/C4/C6 */}
+      {activeMission && (
+        <MissionEditorBanner
+          mission={activeMission}
+          onCheck={handleCheckMission}
+          onExit={onExitMission || (() => {})}
+          onSaveCreative={handleOpenCreativeModal}
+        />
+      )}
+
       {/* Dua Tab Di Atas Sesuai Sketsa 1 PRD */}
       <div className="editor-top-tabs" role="tablist">
         <button
@@ -258,6 +392,24 @@ export const EditorPage: React.FC = () => {
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
         onAddBlock={handleAddBlock}
+      />
+
+      {/* Modal Evaluasi Misi Berhasil / Umpan Balik */}
+      {evalResult && (
+        <MissionSuccessModal
+          result={evalResult}
+          onClose={() => setEvalResult(null)}
+          onNextMission={handleNextMission}
+          onRetry={() => setEvalResult(null)}
+        />
+      )}
+
+      {/* Modal Simpan Karya C6 ke Karyaku */}
+      <SaveCreativeModal
+        isOpen={isCreativeModalOpen}
+        notesCount={compiledEvents.length}
+        onClose={() => setIsCreativeModalOpen(false)}
+        onSave={handleConfirmSaveCreative}
       />
     </div>
   );

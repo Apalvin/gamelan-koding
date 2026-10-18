@@ -21,12 +21,12 @@ export const MissionModalC1: React.FC<MissionModalC1Props> = ({
   const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
   const questions = mission.quiz?.questions || [];
 
-  const handlePlaySound = (instrument?: string, note?: string) => {
+  const handlePlaySound = (instrument?: string, note?: string | number) => {
     gamelanSynth.initAudio();
     if (instrument === 'gong') {
       gamelanSynth.playGong();
     } else {
-      gamelanSynth.playSaronNote((note as any) || '1');
+      gamelanSynth.playSaronNote((note ? String(note) : '1') as any);
     }
   };
 

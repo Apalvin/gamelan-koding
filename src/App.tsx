@@ -44,6 +44,13 @@ export function App() {
     );
   }
 
+  const [activeMissionId, setActiveMissionId] = useState<string | null>(null);
+
+  const handleStartMission = (code: string) => {
+    setActiveMissionId(code);
+    setActiveTab('editor');
+  };
+
   const renderCurrentPage = () => {
     switch (activeTab) {
       case 'beranda':
@@ -51,13 +58,32 @@ export function App() {
       case 'belajar':
         return <BelajarPage onNavigate={setActiveTab} />;
       case 'editor':
-        return <EditorPage />;
+        return (
+          <EditorPage
+            activeMissionId={activeMissionId}
+            onExitMission={() => setActiveMissionId(null)}
+            onNavigateToTab={setActiveTab}
+            onSelectMission={(code) => setActiveMissionId(code)}
+          />
+        );
       case 'misi':
-        return <MisiPage onNavigate={setActiveTab} />;
+        return (
+          <MisiPage
+            onNavigate={setActiveTab}
+            onStartMission={handleStartMission}
+          />
+        );
       case 'karyaku':
         return <KaryakuPage onNavigate={setActiveTab} />;
       default:
-        return <EditorPage />;
+        return (
+          <EditorPage
+            activeMissionId={activeMissionId}
+            onExitMission={() => setActiveMissionId(null)}
+            onNavigateToTab={setActiveTab}
+            onSelectMission={(code) => setActiveMissionId(code)}
+          />
+        );
     }
   };
 
