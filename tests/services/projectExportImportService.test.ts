@@ -9,8 +9,7 @@ describe('projectExportImportService', () => {
     description: 'Kreasi nada lancaran',
     notesCount: 8,
     xml: '<xml><block type="tabuh_saron"></block></xml>',
-    createdAt: 1729000000000,
-    updatedAt: 1729000000000,
+    date: '18 Okt 2026',
   };
 
   it('harus menghasilkan string JSON valid dengan format standar GamelanCode', () => {

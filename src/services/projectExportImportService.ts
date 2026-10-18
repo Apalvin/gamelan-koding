@@ -47,10 +47,13 @@ export function parseProjectJson(jsonString: string): {
       id: `imported_${Date.now()}`,
       title: String(parsed.title),
       description: String(parsed.description || ''),
+      date: new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
       notesCount: Number(parsed.notesCount || 0),
       xml: String(parsed.xml),
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     };
 
     return { success: true, project: importedProject };
