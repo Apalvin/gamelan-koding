@@ -1,26 +1,39 @@
 import React, { useState } from 'react';
-import { Settings, User, X, Volume2, Globe, Music } from 'lucide-react';
+import { Settings, User, X, Volume2, Globe, Music, BookOpen, RotateCcw } from 'lucide-react';
+import { onboardingService } from '../../services/onboardingService';
 
 interface AppHeaderProps {
   onOpenSettings?: () => void;
+  onOpenOnboarding?: () => void;
+  onResetAllData?: () => void;
 }
 
-export const AppHeader: React.FC<AppHeaderProps> = () => {
+export const AppHeader: React.FC<AppHeaderProps> = ({
+  onOpenOnboarding,
+  onResetAllData,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [studentName, setStudentName] = useState(() => {
-    try {
-      return localStorage.getItem('gamelan_student_name') || 'Pengrawit Cilik';
-    } catch {
-      return 'Pengrawit Cilik';
-    }
+    return onboardingService.getStudentName();
   });
 
   const handleSaveName = (newName: string) => {
     setStudentName(newName);
-    try {
-      localStorage.setItem('gamelan_student_name', newName);
-    } catch {
-      // safe fallback
+    onboardingService.setStudentName(newName);
+  };
+
+  const handleResetTotal = () => {
+    const confirmed = window.confirm(
+      '⚠️ Apakah kamu yakin ingin mereset seluruh data aplikasi?\n\nSemua karya simpanan, bintang misi, draf blok koding, dan nama panggilan akan dihapus bersih kembali seperti saat baru pertama kali membuka aplikasi.'
+    );
+    if (confirmed) {
+      onboardingService.resetAllAppStorage();
+      setShowModal(false);
+      if (onResetAllData) {
+        onResetAllData();
+      } else {
+        window.location.reload();
+      }
     }
   };
 
@@ -173,6 +186,36 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                 <span>ℹ️ Suara simulasi hanyalah pendekatan digital, bukan representasi penuh gamelan asli.</span>
               </div>
 
+              {/* Buka Panduan Onboarding */}
+              {onOpenOnboarding && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    onOpenOnboarding();
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: '#f0fdf4',
+                    border: '1.5px solid #bbf7d0',
+                    borderRadius: 12,
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    color: '#15803d',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    marginBottom: 10,
+                  }}
+                >
+                  <BookOpen size={16} /> Buka Panduan Onboarding
+                </button>
+              )}
+
+              {/* Lab / Debug Audio */}
               <button
                 type="button"
                 onClick={() => {
@@ -193,10 +236,34 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  marginBottom: 14,
+                  marginBottom: 10,
                 }}
               >
                 🛠️ Buka Lab / Debug Audio
+              </button>
+
+              {/* Reset Total Aplikasi (Clean Slate) */}
+              <button
+                type="button"
+                onClick={handleResetTotal}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  background: '#fef2f2',
+                  border: '1.5px solid #fecaca',
+                  borderRadius: 12,
+                  fontSize: '0.83rem',
+                  fontWeight: 700,
+                  color: '#b91c1c',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                  marginBottom: 14,
+                }}
+              >
+                <RotateCcw size={15} /> Reset Total Aplikasi (Clean Slate)
               </button>
 
             <button
