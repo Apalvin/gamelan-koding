@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Volume2, Music, Sparkles } from 'lucide-react';
+import { Volume2, Sparkles } from 'lucide-react';
 import { gamelanSynth } from '../../audio/gamelanSynth';
 import { SlendroNote, InstrumentType } from '../../types/gamelan';
 
@@ -7,17 +7,23 @@ interface KeyConfig {
   note: SlendroNote;
   javaneseName: string;
   number: string;
-  widthPercent: number;
+  color: string;
+  bgTint: string;
 }
 
+/**
+ * Pemetaan warna 7 bilah laras Slendro berdasarkan palet moodboard Classly:
+ * 6: Olive (#9AAB65), 1: Yellow (#F7D66E), 2: Periwinkle (#B6CAEB),
+ * 3: Pink (#FFB2DD), 5: Yellow (#F7D66E), 6': Olive (#9AAB65), 1': Periwinkle (#B6CAEB)
+ */
 const KEYS_CONFIG: KeyConfig[] = [
-  { note: '6', javaneseName: 'Nem', number: '6', widthPercent: 15 },
-  { note: '1', javaneseName: 'Ji', number: '1', widthPercent: 14.5 },
-  { note: '2', javaneseName: 'Ro', number: '2', widthPercent: 14 },
-  { note: '3', javaneseName: 'Lu', number: '3', widthPercent: 13.5 },
-  { note: '5', javaneseName: 'Ma', number: '5', widthPercent: 13 },
-  { note: "6'", javaneseName: 'Nem Cilik', number: "6'", widthPercent: 12.5 },
-  { note: "1'", javaneseName: 'Ji Cilik', number: "1'", widthPercent: 12 },
+  { note: '6', javaneseName: 'Nem', number: '6', color: '#9AAB65', bgTint: '#E1E6D1' },
+  { note: '1', javaneseName: 'Ji', number: '1', color: '#F7D66E', bgTint: '#FEEFBF' },
+  { note: '2', javaneseName: 'Ro', number: '2', color: '#B6CAEB', bgTint: '#EAF0F9' },
+  { note: '3', javaneseName: 'Lu', number: '3', color: '#FFB2DD', bgTint: '#FAE0E4' },
+  { note: '5', javaneseName: 'Ma', number: '5', color: '#F7D66E', bgTint: '#FEEFBF' },
+  { note: "6'", javaneseName: 'Nem Cilik', number: "6'", color: '#9AAB65', bgTint: '#E1E6D1' },
+  { note: "1'", javaneseName: 'Ji Cilik', number: "1'", color: '#B6CAEB', bgTint: '#EAF0F9' },
 ];
 
 export const BelajarSoundboard: React.FC = () => {
@@ -30,7 +36,7 @@ export const BelajarSoundboard: React.FC = () => {
     gamelanSynth.playNote(selectedInstrument, note);
     setTimeout(() => {
       setActiveNote((curr) => (curr === String(note) ? null : curr));
-    }, 300);
+    }, 280);
   };
 
   const handlePlayGong = () => {
@@ -44,85 +50,95 @@ export const BelajarSoundboard: React.FC = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(135deg, #fefce8 0%, #fef3c7 100%)',
-        borderRadius: 20,
+        background: '#F8F3E7',
+        borderRadius: 22,
         padding: '16px',
-        border: '2px solid #fde68a',
+        border: '1.5px solid rgba(45, 45, 43, 0.08)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 12,
-        boxShadow: '0 8px 20px rgba(245, 158, 11, 0.1)',
+        gap: 14,
       }}
     >
       {/* Header Soundboard */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: 8,
-              background: '#f59e0b',
-              color: 'white',
+              width: 34,
+              height: 34,
+              borderRadius: 12,
+              background: '#FFB2DD',
+              color: '#2D2D2B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Volume2 size={18} />
+            <Volume2 size={18} strokeWidth={2.5} />
           </div>
           <div>
-            <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800, color: '#78350f' }}>
+            <h4 style={{ margin: 0, fontSize: '0.94rem', fontWeight: 800, color: '#2D2D2B' }}>
               Tuts Gamelan Interaktif
             </h4>
-            <div style={{ fontSize: '0.72rem', color: '#92400e' }}>
+            <div style={{ fontSize: '0.72rem', color: '#6C6B66' }}>
               Sentuh bilah atau gong untuk mendengar tala nada Slendro
             </div>
           </div>
         </div>
 
-        {/* Pemilihan Instrumen Balungan */}
-        <div style={{ display: 'flex', background: 'white', borderRadius: 10, padding: 2, border: '1px solid #cbd5e1' }}>
+        {/* Pemilihan Instrumen Balungan (Segmented Pill) */}
+        <div
+          style={{
+            display: 'flex',
+            background: '#FFFCF5',
+            borderRadius: 9999,
+            padding: 3,
+            border: '1.5px solid rgba(45, 45, 43, 0.08)',
+          }}
+        >
           {(
             [
               { id: 'demung', label: 'Demung' },
               { id: 'saron', label: 'Saron' },
               { id: 'peking', label: 'Peking' },
             ] as const
-          ).map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setSelectedInstrument(item.id)}
-              style={{
-                border: 'none',
-                background: selectedInstrument === item.id ? '#f59e0b' : 'transparent',
-                color: selectedInstrument === item.id ? 'white' : '#64748b',
-                padding: '3px 8px',
-                borderRadius: 8,
-                fontSize: '0.72rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
+          ).map((item) => {
+            const isSelected = selectedInstrument === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedInstrument(item.id)}
+                style={{
+                  border: 'none',
+                  background: isSelected ? '#FFB2DD' : 'transparent',
+                  color: '#2D2D2B',
+                  padding: '4px 10px',
+                  borderRadius: 9999,
+                  fontSize: '0.74rem',
+                  fontWeight: isSelected ? 800 : 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Visual Bilah Saron Slendro */}
+      {/* Visual Bilah Saron Slendro (Classly Color-Coded Keys) */}
       <div
         style={{
-          background: '#78350f',
-          padding: '12px 10px',
-          borderRadius: 14,
-          boxShadow: 'inset 0 2px 6px rgba(0, 0, 0, 0.4)',
+          background: '#FFFCF5',
+          padding: '14px 10px',
+          borderRadius: 18,
+          border: '1.5px solid rgba(45, 45, 43, 0.08)',
           display: 'flex',
           gap: 6,
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-end',
         }}
       >
         {KEYS_CONFIG.map((k) => {
@@ -134,30 +150,42 @@ export const BelajarSoundboard: React.FC = () => {
               onClick={() => handlePlayKey(k.note)}
               style={{
                 flex: 1,
-                height: 82,
-                borderRadius: 8,
-                border: isActive ? '2px solid #ffffff' : '1.5px solid #ca8a04',
-                background: isActive
-                  ? 'linear-gradient(180deg, #fef08a 0%, #facc15 100%)'
-                  : 'linear-gradient(180deg, #fde047 0%, #eab308 100%)',
-                boxShadow: isActive
-                  ? '0 0 16px rgba(250, 204, 21, 0.9), inset 0 2px 4px rgba(255, 255, 255, 0.6)'
-                  : '0 4px 6px rgba(0, 0, 0, 0.3)',
+                minHeight: 84,
+                borderRadius: 12,
+                border: isActive
+                  ? '2px solid #2D2D2B'
+                  : '1.5px solid rgba(45, 45, 43, 0.15)',
+                background: isActive ? k.color : k.bgTint,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '8px 4px',
+                padding: '8px 3px',
                 alignItems: 'center',
                 cursor: 'pointer',
-                transform: isActive ? 'scale(0.97)' : 'none',
-                transition: 'all 0.1s ease',
+                transform: isActive ? 'scale(0.95)' : 'none',
+                transition: 'all 0.12s ease',
               }}
               aria-label={`Tabuh nada ${k.note} (${k.javaneseName})`}
             >
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#713f12' }}>
+              <span
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: 800,
+                  color: '#2D2D2B',
+                  fontFamily: 'var(--font-display)',
+                }}
+              >
                 {k.number}
               </span>
-              <span style={{ fontSize: '0.62rem', fontWeight: 700, color: '#854d0e', textAlign: 'center', lineHeight: 1.1 }}>
+              <span
+                style={{
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  color: '#2D2D2B',
+                  textAlign: 'center',
+                  lineHeight: 1.1,
+                }}
+              >
                 {k.javaneseName}
               </span>
             </button>
@@ -171,12 +199,10 @@ export const BelajarSoundboard: React.FC = () => {
         onClick={handlePlayGong}
         style={{
           minHeight: 46,
-          background: isGongActive
-            ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
-            : 'white',
-          color: isGongActive ? 'white' : '#78350f',
-          border: '2px solid #f59e0b',
-          borderRadius: 12,
+          background: isGongActive ? '#FFB2DD' : '#FEEFBF',
+          color: '#2D2D2B',
+          border: '1.5px solid rgba(45, 45, 43, 0.12)',
+          borderRadius: 9999,
           fontWeight: 800,
           fontSize: '0.86rem',
           display: 'flex',
@@ -184,7 +210,7 @@ export const BelajarSoundboard: React.FC = () => {
           justifyContent: 'center',
           gap: 8,
           cursor: 'pointer',
-          boxShadow: isGongActive ? '0 0 14px rgba(245, 158, 11, 0.5)' : 'none',
+          transform: isGongActive ? 'scale(0.98)' : 'none',
           transition: 'all 0.15s ease',
         }}
       >
@@ -192,7 +218,14 @@ export const BelajarSoundboard: React.FC = () => {
         <span>Tabuh Gong Ageng (Penutup Gongan)</span>
       </button>
 
-      <div style={{ fontSize: '0.7rem', color: '#92400e', textAlign: 'center', fontStyle: 'italic' }}>
+      <div
+        style={{
+          fontSize: '0.72rem',
+          color: '#6C6B66',
+          textAlign: 'center',
+          fontStyle: 'italic',
+        }}
+      >
         Contoh — belum divalidasi praktisi karawitan
       </div>
     </div>
