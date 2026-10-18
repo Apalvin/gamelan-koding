@@ -91,8 +91,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.72)',
-        backdropFilter: 'blur(5px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -102,14 +102,14 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-app)',
           borderRadius: 24,
           padding: '24px 20px',
           width: '100%',
           maxWidth: 480,
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           gap: 16,
@@ -125,50 +125,36 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               position: 'absolute',
               top: 14,
               left: 14,
-              background: '#f1f5f9',
-              border: 'none',
-              borderRadius: 999,
+              background: 'var(--bg-surface)',
+              border: '1.5px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-pill)',
               height: 36,
-              padding: '0 12px',
+              padding: '0 14px',
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              color: '#475569',
+              color: 'var(--text-primary)',
               cursor: 'pointer',
-              fontSize: '0.82rem',
-              fontWeight: 700,
+              fontSize: '0.8rem',
+              fontWeight: 800,
               zIndex: 10,
             }}
             aria-label="Kembali ke slide sebelumnya"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={15} strokeWidth={2.5} />
             <span>Kembali</span>
           </button>
         )}
 
-        {/* Tombol Tutup */}
+        {/* Tombol Tutup Circular Dark */}
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-            zIndex: 10,
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 14, right: 14, zIndex: 10 }}
           aria-label="Tutup Panduan"
         >
-          <X size={20} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         {/* Indikator Titik Slide */}
@@ -180,7 +166,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 width: idx === currentSlide ? 24 : 8,
                 height: 8,
                 borderRadius: 4,
-                backgroundColor: idx === currentSlide ? '#10b981' : '#e2e8f0',
+                backgroundColor: idx === currentSlide ? 'var(--color-pink)' : 'var(--border-subtle)',
                 transition: 'all 0.25s ease',
               }}
             />
@@ -581,10 +567,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 onClick={handleFinishWithChallenge}
                 style={{
                   minHeight: 46,
-                  background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 14,
+                  background: 'var(--color-pink)',
+                  color: 'var(--text-primary)',
+                  border: '1.5px solid var(--text-primary)',
+                  borderRadius: 'var(--radius-pill)',
                   fontWeight: 800,
                   fontSize: '0.92rem',
                   display: 'flex',
@@ -592,10 +578,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   justifyContent: 'center',
                   gap: 8,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                  transition: 'all 0.15s ease',
                 }}
               >
-                <Play size={18} fill="white" /> Coba Dulu di Editor! 🚀
+                <Play size={18} fill="currentColor" /> Coba Dulu di Editor! 🚀
               </button>
 
               <div style={{ display: 'flex', gap: 8 }}>
@@ -606,11 +592,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                     flex: '0 0 auto',
                     minHeight: 44,
                     padding: '0 16px',
-                    background: '#f1f5f9',
-                    color: '#334155',
-                    border: '1.5px solid #cbd5e1',
-                    borderRadius: 14,
-                    fontWeight: 700,
+                    background: 'var(--bg-surface)',
+                    color: 'var(--text-primary)',
+                    border: '1.5px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-pill)',
+                    fontWeight: 800,
                     fontSize: '0.86rem',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -620,7 +606,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   }}
                   aria-label="Kembali ke slide sebelumnya"
                 >
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={16} strokeWidth={2.5} />
                   <span>Kembali</span>
                 </button>
 
@@ -630,12 +616,12 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   style={{
                     flex: 1,
                     minHeight: 44,
-                    padding: '0 12px',
-                    background: '#f8fafc',
-                    color: '#475569',
-                    border: '1.5px solid #cbd5e1',
-                    borderRadius: 14,
-                    fontWeight: 700,
+                    padding: '0 14px',
+                    background: 'var(--bg-surface)',
+                    color: 'var(--text-primary)',
+                    border: '1.5px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-pill)',
+                    fontWeight: 800,
                     fontSize: '0.86rem',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -645,7 +631,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   }}
                 >
                   <span>Lewati & Mulai Misi C1</span>
-                  <ArrowRight size={16} />
+                  <ArrowRight size={16} strokeWidth={2.5} />
                 </button>
               </div>
             </div>
@@ -662,11 +648,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 style={{
                   minHeight: 42,
                   padding: '0 16px',
-                  background: '#f1f5f9',
-                  border: 'none',
-                  borderRadius: 12,
-                  color: '#475569',
-                  fontWeight: 700,
+                  background: 'var(--bg-surface)',
+                  border: '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-pill)',
+                  color: 'var(--text-primary)',
+                  fontWeight: 800,
                   fontSize: '0.86rem',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -674,7 +660,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   cursor: 'pointer',
                 }}
               >
-                <ArrowLeft size={16} /> Kembali
+                <ArrowLeft size={16} strokeWidth={2.5} /> Kembali
               </button>
             ) : (
               <div />
@@ -685,22 +671,22 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               onClick={handleNext}
               style={{
                 minHeight: 44,
-                padding: '0 20px',
-                background: '#10b981',
-                border: 'none',
-                borderRadius: 12,
-                color: 'white',
-                fontWeight: 700,
-                fontSize: '0.9rem',
+                padding: '0 22px',
+                background: 'var(--color-pink)',
+                border: '1.5px solid var(--text-primary)',
+                borderRadius: 'var(--radius-pill)',
+                color: 'var(--text-primary)',
+                fontWeight: 800,
+                fontSize: '0.92rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
                 cursor: 'pointer',
-                boxShadow: '0 4px 10px rgba(16, 185, 129, 0.25)',
+                transition: 'all 0.15s ease',
               }}
             >
               <span>Lanjut</span>
-              <ArrowRight size={16} />
+              <ArrowRight size={16} strokeWidth={2.5} />
             </button>
           </div>
         )}

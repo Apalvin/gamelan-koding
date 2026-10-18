@@ -100,28 +100,37 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
   };
 
   return (
-    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: 12,
-              background: '#fdf2f8',
-              color: '#db2777',
+              width: 42,
+              height: 42,
+              borderRadius: 'var(--radius-squircle)',
+              background: 'var(--color-pink-tint)',
+              border: '1.5px solid var(--color-pink)',
+              color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Sparkles size={22} />
+            <Sparkles size={22} strokeWidth={2.5} />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#1e293b' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.25rem',
+                fontWeight: 800,
+                margin: 0,
+                color: 'var(--text-primary)',
+              }}
+            >
               Karyaku
             </h2>
-            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
               Koleksi tabuhan dan gending kreasimu
             </div>
           </div>
@@ -141,43 +150,45 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             style={{
-              minHeight: 44,
-              padding: '0 12px',
-              background: '#f1f5f9',
-              color: '#334155',
-              border: '1.5px solid #cbd5e1',
-              borderRadius: 12,
-              fontWeight: 700,
-              fontSize: '0.84rem',
+              minHeight: 40,
+              padding: '0 14px',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-pill)',
+              fontWeight: 800,
+              fontSize: '0.82rem',
               display: 'flex',
               alignItems: 'center',
               gap: 6,
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
             title="Unggah berkas proyek .gamelan"
           >
-            <Upload size={16} /> Impor
+            <Upload size={15} /> Impor
           </button>
 
           <button
             type="button"
             onClick={() => onNavigate('editor')}
             style={{
-              minHeight: 44,
-              padding: '0 14px',
-              background: '#10b981',
-              color: 'white',
-              border: 'none',
-              borderRadius: 12,
-              fontWeight: 700,
-              fontSize: '0.88rem',
+              minHeight: 40,
+              padding: '0 16px',
+              background: 'var(--color-pink)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--text-primary)',
+              borderRadius: 'var(--radius-pill)',
+              fontWeight: 800,
+              fontSize: '0.84rem',
               display: 'flex',
               alignItems: 'center',
               gap: 6,
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
-            <Plus size={18} /> Buat Baru
+            <Plus size={16} strokeWidth={2.5} /> Buat Baru
           </button>
         </div>
       </div>
@@ -189,22 +200,22 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
       {projects.length === 0 ? (
         <div
           style={{
-            background: 'white',
-            borderRadius: 20,
-            padding: '32px 16px',
+            background: 'var(--bg-surface)',
+            borderRadius: 'var(--radius-card)',
+            padding: '36px 16px',
             textAlign: 'center',
-            border: '2px dashed #cbd5e1',
+            border: '2px dashed var(--border-card)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             gap: 12,
           }}
         >
-          <Music size={40} color="#94a3b8" />
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#334155', margin: 0 }}>
+          <Music size={40} color="var(--text-muted)" />
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
             Belum Ada Gending
           </h3>
-          <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, maxWidth: 260 }}>
+          <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', margin: 0, maxWidth: 280, lineHeight: 1.45 }}>
             Kamu belum menyimpan susunan pola tabuhan. Yuk buat kreasi pertamamu di Editor!
           </p>
           <button
@@ -213,11 +224,12 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
             style={{
               minHeight: 44,
               padding: '0 20px',
-              background: '#10b981',
-              color: 'white',
-              border: 'none',
-              borderRadius: 12,
-              fontWeight: 700,
+              background: 'var(--color-pink)',
+              color: 'var(--text-primary)',
+              border: '1.5px solid var(--text-primary)',
+              borderRadius: 'var(--radius-pill)',
+              fontWeight: 800,
+              fontSize: '0.88rem',
               cursor: 'pointer',
             }}
           >
@@ -231,10 +243,10 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
               key={proj.id}
               onClick={() => handleOpen(proj, false)}
               style={{
-                background: 'white',
-                borderRadius: 16,
+                background: 'var(--bg-surface)',
+                borderRadius: 'var(--radius-card)',
                 padding: '16px',
-                border: '2px solid #e2e8f0',
+                border: '1.5px solid var(--border-card)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -242,12 +254,10 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                 transition: 'all 0.15s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#10b981';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.1)';
+                e.currentTarget.style.borderColor = 'var(--text-primary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#e2e8f0';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'var(--border-card)';
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
@@ -255,24 +265,26 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                   style={{
                     width: 44,
                     height: 44,
-                    borderRadius: 12,
-                    background: '#fef3c7',
-                    color: '#d97706',
+                    borderRadius: 'var(--radius-squircle)',
+                    background: 'var(--color-yellow-tint)',
+                    border: '1.5px solid var(--color-yellow)',
+                    color: 'var(--text-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}
                 >
-                  <Music size={22} />
+                  <Music size={22} strokeWidth={2.5} />
                 </div>
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <h4
                     style={{
-                      fontSize: '0.98rem',
-                      fontWeight: 700,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '1rem',
+                      fontWeight: 800,
                       margin: 0,
-                      color: '#1e293b',
+                      color: 'var(--text-primary)',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -280,14 +292,15 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                   >
                     {proj.title}
                   </h4>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: 2 }}>
+                  <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: 2, fontWeight: 600 }}>
                     {proj.date} • {proj.notesCount} ketukan tabuhan
                   </div>
                   {proj.description ? (
                     <div
                       style={{
                         fontSize: '0.74rem',
-                        color: '#94a3b8',
+                        color: 'var(--text-primary)',
+                        opacity: 0.75,
                         marginTop: 2,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
@@ -308,24 +321,23 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                     handleOpen(proj, true);
                   }}
                   style={{
-                    minHeight: 44,
+                    minHeight: 40,
                     padding: '0 14px',
-                    borderRadius: 12,
-                    border: 'none',
-                    background: '#10b981',
-                    color: 'white',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1.5px solid var(--text-primary)',
+                    background: 'var(--color-pink)',
+                    color: 'var(--text-primary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 6,
-                    fontWeight: 700,
-                    fontSize: '0.84rem',
-                    boxShadow: '0 2px 6px rgba(16, 185, 129, 0.3)',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
                   }}
                   title="Buka dan mainkan di Editor"
                   aria-label={`Buka dan mainkan ${proj.title} di Editor`}
                 >
-                  <Play size={16} fill="white" />
+                  <Play size={15} fill="currentColor" />
                   <span>Mainkan</span>
                 </button>
 
@@ -333,63 +345,72 @@ export const KaryakuPage: React.FC<KaryakuPageProps> = ({
                   type="button"
                   onClick={(e) => handleShowKepatihan(proj, e)}
                   style={{
-                    minWidth: 44,
-                    minHeight: 44,
-                    borderRadius: 10,
-                    border: '1.5px solid #cbd5e1',
-                    background: '#f8fafc',
-                    color: '#334155',
+                    width: 40,
+                    height: 40,
+                    minWidth: 40,
+                    minHeight: 40,
+                    borderRadius: '50%',
+                    border: '1.5px solid var(--border-subtle)',
+                    background: 'var(--bg-app)',
+                    color: 'var(--text-primary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    transition: 'all 0.15s ease',
                   }}
                   title="Lihat Partitur Notasi Kepatihan"
                   aria-label={`Lihat Partitur Notasi Kepatihan ${proj.title}`}
                 >
-                  <FileMusic size={18} />
+                  <FileMusic size={17} />
                 </button>
 
                 <button
                   type="button"
                   onClick={(e) => handleDownload(proj, e)}
                   style={{
-                    minWidth: 44,
-                    minHeight: 44,
-                    borderRadius: 10,
-                    border: '1.5px solid #cbd5e1',
-                    background: '#f8fafc',
-                    color: '#334155',
+                    width: 40,
+                    height: 40,
+                    minWidth: 40,
+                    minHeight: 40,
+                    borderRadius: '50%',
+                    border: '1.5px solid var(--border-subtle)',
+                    background: 'var(--bg-app)',
+                    color: 'var(--text-primary)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    transition: 'all 0.15s ease',
                   }}
                   title="Unduh Berkas Proyek .gamelan"
                   aria-label={`Unduh Berkas ${proj.title}`}
                 >
-                  <Download size={18} />
+                  <Download size={17} />
                 </button>
 
                 <button
                   type="button"
                   onClick={(e) => handleDelete(proj.id, e)}
                   style={{
-                    minWidth: 44,
-                    minHeight: 44,
-                    borderRadius: 10,
-                    border: '1.5px solid #fee2e2',
+                    width: 40,
+                    height: 40,
+                    minWidth: 40,
+                    minHeight: 40,
+                    borderRadius: '50%',
+                    border: '1.5px solid #fecaca',
                     background: '#fef2f2',
                     color: '#dc2626',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    transition: 'all 0.15s ease',
                   }}
                   title="Hapus karya"
                   aria-label="Hapus karya"
                 >
-                  <Trash2 size={18} />
+                  <Trash2 size={17} />
                 </button>
               </div>
             </div>

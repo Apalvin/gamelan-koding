@@ -28,8 +28,8 @@ export const KepatihanModal: React.FC<KepatihanModalProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 50,
         display: 'flex',
         alignItems: 'center',
@@ -39,86 +39,73 @@ export const KepatihanModal: React.FC<KepatihanModalProps> = ({
     >
       <div
         style={{
-          background: 'white',
-          borderRadius: 20,
-          padding: '20px 24px',
+          background: 'var(--bg-app)',
+          borderRadius: 24,
+          padding: '22px 20px',
           width: '100%',
           maxWidth: 480,
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
+          border: '1.5px solid var(--border-card)',
           display: 'flex',
           flexDirection: 'column',
           gap: 14,
           position: 'relative',
         }}
       >
-        {/* Tombol Tutup */}
+        {/* Tombol Tutup Circular Dark */}
         <button
           type="button"
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 14,
-            right: 14,
-            background: '#f1f5f9',
-            border: 'none',
-            borderRadius: 999,
-            width: 32,
-            height: 32,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#64748b',
-            cursor: 'pointer',
-          }}
+          className="btn-back-circle"
+          style={{ position: 'absolute', top: 16, right: 16 }}
           aria-label="Tutup Partitur"
         >
-          <X size={18} />
+          <X size={18} strokeWidth={2.5} />
         </button>
 
         {/* Header Modal */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
-              width: 38,
-              height: 38,
-              borderRadius: 10,
-              background: '#fef3c7',
-              color: '#d97706',
+              width: 40,
+              height: 40,
+              borderRadius: 'var(--radius-squircle)',
+              background: 'var(--color-yellow-tint)',
+              border: '1.5px solid var(--color-yellow)',
+              color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <FileMusic size={22} />
+            <FileMusic size={22} strokeWidth={2.5} />
           </div>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>
+            <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
               Partitur Notasi Kepatihan
             </h3>
-            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{title}</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>{title}</div>
           </div>
         </div>
 
         {/* Area Notasi Kepatihan */}
         <div
           style={{
-            background: '#0f172a',
-            color: '#fde047',
+            background: 'var(--text-primary)',
+            color: 'var(--color-yellow)',
             padding: '14px 16px',
-            borderRadius: 14,
+            borderRadius: 'var(--radius-card)',
             fontFamily: 'Consolas, monospace',
-            fontSize: '0.88rem',
+            fontSize: '0.9rem',
             lineHeight: 1.8,
             overflowX: 'auto',
             whiteSpace: 'pre',
-            border: '1.5px solid #334155',
-            boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.4)',
+            border: '1.5px solid var(--border-subtle)',
           }}
         >
           {kepatihanText}
         </div>
 
-        <div style={{ fontSize: '0.74rem', color: '#64748b', lineHeight: 1.4 }}>
+        <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: 1.45 }}>
           *Tanda kurung <strong>(5)</strong> menandai tabuhan nada bersamaan dengan pukulan Gong Ageng sebagai penutup gongan.
         </div>
 
@@ -126,29 +113,29 @@ export const KepatihanModal: React.FC<KepatihanModalProps> = ({
           <span>Contoh — belum divalidasi praktisi karawitan</span>
         </div>
 
-        {/* Aksi Salin & Tutup */}
+        {/* Aksi Salin Full-Pill */}
         <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
           <button
             type="button"
             onClick={handleCopy}
             style={{
               flex: 1,
-              minHeight: 44,
-              background: copied ? '#059669' : '#10b981',
-              color: 'white',
-              border: 'none',
-              borderRadius: 12,
-              fontWeight: 700,
-              fontSize: '0.86rem',
+              minHeight: 46,
+              background: copied ? 'var(--color-olive)' : 'var(--color-pink)',
+              color: copied ? 'white' : 'var(--text-primary)',
+              border: '1.5px solid var(--text-primary)',
+              borderRadius: 'var(--radius-pill)',
+              fontWeight: 800,
+              fontSize: '0.88rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 6,
               cursor: 'pointer',
-              boxShadow: '0 4px 10px rgba(16, 185, 129, 0.25)',
+              transition: 'all 0.15s ease',
             }}
           >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
+            {copied ? <Check size={16} strokeWidth={2.5} /> : <Copy size={16} />}
             <span>{copied ? 'Tersalin ke Clipboard!' : 'Salin Notasi Kepatihan'}</span>
           </button>
         </div>

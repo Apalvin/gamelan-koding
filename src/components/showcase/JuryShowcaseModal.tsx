@@ -71,8 +71,8 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-        backdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(45, 45, 43, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
@@ -83,16 +83,15 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--bg-app)',
           borderRadius: 24,
           width: '100%',
           maxWidth: 720,
           maxHeight: '90vh',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
           overflow: 'hidden',
-          border: '2px solid #e2e8f0',
+          border: '1.5px solid var(--border-card)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -100,28 +99,28 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
         <div
           style={{
             padding: '14px 20px',
-            borderBottom: '1.5px solid #e2e8f0',
+            borderBottom: '1.5px solid var(--border-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'linear-gradient(135deg, #fdfbf7 0%, #fefce8 100%)',
+            background: 'var(--bg-surface)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 38,
-                height: 38,
-                borderRadius: 12,
-                background: 'linear-gradient(135deg, #d97706, #b45309)',
-                color: 'white',
+                width: 40,
+                height: 40,
+                borderRadius: 'var(--radius-squircle)',
+                background: 'var(--color-yellow-tint)',
+                border: '1.5px solid var(--color-yellow)',
+                color: 'var(--text-primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 10px rgba(217, 119, 6, 0.3)',
               }}
             >
-              <Award size={22} />
+              <Award size={22} strokeWidth={2.5} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -129,26 +128,27 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
                   style={{
                     fontSize: '0.72rem',
                     fontWeight: 800,
-                    color: '#92400e',
-                    background: '#fef3c7',
+                    color: 'var(--text-primary)',
+                    background: 'var(--color-yellow)',
                     padding: '2px 8px',
-                    borderRadius: 999,
+                    borderRadius: 'var(--radius-pill)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.04em',
                   }}
                 >
                   Showcase Esai Lomba
                 </span>
-                <span style={{ fontSize: '0.75rem', color: '#78350f', fontWeight: 700 }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 800 }}>
                   GamelanCode
                 </span>
               </div>
               <h3
                 style={{
                   margin: '2px 0 0',
+                  fontFamily: 'var(--font-display)',
                   fontSize: '1rem',
                   fontWeight: 800,
-                  color: '#1e293b',
+                  color: 'var(--text-primary)',
                 }}
               >
                 Presentasi Komprehensif Dewan Juri
@@ -160,21 +160,9 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Tutup Showcase"
-            style={{
-              minWidth: 44,
-              minHeight: 44,
-              borderRadius: 12,
-              border: '1.5px solid #cbd5e1',
-              background: 'white',
-              color: '#64748b',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.15s ease',
-            }}
+            className="btn-back-circle"
           >
-            <X size={20} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
@@ -187,7 +175,7 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
             display: 'flex',
             flexDirection: 'column',
             gap: 16,
-            background: '#fafafa',
+            background: 'var(--bg-app)',
           }}
         >
           {/* SLIDE 1: URGENSI & LATAR BELAKANG RISET */}
@@ -842,11 +830,11 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
         <div
           style={{
             padding: '12px 20px',
-            borderTop: '1.5px solid #e2e8f0',
+            borderTop: '1.5px solid var(--border-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'white',
+            background: 'var(--color-sand)',
           }}
         >
           {/* Tombol Kembali (selalu terpasang dengan touch target >= 44px) */}
@@ -856,11 +844,11 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
             disabled={currentSlide === 0}
             style={{
               minHeight: 44,
-              padding: '0 14px',
-              borderRadius: 12,
-              border: '1.5px solid #cbd5e1',
-              background: currentSlide === 0 ? '#f8fafc' : 'white',
-              color: currentSlide === 0 ? '#94a3b8' : '#334155',
+              padding: '0 16px',
+              borderRadius: 'var(--radius-pill)',
+              border: '1.5px solid var(--border-card)',
+              background: currentSlide === 0 ? 'rgba(45, 43, 43, 0.05)' : 'white',
+              color: currentSlide === 0 ? 'rgba(45, 45, 43, 0.35)' : 'var(--color-charcoal)',
               fontWeight: 700,
               fontSize: '0.84rem',
               display: 'flex',
@@ -884,8 +872,8 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
                 style={{
                   width: idx === currentSlide ? 24 : 10,
                   height: 10,
-                  borderRadius: 999,
-                  backgroundColor: idx === currentSlide ? '#10b981' : '#cbd5e1',
+                  borderRadius: 9999,
+                  backgroundColor: idx === currentSlide ? 'var(--color-pink)' : 'rgba(45, 45, 43, 0.15)',
                   border: 'none',
                   cursor: 'pointer',
                   padding: 0,
@@ -902,10 +890,10 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
             onClick={handleNext}
             style={{
               minHeight: 44,
-              padding: '0 16px',
-              borderRadius: 12,
+              padding: '0 18px',
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: currentSlide === totalSlides - 1 ? '#059669' : '#10b981',
+              background: currentSlide === totalSlides - 1 ? 'var(--color-olive)' : 'var(--color-charcoal)',
               color: 'white',
               fontWeight: 800,
               fontSize: '0.84rem',
@@ -913,7 +901,6 @@ export const JuryShowcaseModal: React.FC<JuryShowcaseModalProps> = ({
               alignItems: 'center',
               gap: 6,
               cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)',
             }}
           >
             <span>{currentSlide === totalSlides - 1 ? 'Tutup & Eksplorasi' : 'Lanjut'}</span>
