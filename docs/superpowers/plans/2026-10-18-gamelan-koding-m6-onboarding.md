@@ -30,11 +30,11 @@
 **Interfaces:**
 - Produces: `onboardingService` (`isOnboardingCompleted`, `setOnboardingCompleted`, `getStudentName`, `setStudentName`, `resetAllAppStorage`, `FINAL_CHALLENGE_TARGET_EVENTS`)
 
-- [ ] **Step 1: Tulis unit test untuk onboardingService (baca/tulis status, simpan nama, dan reset total)**
-- [ ] **Step 2: Jalankan test dan pastikan gagal karena file belum dibuat**
-- [ ] **Step 3: Implementasikan `src/services/onboardingService.ts` dengan penanganan aman localStorage dan memori cache**
-- [ ] **Step 4: Jalankan test dan pastikan seluruh test lulus**
-- [ ] **Step 5: Commit Task 1**
+- [x] **Step 1: Tulis unit test untuk onboardingService (baca/tulis status, simpan nama, dan reset total)**
+- [x] **Step 2: Jalankan test dan pastikan gagal karena file belum dibuat**
+- [x] **Step 3: Implementasikan `src/services/onboardingService.ts` dengan penanganan aman localStorage dan memori cache**
+- [x] **Step 4: Jalankan test dan pastikan seluruh test lulus**
+- [x] **Step 5: Commit Task 1**
 
 ---
 
@@ -48,11 +48,11 @@
 - Produces: `evaluateFinalChallenge(events: GamelanEvent[]): EvaluationResult`
 - Pola Target: Lancaran 8 ketukan (`3, 5, 3, 2, 3, 5, 6, 5` + gong seleh di ketuk ke-8).
 
-- [ ] **Step 1: Tulis unit test untuk evaluator tantangan akhir (skenario sempurna, mencoba/belum tepat, dan pesan menguatkan)**
-- [ ] **Step 2: Jalankan test dan pastikan gagal**
-- [ ] **Step 3: Implementasikan logika evaluasi di `src/compiler/finalChallengeEvaluator.ts`**
-- [ ] **Step 4: Jalankan test dan pastikan lulus**
-- [ ] **Step 5: Commit Task 2**
+- [x] **Step 1: Tulis unit test untuk evaluator tantangan akhir (skenario sempurna, mencoba/belum tepat, dan pesan menguatkan)**
+- [x] **Step 2: Jalankan test dan pastikan gagal**
+- [x] **Step 3: Implementasikan logika evaluasi di `src/compiler/finalChallengeEvaluator.ts`**
+- [x] **Step 4: Jalankan test dan pastikan lulus**
+- [x] **Step 5: Commit Task 2**
 
 ---
 
@@ -68,10 +68,10 @@
   - `onStartChallenge: () => void` (membuka Editor mode tantangan akhir)
   - `onSkipToMissions: () => void` (mengarahkan langsung ke Misi C1)
 
-- [ ] **Step 1: Buat slide 1 (Pengantar Seni & Koding) dan slide 2 (Peta 5 Tab Seru)**
-- [ ] **Step 2: Buat slide 3 (Jembatan Tradisi Bersama Guru/Pengrawit) dan slide 4 (Input Nama Siswa)**
-- [ ] **Step 3: Buat slide 5 (Tantangan Gending Akhir + Tombol Dengarkan Target + Aksi Coba/Lewati)**
-- [ ] **Step 4: Commit Task 3**
+- [x] **Step 1: Buat slide 1 (Pengantar Seni & Koding) dan slide 2 (Peta 5 Tab Seru)**
+- [x] **Step 2: Buat slide 3 (Jembatan Tradisi Bersama Guru/Pengrawit) dan slide 4 (Input Nama Siswa)**
+- [x] **Step 3: Buat slide 5 (Tantangan Gending Akhir + Tombol Dengarkan Target + Aksi Coba/Lewati)**
+- [x] **Step 4: Commit Task 3**
 
 ---
 
@@ -85,11 +85,11 @@
   - `isFinalChallengeActive?: boolean`
   - `onExitFinalChallenge?: () => void`
 
-- [ ] **Step 1: Tambahkan banner visual Tantangan Gending Akhir di Editor jika mode aktif**
-- [ ] **Step 2: Hubungkan tombol "Dengarkan Target" ke pemutar audio target lancaran 8 ketukan**
-- [ ] **Step 3: Hubungkan tombol "Periksa Tabuhanku" ke `evaluateFinalChallenge`**
-- [ ] **Step 4: Tampilkan modal hasil apresiasi yang mengarahkan anak ke Misi C1**
-- [ ] **Step 5: Commit Task 4**
+- [x] **Step 1: Tambahkan banner visual Tantangan Gending Akhir di Editor jika mode aktif**
+- [x] **Step 2: Hubungkan tombol "Dengarkan Target" ke pemutar audio target lancaran 8 ketukan**
+- [x] **Step 3: Hubungkan tombol "Periksa Tabuhanku" ke `evaluateFinalChallenge`**
+- [x] **Step 4: Tampilkan modal hasil apresiasi yang mengarahkan anak ke Misi C1**
+- [x] **Step 5: Commit Task 4**
 
 ---
 
@@ -99,10 +99,10 @@
 - Modify: `src/components/layout/AppHeader.tsx`
 - Modify: `src/pages/BerandaPage.tsx`
 
-- [ ] **Step 1: Tambahkan tombol "Panduan Onboarding" di modal Pengaturan/Profil (`AppHeader.tsx`)**
-- [ ] **Step 2: Tambahkan tombol "Reset Total Aplikasi" dengan dialog konfirmasi aman di `AppHeader.tsx`**
-- [ ] **Step 3: Tambahkan tombol pintas "Buka Panduan Awal" di `BerandaPage.tsx`**
-- [ ] **Step 4: Commit Task 5**
+- [x] **Step 1: Tambahkan tombol "Panduan Onboarding" di modal Pengaturan/Profil (`AppHeader.tsx`)**
+- [x] **Step 2: Tambahkan tombol "Reset Total Aplikasi" dengan dialog konfirmasi aman di `AppHeader.tsx`**
+- [x] **Step 3: Tambahkan tombol pintas "Buka Panduan Awal" di `BerandaPage.tsx`**
+- [x] **Step 4: Commit Task 5**
 
 ---
 
@@ -111,9 +111,9 @@
 **Files:**
 - Modify: `src/App.tsx`
 
-- [ ] **Step 1: Periksa status onboarding di `App.tsx` dan picu `OnboardingModal` otomatis jika baru pertama buka**
-- [ ] **Step 2: Hubungkan aksi "Coba Dulu di Editor" dan "Lewati & Mulai Misi" di `App.tsx`**
-- [ ] **Step 3: Hubungkan callback reset total aplikasi agar state langsung ter-refresh bersih**
-- [ ] **Step 4: Jalankan seluruh test vitest (`cmd /c "npx vitest run"`)**
-- [ ] **Step 5: Jalankan build produksi (`cmd /c "npm run build"`)**
-- [ ] **Step 6: Commit dan Push ke GitHub**
+- [x] **Step 1: Periksa status onboarding di `App.tsx` dan picu `OnboardingModal` otomatis jika baru pertama buka**
+- [x] **Step 2: Hubungkan aksi "Coba Dulu di Editor" dan "Lewati & Mulai Misi" di `App.tsx`**
+- [x] **Step 3: Hubungkan callback reset total aplikasi agar state langsung ter-refresh bersih**
+- [x] **Step 4: Jalankan seluruh test vitest (`cmd /c "npx vitest run"`)**
+- [x] **Step 5: Jalankan build produksi (`cmd /c "npm run build"`)**
+- [x] **Step 6: Commit dan Push ke GitHub**
