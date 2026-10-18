@@ -617,3 +617,35 @@ body {
   stroke-width: 4px !important;
 }
 
+/* Milestone 8: Aksesibilitas Fokus Keyboard & Responsivitas Multi-Device */
+:focus-visible {
+  outline: 3px solid #10b981;
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 360px) {
+  .bottom-nav {
+    padding: 0 2px env(safe-area-inset-bottom, 0px) 2px;
+  }
+  .nav-tab-btn {
+    font-size: 0.68rem;
+    gap: 1px;
+  }
+  .app-header {
+    padding: 0 10px;
+  }
+}
+
+
