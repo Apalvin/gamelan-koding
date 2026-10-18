@@ -152,12 +152,15 @@ export class DigitalSimOutput implements GamelanOutput {
           // Picu visualisasi bilah & highlight blok di kanvas
           this.triggerVisualAndHighlight(ev);
 
+          const isGong = ev.instrument === 'gong';
           const nextEv = sortedEvents[idx + 1];
-          const timeToNext = nextEv ? nextEv.tMs - ev.tMs : 450;
-          const resetDur = Math.min(Math.max(timeToNext - 40, 150), 400);
+          const timeToNext = nextEv ? nextEv.tMs - ev.tMs : (isGong ? 2800 : 450);
+          const resetDur = isGong
+            ? Math.min(Math.max(timeToNext - 40, 150), 2800)
+            : Math.min(Math.max(timeToNext - 40, 150), 400);
 
           const rTid = setTimeout(() => {
-            if (this.isPlaying && this.onVisualEvent) {
+            if (this.onVisualEvent) {
               this.onVisualEvent(null);
             }
           }, resetDur);
@@ -167,13 +170,10 @@ export class DigitalSimOutput implements GamelanOutput {
         this.timerIds.push(tid);
       });
 
-      // Jadwalkan akhir program (tMs terakhir + padding suara meluruh)
+      // Jadwalkan akhir penyorotan blok dan status bermain tanpa mematikan audio
       const finishPaddingMs = 500;
       const finishTid = setTimeout(() => {
-        this.stop();
-        if (this.onFinish) {
-          this.onFinish();
-        }
+        this.finishPlayback();
       }, totalDuration + finishPaddingMs);
 
       this.timerIds.push(finishTid);
@@ -181,18 +181,14 @@ export class DigitalSimOutput implements GamelanOutput {
   }
 
   /**
-   * Menghentikan pemutaran, mematikan audio, dan membersihkan penyorotan blok
+   * Selesai memainkan antrean blok: membersihkan penyorotan blok dan status bermain,
+   * tanpa mematikan resonansi suara audio alami yang sedang meluruh (misal: gong ageng).
    */
-  public stop(): void {
+  private finishPlayback(): void {
     if (this.rafId !== null && typeof window !== 'undefined') {
       window.cancelAnimationFrame(this.rafId);
       this.rafId = null;
     }
-
-    this.timerIds.forEach((id) => clearTimeout(id));
-    this.timerIds = [];
-
-    this.synth.stopAll();
 
     if (this.workspace && typeof this.workspace.highlightBlock === 'function') {
       try {
@@ -207,19 +203,43 @@ export class DigitalSimOutput implements GamelanOutput {
       this.lastHighlightedBlock = null;
     }
 
-    if (this.onVisualEvent) {
+    this.isPlaying = false;
+
+    if (this.onFinish) {
       try {
-        this.onVisualEvent(null);
+        this.onFinish();
       } catch {}
     }
-
-    this.isPlaying = false;
 
     if (this.resolveCurrentPlay) {
       const resolve = this.resolveCurrentPlay;
       this.resolveCurrentPlay = null;
       resolve();
     }
+  }
+
+  /**
+   * Menghentikan pemutaran secara paksa (tombol Berhenti ditekan atau unmount),
+   * mematikan seluruh audio seketika, dan membersihkan penyorotan blok
+   */
+  public stop(): void {
+    if (this.rafId !== null && typeof window !== 'undefined') {
+      window.cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+
+    this.timerIds.forEach((id) => clearTimeout(id));
+    this.timerIds = [];
+
+    this.synth.stopAll();
+
+    if (this.onVisualEvent) {
+      try {
+        this.onVisualEvent(null);
+      } catch {}
+    }
+
+    this.finishPlayback();
   }
 }
 
