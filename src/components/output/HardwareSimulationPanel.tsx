@@ -57,12 +57,11 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
 
   return (
     <div
-      className="modern-card"
       style={{
-        background: 'white',
-        borderRadius: 20,
+        background: 'var(--bg-surface)',
+        borderRadius: 'var(--radius-card)',
         padding: 16,
-        border: '2px solid #e2e8f0',
+        border: '1.5px solid var(--border-card)',
         display: 'flex',
         flexDirection: 'column',
         gap: 14,
@@ -74,7 +73,7 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
           style={{
             fontSize: '0.74rem',
             fontWeight: 800,
-            color: '#64748b',
+            color: 'var(--text-muted)',
             textTransform: 'uppercase',
             marginBottom: 8,
             letterSpacing: '0.5px',
@@ -86,11 +85,11 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
         <div
           style={{
             display: 'flex',
-            gap: 8,
-            background: '#f8fafc',
+            gap: 6,
+            background: 'var(--bg-app)',
             padding: 4,
-            borderRadius: 14,
-            border: '1.5px solid #e2e8f0',
+            borderRadius: 'var(--radius-pill)',
+            border: '1.5px solid var(--border-subtle)',
           }}
         >
           <button
@@ -98,23 +97,22 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
             onClick={() => onModeChange('digital')}
             style={{
               flex: 1,
-              minHeight: 44,
-              borderRadius: 12,
+              minHeight: 40,
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: mode === 'digital' ? '#10b981' : 'transparent',
-              color: mode === 'digital' ? 'white' : '#64748b',
+              background: mode === 'digital' ? 'var(--color-pink)' : 'transparent',
+              color: 'var(--text-primary)',
               fontWeight: 800,
-              fontSize: '0.84rem',
+              fontSize: '0.82rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 8,
               cursor: 'pointer',
-              boxShadow: mode === 'digital' ? '0 2px 8px rgba(16, 185, 129, 0.3)' : 'none',
               transition: 'all 0.15s ease',
             }}
           >
-            <Monitor size={18} />
+            <Monitor size={17} />
             <span>Simulasi Digital</span>
           </button>
 
@@ -123,23 +121,22 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
             onClick={() => onModeChange('hardware')}
             style={{
               flex: 1,
-              minHeight: 44,
-              borderRadius: 12,
+              minHeight: 40,
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: mode === 'hardware' ? '#3b82f6' : 'transparent',
-              color: mode === 'hardware' ? 'white' : '#64748b',
+              background: mode === 'hardware' ? 'var(--color-yellow)' : 'transparent',
+              color: 'var(--text-primary)',
               fontWeight: 800,
-              fontSize: '0.84rem',
+              fontSize: '0.82rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 8,
               cursor: 'pointer',
-              boxShadow: mode === 'hardware' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none',
               transition: 'all 0.15s ease',
             }}
           >
-            <Cpu size={18} />
+            <Cpu size={17} />
             <span>Gamelan Akustik</span>
           </button>
         </div>
@@ -149,13 +146,14 @@ export const HardwareSimulationPanel: React.FC<HardwareSimulationPanelProps> = (
       {mode === 'digital' ? (
         <div
           style={{
-            background: '#ecfdf5',
+            background: 'var(--color-olive-tint)',
             padding: '14px 16px',
-            borderRadius: 14,
-            fontSize: '0.85rem',
-            color: '#065f46',
+            borderRadius: 'var(--radius-card)',
+            fontSize: '0.84rem',
+            color: 'var(--text-primary)',
             lineHeight: 1.5,
-            border: '1.5px solid #a7f3d0',
+            border: '1.5px solid var(--color-olive)',
+            fontWeight: 600,
           }}
         >
           🟢 <strong>Mode Digital Aktif:</strong> Suara gamelan Web Audio API dan animasi bilah menyala disimulasikan secara interaktif di layar ini.

@@ -501,13 +501,12 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       {isFinalChallengeActive && (
         <div
           style={{
-            background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-            borderBottom: '2px solid #fde68a',
-            padding: '10px 14px',
+            background: 'var(--bg-surface)',
+            borderBottom: '1.5px solid var(--border-card)',
+            padding: '12px 14px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 8,
-            boxShadow: '0 4px 10px rgba(245, 158, 11, 0.08)',
+            gap: 10,
             zIndex: 11,
           }}
         >
@@ -518,21 +517,21 @@ export const EditorPage: React.FC<EditorPageProps> = ({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 6,
-                  background: '#f59e0b',
-                  color: 'white',
-                  fontSize: '0.72rem',
+                  background: 'var(--color-yellow)',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.74rem',
                   fontWeight: 800,
-                  padding: '2px 8px',
-                  borderRadius: 999,
-                  marginBottom: 4,
+                  padding: '3px 10px',
+                  borderRadius: 'var(--radius-pill)',
+                  marginBottom: 6,
                 }}
               >
-                <Sparkles size={12} /> Tantangan Awal • Gending Akhir
+                <Sparkles size={13} /> Tantangan Awal • Gending Akhir
               </div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#78350f' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 Pola Lancaran 8 Ketukan: 3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
               </div>
-              <div style={{ fontSize: '0.74rem', color: '#92400e', marginTop: 2 }}>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: 2 }}>
                 Susun blok saron dan gong untuk membunyikan pola penutup ini! (Contoh — belum divalidasi praktisi karawitan)
               </div>
             </div>
@@ -541,13 +540,13 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               type="button"
               onClick={onExitFinalChallenge}
               style={{
-                background: 'white',
-                border: '1.5px solid #cbd5e1',
-                borderRadius: 8,
-                padding: '4px 10px',
-                fontSize: '0.76rem',
-                fontWeight: 700,
-                color: '#64748b',
+                background: 'var(--bg-app)',
+                border: '1.5px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-pill)',
+                padding: '4px 12px',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                color: 'var(--text-primary)',
                 cursor: 'pointer',
                 flexShrink: 0,
               }}
@@ -562,12 +561,12 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               onClick={handleTogglePlayFinalChallengeTarget}
               style={{
                 minHeight: 40,
-                padding: '0 12px',
-                background: isPlayingFinalChallengeTarget ? '#fee2e2' : '#fef08a',
-                color: isPlayingFinalChallengeTarget ? '#dc2626' : '#713f12',
-                border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid #eab308',
-                borderRadius: 12,
-                fontWeight: 700,
+                padding: '0 14px',
+                background: isPlayingFinalChallengeTarget ? '#fee2e2' : 'var(--color-yellow-tint)',
+                color: isPlayingFinalChallengeTarget ? '#dc2626' : 'var(--text-primary)',
+                border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid var(--color-yellow)',
+                borderRadius: 'var(--radius-pill)',
+                fontWeight: 800,
                 fontSize: '0.82rem',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -584,18 +583,17 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               onClick={handleCheckFinalChallenge}
               style={{
                 minHeight: 40,
-                padding: '0 14px',
-                background: '#10b981',
-                color: 'white',
-                border: 'none',
-                borderRadius: 12,
+                padding: '0 16px',
+                background: 'var(--color-pink)',
+                color: 'var(--text-primary)',
+                border: '1.5px solid var(--text-primary)',
+                borderRadius: 'var(--radius-pill)',
                 fontWeight: 800,
                 fontSize: '0.84rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
                 cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)',
               }}
             >
               <CheckCircle2 size={16} />
@@ -644,19 +642,18 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       {saveSuccessToast && (
         <div
           style={{
-            margin: '6px 12px 0',
+            margin: '8px 12px 0',
             padding: '10px 14px',
-            borderRadius: 14,
+            borderRadius: 'var(--radius-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 10,
             fontSize: '0.84rem',
-            fontWeight: 700,
-            background: '#ecfdf5',
-            color: '#065f46',
-            border: '1.5px solid #a7f3d0',
-            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)',
+            fontWeight: 800,
+            background: 'var(--bg-surface)',
+            color: 'var(--text-primary)',
+            border: '1.5px solid var(--color-olive)',
             zIndex: 16,
             flexShrink: 0,
           }}
@@ -670,13 +667,13 @@ export const EditorPage: React.FC<EditorPageProps> = ({
                 type="button"
                 onClick={() => onNavigateToTab('karyaku')}
                 style={{
-                  background: '#059669',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 8,
-                  padding: '4px 10px',
+                  background: 'var(--color-pink)',
+                  color: 'var(--text-primary)',
+                  border: '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-pill)',
+                  padding: '4px 12px',
                   fontSize: '0.78rem',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   cursor: 'pointer',
                 }}
               >
@@ -689,7 +686,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#047857',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
                 padding: 4,
                 display: 'flex',
@@ -706,33 +703,31 @@ export const EditorPage: React.FC<EditorPageProps> = ({
       {compilerNotice && (
         <div
           style={{
-            margin: '6px 12px 0',
-            padding: '8px 12px',
-            borderRadius: 12,
+            margin: '8px 12px 0',
+            padding: '10px 14px',
+            borderRadius: 'var(--radius-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 8,
-            fontSize: '0.8rem',
-            fontWeight: 600,
+            fontSize: '0.82rem',
+            fontWeight: 700,
             background:
               compilerNotice.type === 'success'
-                ? '#ecfdf5'
+                ? 'var(--color-olive-tint)'
                 : compilerNotice.type === 'error'
                 ? '#fef2f2'
-                : '#fffbeb',
+                : 'var(--color-yellow-tint)',
             color:
-              compilerNotice.type === 'success'
-                ? '#065f46'
-                : compilerNotice.type === 'error'
+              compilerNotice.type === 'error'
                 ? '#991b1b'
-                : '#92400e',
-            border: `1px solid ${
+                : 'var(--text-primary)',
+            border: `1.5px solid ${
               compilerNotice.type === 'success'
-                ? '#a7f3d0'
+                ? 'var(--color-olive)'
                 : compilerNotice.type === 'error'
                 ? '#fecaca'
-                : '#fde68a'
+                : 'var(--color-yellow)'
             }`,
             animation: 'fadeIn 0.2s ease-out',
             zIndex: 15,
@@ -741,7 +736,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {compilerNotice.type === 'success' ? (
-              <CheckCircle2 size={16} color="#059669" />
+              <CheckCircle2 size={16} color="var(--color-olive)" />
             ) : (
               <AlertTriangle size={16} color={compilerNotice.type === 'error' ? '#dc2626' : '#d97706'} />
             )}

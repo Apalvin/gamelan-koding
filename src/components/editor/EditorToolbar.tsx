@@ -38,17 +38,17 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
             type="button"
             onClick={onShowKepatihan}
             style={{
-              minHeight: 44,
-              padding: '0 10px',
-              borderRadius: 14,
-              border: '2px solid #e2e8f0',
-              background: '#f8fafc',
-              color: '#334155',
+              minHeight: 42,
+              padding: '0 14px',
+              borderRadius: 'var(--radius-pill)',
+              border: '1.5px solid rgba(45, 45, 43, 0.12)',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
-              fontWeight: 700,
-              fontSize: '0.82rem',
+              gap: 6,
+              fontWeight: 800,
+              fontSize: '0.84rem',
               cursor: 'pointer',
               transition: 'all 0.15s ease',
             }}
@@ -65,47 +65,50 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           type="button"
           onClick={onSavePattern}
           style={{
-            minHeight: 44,
-            padding: '0 12px',
-            borderRadius: 14,
-            border: '2px solid #fbcfe8',
-            background: '#fdf2f8',
-            color: '#db2777',
+            minHeight: 42,
+            padding: '0 14px',
+            borderRadius: 'var(--radius-pill)',
+            border: '1.5px solid var(--color-pink)',
+            background: 'var(--color-pink-tint)',
+            color: 'var(--text-primary)',
             display: 'flex',
             alignItems: 'center',
             gap: 6,
-            fontWeight: 700,
-            fontSize: '0.86rem',
+            fontWeight: 800,
+            fontSize: '0.84rem',
             cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
           title="Simpan Pola ke Karyaku"
           aria-label="Simpan Pola ke Karyaku"
         >
-          <Bookmark size={17} />
+          <Bookmark size={16} />
           <span>Simpan</span>
         </button>
 
-        {/* Tombol Reset */}
+        {/* Tombol Reset (Circular Flat) */}
         <button
           type="button"
           onClick={onResetWorkspace}
           style={{
-            minWidth: 44,
-            minHeight: 44,
+            width: 42,
+            height: 42,
+            minWidth: 42,
+            minHeight: 42,
             borderRadius: '50%',
-            border: '2px solid #e2e8f0',
-            background: 'white',
-            color: '#64748b',
+            border: '1.5px solid rgba(45, 45, 43, 0.12)',
+            background: 'var(--bg-surface)',
+            color: 'var(--text-primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
+            transition: 'all 0.15s ease',
           }}
           title="Bersihkan Lembar Kerja"
           aria-label="Bersihkan Lembar Kerja"
         >
-          <RotateCcw size={18} />
+          <RotateCcw size={17} />
         </button>
 
         {/* Tombol Mainkan / Berhenti (Selalu Terlihat Sesuai PRD) */}
@@ -117,12 +120,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         >
           {isPlaying ? (
             <>
-              <Square size={18} fill="white" />
+              <Square size={17} fill="currentColor" />
               <span>Berhenti</span>
             </>
           ) : (
             <>
-              <Play size={18} fill="white" />
+              <Play size={17} fill="currentColor" />
               <span>Mainkan</span>
             </>
           )}

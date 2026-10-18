@@ -7,18 +7,34 @@ interface GamelanVisualizerProps {
   isGongActive?: boolean;
 }
 
+interface SaronNoteConfig {
+  note: SlendroNote;
+  label: string;
+  name: string;
+  height: number;
+  bg: string;
+  tint: string;
+}
+
 /**
- * 7 Bilah Saron Slendro Berurutan Nada Rendah ke Tinggi:
- * 6 (nem rendah/ngisor), 1 (ji), 2 (ro), 3 (lu), 5 (ma), 6' (nem tinggi/cilik), 1' (ji tinggi/cilik)
+ * 7 Bilah Saron Slendro Berurutan Nada Rendah ke Tinggi
+ * Menggunakan palet Classly:
+ * 6 (Nem): Olive green #9AAB65
+ * 1 (Ji): Warm yellow #F7D66E
+ * 2 (Ro): Periwinkle blue #B6CAEB
+ * 3 (Lu): Brand pink #FFB2DD
+ * 5 (Ma): Warm yellow #F7D66E
+ * 6' (Nem t): Olive green #9AAB65
+ * 1' (Ji t): Periwinkle blue #B6CAEB
  */
-const SARON_NOTES: { note: SlendroNote; label: string; name: string; height: number }[] = [
-  { note: '6', label: '6', name: 'Nem (b)', height: 168 },
-  { note: '1', label: '1', name: 'Ji', height: 158 },
-  { note: '2', label: '2', name: 'Ro', height: 148 },
-  { note: '3', label: '3', name: 'Lu', height: 140 },
-  { note: '5', label: '5', name: 'Ma', height: 132 },
-  { note: "6'", label: "6'", name: 'Nem (t)', height: 124 },
-  { note: "1'", label: "1'", name: 'Ji (t)', height: 116 },
+const SARON_NOTES: SaronNoteConfig[] = [
+  { note: '6', label: '6', name: 'Nem (b)', height: 168, bg: '#9AAB65', tint: '#E1E6D1' },
+  { note: '1', label: '1', name: 'Ji', height: 158, bg: '#F7D66E', tint: '#FEEFBF' },
+  { note: '2', label: '2', name: 'Ro', height: 148, bg: '#B6CAEB', tint: '#EAF0F9' },
+  { note: '3', label: '3', name: 'Lu', height: 140, bg: '#FFB2DD', tint: '#FAE0E4' },
+  { note: '5', label: '5', name: 'Ma', height: 132, bg: '#F7D66E', tint: '#FEEFBF' },
+  { note: "6'", label: "6'", name: 'Nem (t)', height: 124, bg: '#9AAB65', tint: '#E1E6D1' },
+  { note: "1'", label: "1'", name: 'Ji (t)', height: 116, bg: '#B6CAEB', tint: '#EAF0F9' },
 ];
 
 export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
@@ -53,21 +69,31 @@ export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
   const isGongRippling = isGongActive || manualGong;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: '16px 12px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, padding: '16px 12px' }}>
       {/* 1. Saron Instrument Chassis (7 Bilah Berurutan) */}
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, padding: '0 4px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#78350f' }}>Instrumen Saron</span>
-            <span style={{ fontSize: '0.72rem', background: '#fef3c7', color: '#92400e', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, padding: '0 4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1rem', color: 'var(--text-primary)' }}>
+              Instrumen Saron
+            </span>
+            <span style={{ fontSize: '0.72rem', background: 'var(--color-yellow-tint)', color: 'var(--text-primary)', padding: '2px 8px', borderRadius: 'var(--radius-pill)', fontWeight: 800 }}>
               7 Bilah Slendro (6 .. 1')
             </span>
           </div>
-          <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Ketuk bilah untuk uji bunyi</span>
+          <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Ketuk bilah untuk uji</span>
         </div>
 
-        <div className="saron-chassis">
-          <div className="saron-keys-grid">
+        <div
+          className="saron-chassis"
+          style={{
+            background: 'var(--bg-surface)',
+            borderRadius: 'var(--radius-card)',
+            padding: '16px 10px 14px',
+            border: '1.5px solid var(--border-card)',
+          }}
+        >
+          <div className="saron-keys-grid" style={{ display: 'flex', gap: 6, justifyContent: 'space-between', alignItems: 'flex-end' }}>
             {SARON_NOTES.map((item) => {
               const isHit =
                 String(activeNote) === String(item.note) ||
@@ -79,50 +105,67 @@ export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
                   className={`saron-key ${isHit ? 'active' : ''}`}
                   style={{
                     height: item.height,
-                    boxShadow: isHit
-                      ? '0 0 20px #facc15, 0 4px 10px rgba(0,0,0,0.3)'
-                      : '0 4px 6px rgba(0,0,0,0.25)',
-                    transform: isHit ? 'translateY(4px) scale(0.98)' : 'none',
-                    filter: isHit ? 'brightness(1.3)' : 'none',
+                    backgroundColor: isHit ? item.tint : item.bg,
+                    borderColor: isHit ? 'var(--text-primary)' : 'rgba(45, 45, 43, 0.15)',
+                    borderWidth: isHit ? 2.5 : 1.5,
+                    borderStyle: 'solid',
+                    borderRadius: 'var(--radius-squircle)',
+                    transform: isHit ? 'translateY(4px) scale(0.97)' : 'none',
+                    transition: 'all 0.1s ease',
                   }}
                   onClick={() => handleTapKey(item.note)}
                   role="button"
                   aria-label={`Bilah Saron nada ${item.note} (${item.name})`}
                 >
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#78350f', opacity: 0.7 }} />
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--text-primary)', opacity: 0.35 }} />
                   <div>
-                    <div className="saron-key-label">{item.label}</div>
-                    <div style={{ fontSize: '0.65rem', fontWeight: 600, color: '#854d0e', textAlign: 'center' }}>
+                    <div className="saron-key-label" style={{ color: 'var(--text-primary)' }}>{item.label}</div>
+                    <div style={{ fontSize: '0.62rem', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', opacity: 0.85 }}>
                       {item.name}
                     </div>
                   </div>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#78350f', opacity: 0.7 }} />
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--text-primary)', opacity: 0.35 }} />
                 </div>
               );
             })}
           </div>
-          {/* Label Ukiran Rancakan Kayu */}
-          <div style={{ textAlign: 'center', marginTop: 10, fontSize: '0.72rem', color: '#fef3c7', fontWeight: 600, letterSpacing: '1px' }}>
+
+          {/* Label Ukiran Rancakan Kayu Flat Playful */}
+          <div style={{ textAlign: 'center', marginTop: 12, fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '1px' }}>
             ✦ LARAS SLENDRO JAWA ✦
           </div>
         </div>
       </div>
 
       {/* 2. Gong Ageng Instrument Gantung dengan Gayor & Pencon Riak */}
-      <div style={{ textAlign: 'center', background: 'white', padding: '18px 14px', borderRadius: 18, border: '2px solid #e2e8f0', boxShadow: '0 2px 6px rgba(0,0,0,0.03)' }}>
+      <div
+        style={{
+          textAlign: 'center',
+          background: 'var(--bg-surface)',
+          padding: '18px 14px',
+          borderRadius: 'var(--radius-card)',
+          border: '1.5px solid var(--border-card)',
+        }}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
           <div>
-            <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#92400e' }}>Gong Ageng</span>
-            <span style={{ display: 'block', fontSize: '0.7rem', color: '#64748b' }}>Penanda penutup siklus gongan</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '0.98rem', color: 'var(--text-primary)' }}>
+              Gong Ageng
+            </span>
+            <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+              Penanda penutup siklus gongan
+            </span>
           </div>
-          <span style={{ fontSize: '0.72rem', color: '#64748b', background: '#f8fafc', padding: '3px 8px', borderRadius: 6 }}>Ketuk gong</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-primary)', background: 'var(--color-pink-tint)', padding: '3px 10px', borderRadius: 'var(--radius-pill)', fontWeight: 700 }}>
+            Ketuk gong
+          </span>
         </div>
 
         <div className="gong-stand-container">
           {/* Balok Gayor Kayu Penyangga Gong */}
           <div className="gong-gayor-beam">
-            <div style={{ position: 'absolute', top: -3, left: 10, width: 8, height: 18, background: '#451a03', borderRadius: 2 }} />
-            <div style={{ position: 'absolute', top: -3, right: 10, width: 8, height: 18, background: '#451a03', borderRadius: 2 }} />
+            <div style={{ position: 'absolute', top: -3, left: 10, width: 8, height: 18, background: 'var(--text-primary)', borderRadius: 2 }} />
+            <div style={{ position: 'absolute', top: -3, right: 10, width: 8, height: 18, background: 'var(--text-primary)', borderRadius: 2 }} />
           </div>
           {/* Tali Gantungan Pluntur */}
           <div className="gong-ropes">
@@ -150,74 +193,56 @@ export const GamelanVisualizer: React.FC<GamelanVisualizerProps> = ({
           </div>
         </div>
 
-        <div style={{ marginTop: 12, fontSize: '0.76rem', color: '#78350f', fontWeight: 600 }}>
+        <div style={{ marginTop: 12, fontSize: '0.78rem', color: 'var(--text-primary)', fontWeight: 700 }}>
           {isGongRippling ? 'Getaran ombak berwibawa (~62 Hz)' : 'Gong Ageng Slendro'}
         </div>
       </div>
 
       {/* 3. Instrumen Kolotomik Pendukung (Kenong, Kempul, Kethuk) */}
-      <div style={{ background: '#fafaf9', padding: '12px 14px', borderRadius: 14, border: '1px solid #e7e5e4' }}>
-        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#44403c', marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          background: 'var(--bg-surface)',
+          padding: '14px 14px',
+          borderRadius: 'var(--radius-card)',
+          border: '1.5px solid var(--border-card)',
+        }}
+      >
+        <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span>Instrumen Struktural (Kolotomik)</span>
-          <span style={{ fontSize: '0.7rem', color: '#78716c' }}>Ketuk untuk dengar</span>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Ketuk untuk dengar</span>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-          <button
-            type="button"
-            onClick={() => handleTapColotomic('kenong')}
-            style={{
-              padding: '8px 4px',
-              borderRadius: 8,
-              border: '1.5px solid #d6d3d1',
-              background: activeColotomic === 'kenong' ? '#fde047' : 'white',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#44403c',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            Kenong
-          </button>
-          <button
-            type="button"
-            onClick={() => handleTapColotomic('kempul')}
-            style={{
-              padding: '8px 4px',
-              borderRadius: 8,
-              border: '1.5px solid #d6d3d1',
-              background: activeColotomic === 'kempul' ? '#fde047' : 'white',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#44403c',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            Kempul
-          </button>
-          <button
-            type="button"
-            onClick={() => handleTapColotomic('kethuk')}
-            style={{
-              padding: '8px 4px',
-              borderRadius: 8,
-              border: '1.5px solid #d6d3d1',
-              background: activeColotomic === 'kethuk' ? '#fde047' : 'white',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#44403c',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            Kethuk
-          </button>
+          {(['kenong', 'kempul', 'kethuk'] as const).map((inst) => {
+            const isActive = activeColotomic === inst;
+            return (
+              <button
+                key={inst}
+                type="button"
+                onClick={() => handleTapColotomic(inst)}
+                style={{
+                  minHeight: 42,
+                  padding: '8px 4px',
+                  borderRadius: 'var(--radius-pill)',
+                  border: `1.5px solid ${isActive ? 'var(--text-primary)' : 'rgba(45, 45, 43, 0.12)'}`,
+                  background: isActive ? 'var(--color-yellow)' : 'var(--bg-app)',
+                  fontSize: '0.8rem',
+                  fontWeight: 800,
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  textTransform: 'capitalize',
+                  transition: 'all 0.12s ease',
+                  transform: isActive ? 'scale(0.96)' : 'none',
+                }}
+              >
+                {inst}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Catatan Akurasi Suara Sesuai PRD Bagian 7.4 */}
-      <div style={{ textAlign: 'center', fontSize: '0.72rem', color: '#94a3b8', fontStyle: 'italic', marginTop: -4 }}>
+      <div className="culture-disclaimer">
         💡 Catatan: Suara simulasi sintesis Web Audio adalah pendekatan digital teoretis, bukan representasi penuh gamelan asli.
       </div>
     </div>

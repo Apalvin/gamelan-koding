@@ -27,54 +27,77 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
       <div className="sheet-drawer" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-handle" onClick={onClose} />
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 34, height: 34, borderRadius: 10, background: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 'var(--radius-squircle)',
+                background: 'var(--color-blue-tint)',
+                color: 'var(--text-primary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <Plus size={20} strokeWidth={2.5} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#1e293b' }}>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.08rem',
+                  fontWeight: 800,
+                  margin: 0,
+                  color: 'var(--text-primary)',
+                }}
+              >
                 Pilih Blok Koding
               </h3>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Ketuk blok untuk memasukkan ke lembar kerja</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                Ketuk blok untuk memasukkan ke lembar kerja
+              </div>
             </div>
           </div>
 
+          {/* Dark Circular Close Button Sesuai Classly */}
           <button
             type="button"
             onClick={onClose}
-            style={{
-              minWidth: 44,
-              minHeight: 44,
-              borderRadius: '50%',
-              border: 'none',
-              background: '#f1f5f9',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="btn-back-circle"
             aria-label="Tutup Palet"
           >
-            <X size={20} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
-        {/* Filter Kategori */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+        {/* Filter Kategori (Segmented Full-Pill) */}
+        <div
+          style={{
+            display: 'flex',
+            gap: 6,
+            marginBottom: 14,
+            background: 'var(--bg-app)',
+            padding: 4,
+            borderRadius: 'var(--radius-pill)',
+            border: '1.5px solid var(--border-subtle)',
+          }}
+        >
           <button
             type="button"
             onClick={() => setFilter('all')}
             style={{
               flex: 1,
-              minHeight: 38,
-              borderRadius: 10,
+              minHeight: 36,
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: filter === 'all' ? '#0f172a' : '#f1f5f9',
-              color: filter === 'all' ? 'white' : '#475569',
-              fontWeight: 700,
-              fontSize: '0.8rem',
+              background: filter === 'all' ? 'var(--color-pink)' : 'transparent',
+              color: 'var(--text-primary)',
+              fontWeight: 800,
+              fontSize: '0.78rem',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             Semua ({PALETTE_BLOCKS.length})
@@ -84,14 +107,15 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
             onClick={() => setFilter('gamelan')}
             style={{
               flex: 1,
-              minHeight: 38,
-              borderRadius: 10,
+              minHeight: 36,
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: filter === 'gamelan' ? '#0d9488' : '#f1f5f9',
-              color: filter === 'gamelan' ? 'white' : '#475569',
-              fontWeight: 700,
-              fontSize: '0.8rem',
+              background: filter === 'gamelan' ? 'var(--color-olive)' : 'transparent',
+              color: 'var(--text-primary)',
+              fontWeight: 800,
+              fontSize: '0.78rem',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             Gamelan (5)
@@ -101,14 +125,15 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
             onClick={() => setFilter('kontrol')}
             style={{
               flex: 1,
-              minHeight: 38,
-              borderRadius: 10,
+              minHeight: 36,
+              borderRadius: 'var(--radius-pill)',
               border: 'none',
-              background: filter === 'kontrol' ? '#f59e0b' : '#f1f5f9',
-              color: filter === 'kontrol' ? 'white' : '#475569',
-              fontWeight: 700,
-              fontSize: '0.8rem',
+              background: filter === 'kontrol' ? 'var(--color-yellow)' : 'transparent',
+              color: 'var(--text-primary)',
+              fontWeight: 800,
+              fontSize: '0.78rem',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             Kontrol (1)
@@ -116,7 +141,7 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
         </div>
 
         {/* Daftar Blok */}
-        <div style={{ overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8, maxHeight: '50vh', paddingRight: 4 }}>
+        <div style={{ overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, maxHeight: '50vh', paddingRight: 4 }}>
           {filteredBlocks.map((block) => (
             <div
               key={block.type}
@@ -129,55 +154,57 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '12px 14px',
-                borderRadius: 14,
-                border: '2px solid #e2e8f0',
-                background: '#ffffff',
+                borderRadius: 'var(--radius-card)',
+                border: '1.5px solid var(--border-card)',
+                background: 'var(--bg-app)',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = block.color)}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--text-primary)')}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-card)')}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div
                   style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 10,
-                    backgroundColor: block.color,
-                    color: 'white',
+                    width: 40,
+                    height: 40,
+                    borderRadius: 'var(--radius-squircle)',
+                    backgroundColor: block.category === 'gamelan' ? 'var(--color-pink-tint)' : 'var(--color-yellow-tint)',
+                    border: `1.5px solid ${block.category === 'gamelan' ? 'var(--color-pink)' : 'var(--color-yellow)'}`,
+                    color: 'var(--text-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    fontSize: '0.8rem',
                     flexShrink: 0,
                   }}
                 >
-                  {block.category === 'gamelan' ? <Music size={18} /> : <Repeat size={18} />}
+                  {block.category === 'gamelan' ? <Music size={18} strokeWidth={2.5} /> : <Repeat size={18} strokeWidth={2.5} />}
                 </div>
 
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1e293b' }}>
+                    <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                       {block.label}
                     </span>
                     {block.badge && (
                       <span
                         style={{
-                          fontSize: '0.65rem',
-                          fontWeight: 700,
-                          background: '#f1f5f9',
-                          color: '#475569',
-                          padding: '2px 6px',
-                          borderRadius: 6,
+                          fontSize: '0.66rem',
+                          fontWeight: 800,
+                          background: 'var(--bg-surface)',
+                          border: '1px solid var(--border-subtle)',
+                          color: 'var(--text-primary)',
+                          padding: '2px 8px',
+                          borderRadius: 'var(--radius-pill)',
                         }}
                       >
                         {block.badge}
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: 2 }}>
+                  <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: 2 }}>
                     {block.description}
                   </div>
                 </div>
@@ -185,16 +212,18 @@ export const BlockPaletteDrawer: React.FC<BlockPaletteDrawerProps> = ({
 
               <div
                 style={{
-                  minWidth: 44,
-                  minHeight: 44,
+                  minHeight: 34,
+                  padding: '0 12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: '#f8fafc',
-                  borderRadius: 10,
-                  color: '#2563eb',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
+                  background: 'var(--color-pink-tint)',
+                  border: '1.5px solid var(--color-pink)',
+                  borderRadius: 'var(--radius-pill)',
+                  color: 'var(--text-primary)',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  flexShrink: 0,
                 }}
               >
                 + Pakai

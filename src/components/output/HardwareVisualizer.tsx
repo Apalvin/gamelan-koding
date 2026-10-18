@@ -32,11 +32,10 @@ export const HardwareVisualizer: React.FC<HardwareVisualizerProps> = ({
   return (
     <div
       style={{
-        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
-        borderRadius: 20,
+        background: 'var(--text-primary)',
+        borderRadius: 'var(--radius-card)',
         padding: '16px',
         color: '#f8fafc',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
         display: 'flex',
         flexDirection: 'column',
         gap: 14,
@@ -49,14 +48,14 @@ export const HardwareVisualizer: React.FC<HardwareVisualizerProps> = ({
             style={{
               width: 32,
               height: 32,
-              borderRadius: 8,
-              background: '#3b82f6',
+              borderRadius: 'var(--radius-squircle)',
+              background: 'var(--color-pink)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Cpu size={18} color="white" />
+            <Cpu size={18} color="var(--text-primary)" />
           </div>
           <div>
             <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800 }}>
