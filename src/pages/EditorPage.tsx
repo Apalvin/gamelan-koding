@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import * as Blockly from 'blockly';
-import { Code2, Music, AlertTriangle, CheckCircle2, X } from 'lucide-react';
+import { Code2, Music, AlertTriangle, CheckCircle2, X, Sparkles, Volume2, Square } from 'lucide-react';
 import { BlocklyWorkspace, addBlockToWorkspace } from '../components/editor/BlocklyWorkspace';
 import { EditorToolbar } from '../components/editor/EditorToolbar';
 import { BlockPaletteDrawer } from '../components/editor/BlockPaletteDrawer';
@@ -15,6 +15,8 @@ import { SaveCreativeModal } from '../components/missions/SaveCreativeModal';
 import missionsData from '../content/missions.json';
 import { Mission, EvaluationResult } from '../types/mission';
 import { evaluateMission, evaluateC6 } from '../compiler/missionEvaluator';
+import { evaluateFinalChallenge } from '../compiler/finalChallengeEvaluator';
+import { FINAL_CHALLENGE_PLAYBACK_EVENTS } from '../services/onboardingService';
 import { missionProgressService } from '../services/missionProgressService';
 import { karyakuService, SavedProject } from '../services/karyakuService';
 import { TabId } from '../types/navigation';
@@ -33,6 +35,8 @@ interface SaveSuccessToast {
 
 interface EditorPageProps {
   activeMissionId?: string | null;
+  isFinalChallengeActive?: boolean;
+  onExitFinalChallenge?: () => void;
   projectToLoad?: SavedProject | null;
   shouldAutoPlayProject?: boolean;
   onClearProjectToLoad?: () => void;
@@ -43,6 +47,8 @@ interface EditorPageProps {
 
 export const EditorPage: React.FC<EditorPageProps> = ({
   activeMissionId,
+  isFinalChallengeActive = false,
+  onExitFinalChallenge,
   projectToLoad,
   shouldAutoPlayProject = false,
   onClearProjectToLoad,
@@ -65,6 +71,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const [isCreativeModalOpen, setIsCreativeModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [saveSuccessToast, setSaveSuccessToast] = useState<SaveSuccessToast | null>(null);
+  const [isPlayingFinalChallengeTarget, setIsPlayingFinalChallengeTarget] = useState(false);
 
   // Compiler results
   const [compiledEvents, setCompiledEvents] = useState<GamelanEvent[]>([]);
@@ -280,6 +287,40 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     }
   };
 
+  // Toggle pemutaran audio target untuk Tantangan Gending Akhir
+  const handleTogglePlayFinalChallengeTarget = async () => {
+    if (isPlayingFinalChallengeTarget) {
+      digitalSimOutput.stop();
+      setIsPlayingFinalChallengeTarget(false);
+      return;
+    }
+
+    try {
+      setIsPlayingFinalChallengeTarget(true);
+      await digitalSimOutput.play(FINAL_CHALLENGE_PLAYBACK_EVENTS);
+      setIsPlayingFinalChallengeTarget(false);
+    } catch {
+      setIsPlayingFinalChallengeTarget(false);
+    }
+  };
+
+  // Evaluasi tabuhan siswa terhadap Tantangan Gending Akhir
+  const handleCheckFinalChallenge = () => {
+    if (!workspaceRef.current) return;
+    const result = compileWorkspace(workspaceRef.current);
+    if (!result.success) {
+      setCompilerNotice({
+        type: result.code === 'INFINITE_LOOP' ? 'error' : 'warning',
+        message: result.error,
+      });
+      return;
+    }
+
+    setCompiledEvents(result.events);
+    const evaluation = evaluateFinalChallenge(result.events);
+    setEvalResult(evaluation);
+  };
+
   const handleOpenCreativeModal = () => {
     if (!workspaceRef.current) return;
     const result = compileWorkspace(workspaceRef.current);
@@ -350,9 +391,14 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     }
   };
 
-  // Navigasi saat misi berhasil
+  // Navigasi saat misi atau tantangan akhir selesai/ditindaklanjuti
   const handleNextMission = () => {
     setEvalResult(null);
+    if (isFinalChallengeActive) {
+      onExitFinalChallenge?.();
+      onNavigateToTab?.('misi');
+      return;
+    }
     if (activeMission?.code === 'C3' && onSelectMission) {
       onSelectMission('C4');
     } else if (activeMission?.code === 'C6' && onNavigateToTab) {
@@ -406,6 +452,114 @@ export const EditorPage: React.FC<EditorPageProps> = ({
           onExit={onExitMission || (() => {})}
           onSaveCreative={handleOpenCreativeModal}
         />
+      )}
+
+      {/* Banner Tantangan Gending Akhir jika diaktifkan dari Onboarding */}
+      {isFinalChallengeActive && (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+            borderBottom: '2px solid #fde68a',
+            padding: '10px 14px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+            boxShadow: '0 4px 10px rgba(245, 158, 11, 0.08)',
+            zIndex: 11,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+            <div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: '#f59e0b',
+                  color: 'white',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  padding: '2px 8px',
+                  borderRadius: 999,
+                  marginBottom: 4,
+                }}
+              >
+                <Sparkles size={12} /> Tantangan Awal • Gending Akhir
+              </div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#78350f' }}>
+                Pola Lancaran 8 Ketukan: 3 • 5 • 3 • 2 • 3 • 5 • 6 • 5 (+ Gong)
+              </div>
+              <div style={{ fontSize: '0.74rem', color: '#92400e', marginTop: 2 }}>
+                Susun blok saron dan gong untuk membunyikan pola penutup ini! (Contoh — belum divalidasi praktisi karawitan)
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={onExitFinalChallenge}
+              style={{
+                background: 'white',
+                border: '1.5px solid #cbd5e1',
+                borderRadius: 8,
+                padding: '4px 10px',
+                fontSize: '0.76rem',
+                fontWeight: 700,
+                color: '#64748b',
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              Keluar
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={handleTogglePlayFinalChallengeTarget}
+              style={{
+                minHeight: 40,
+                padding: '0 12px',
+                background: isPlayingFinalChallengeTarget ? '#fee2e2' : '#fef08a',
+                color: isPlayingFinalChallengeTarget ? '#dc2626' : '#713f12',
+                border: isPlayingFinalChallengeTarget ? '1.5px solid #f87171' : '1.5px solid #eab308',
+                borderRadius: 12,
+                fontWeight: 700,
+                fontSize: '0.82rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                cursor: 'pointer',
+              }}
+            >
+              {isPlayingFinalChallengeTarget ? <Square size={15} fill="currentColor" /> : <Volume2 size={15} />}
+              <span>{isPlayingFinalChallengeTarget ? 'Hentikan Contoh' : 'Dengarkan Target'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCheckFinalChallenge}
+              style={{
+                minHeight: 40,
+                padding: '0 14px',
+                background: '#10b981',
+                color: 'white',
+                border: 'none',
+                borderRadius: 12,
+                fontWeight: 800,
+                fontSize: '0.84rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)',
+              }}
+            >
+              <CheckCircle2 size={16} />
+              <span>Periksa Tabuhanku</span>
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Dua Tab Di Atas Sesuai Sketsa 1 PRD */}
